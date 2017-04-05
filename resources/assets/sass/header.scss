@@ -1,0 +1,10 @@
+.admin-header{
+  background-color: $dark-bg-nav;
+  color: $color-txt-for-dark;
+  position: fixed;
+  z-index: 100;
+  min-height: 40px;
+  top: 0;
+  left: 0;
+  right: 0;
+}

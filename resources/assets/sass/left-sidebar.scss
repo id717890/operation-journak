@@ -1,0 +1,42 @@
+.left-sidebar {
+  display: block;
+  position: fixed;
+  background-color: $dark-bg-nav;
+  color: $color-txt-for-dark;
+  //background-color: #e6e8e9;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 44px;
+  bottom: 0;
+  left: 0;
+}
+
+.nav-sidebar {
+  margin-bottom: 20px;
+  margin-right: -15px ;
+  margin-left: -15px ;
+}
+
+.nav-sidebar>li {
+  position: relative;
+  display: block;
+}
+
+.nav-sidebar > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  color: $color-txt-for-dark;
+  white-space: nowrap;
+}
+
+.nav-sidebar > li:hover > a {
+  color: black;
+  background-color: #eee;
+  border-left: 3px solid #ee0803;
+}
+
+.nav-sidebar > .active > a {
+  color: white;
+  background-color: #36494e;
+}

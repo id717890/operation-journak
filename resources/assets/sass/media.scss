@@ -1,0 +1,111 @@
+@media (min-width: 576px) {
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 992px) {
+}
+
+@media (min-width: 1200px) {
+}
+
+@media (max-width: 576px){
+  .left-sidebar{
+    display: none;
+  }
+
+  .admin-header{
+    position: relative;
+  }
+}
+
+/*iPad in portrait & landscape*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+
+}
+
+/*iPad in landscape*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+
+}
+
+/*iPad in portrait*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+
+}
+
+/*Retina iPad in portrait & landscape*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
+  /* STYLES GO HERE */
+}
+
+/*Retina iPad in landscape*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  /* STYLES GO HERE */
+}
+
+/*Retina iPad in portrait*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+  /* STYLES GO HERE */
+}
+
+/*iPad 1 & 2 in portrait & landscape*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+}
+
+/*iPhone 6 in portrait*/
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) {
+
+}
+
+/*iPhone 6 Plus Media Queries*/
+/*iPhone 6 Plus in portrait & landscape*/
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) {
+  /* STYLES GO HERE */
+}
+
+/*iPhone 6 Plus in landscape*/
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) {
+  /* STYLES GO HERE */
+}
+
+/*iPhone 6 Plus in portrait*/
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: portrait) {
+  /* STYLES GO HERE */
+}
+
+/*iPhone 5 & 5S Media Queries*/
+/*iPhone 5 & 5S in portrait & landscape*/
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+
+}
+
+/*iPhone 5 & 5S in landscape*/
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (orientation: landscape) {
+
+}
+
+/*iPhone 5 & 5S in portrait*/
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (orientation: portrait) {
+
+}
+
+/*Android*/
+@media only screen and (max-device-width: 360px) {
+
+}
+
+/*iPhone 6 in portrait*/
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) {
+
+}
+
+/*iPhone 6 in portrait & landscape*/
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) {
+
+}
+
+/*iPhone 6 in landscape*/
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) {
+}

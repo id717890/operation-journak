@@ -1,0 +1,33 @@
+#login {
+  display: flex;
+  min-height: 100%;
+  flex-flow: column;
+}
+
+#login form {
+  width: 500px;
+}
+
+#login .input-group-addon {
+  min-width: 50px;
+  background-color: #494f55;
+  color: white;
+  outline: none;
+  font-weight: bolder;
+}
+
+#login form input {
+  background-color: #3b4148;
+  color: #8f9498;
+  outline: none;
+  height: 50px;
+  border: none;
+}
+
+#login form input[type="text"]:focus {
+  outline: none !important;
+}
+
+#login form label {
+  color: white;
+}
