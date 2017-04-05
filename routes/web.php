@@ -20,6 +20,9 @@ Route::group(['middleware' => ['web']], function () {
 
     //region Кабинет администратора
     Route::group(['middleware' => ['auth', 'role:admin']], function () {
+
+        Route::get('/dir/nps', ['as' => 'dir.nps', 'uses' => 'Dashboard\DirectoryController@getNps']); //справочник НПС
+
         Route::post('/users/delete/{id}', ['as' => 'user.delete', 'uses' => 'Dashboard\AdminController@postUserDelete']); //POST удаление пользователя
         Route::post('/users/edit/{id}', ['as' => 'user.edit', 'uses' => 'Dashboard\AdminController@postUserEdit']); //POST редактирование пользователя
         Route::get('/users/edit/{id}', ['as' => 'user.edit', 'uses' => 'Dashboard\AdminController@getUserEdit']); //редактирование пользователя

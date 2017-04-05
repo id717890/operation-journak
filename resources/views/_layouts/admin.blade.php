@@ -76,9 +76,13 @@
                     </li>
                 </ul>
                 <ul class="nav nav-sidebar d-block">
-                    <li><a href="#">Меню №1</a></li>
-                    <li><a href="#">Меню №2</a></li>
-                    <li><a href="#">Меню №3</a></li>
+                    <li class="{{ Request::is('dir/nps') ? 'active' : '' }}">
+                        <a href="{{route('dir.nps')}}">
+                            <i class="fa fa-connectdevelop" title="Пользователи"></i>
+                            <span>Справочник "НПС"</span>
+                        </a></li>
+                    <li><a href="#">Справочник "ЛУ"</a></li>
+                    <li><a href="#">Справочник "КП"</a></li>
                 </ul>
             </div>
             <div class="col-md-10 offset-md-2 col-sm-9 offset-sm-3 wrapper-content-admin">
