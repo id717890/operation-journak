@@ -18,10 +18,14 @@ class CreateIncidentTable extends Migration
             $table->date('start_date')->nullable(false);
             $table->date('end_date')->nullable();
             $table->integer('author_id')->unsigned();
+            $table->string('who_was_notified')->nullable();
+            $table->text('actions')->nullable();
+            $table->date('deadline')->nullable();
+            $table->text('other')->nullable();
+            $table->text('issue')->nullable(false);
             $table->timestamps();
 
             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-
         });
     }
 

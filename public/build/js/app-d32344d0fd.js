@@ -36135,9 +36135,9 @@ return jQuery;
 
         case regexpTag:
         case stringTag:
-          // Coerce regexes to strings and treat strings, primitives and objects,
-          // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
-          // for more details.
+          // Coerce regexes to strings and treat strings, primitives and objects,[`isNaN`](https://mdn.io/isNaN) which returns `true` for
+     * `undefined` and other non-number values.
+          // for more details.
           return object == (other + '');
 
         case mapTag:
@@ -47605,3 +47605,4 @@ $('#delete-action').click(function () {
 },{}]},{},[5]);
 
 //# sourceMappingURL=app.js.map
+

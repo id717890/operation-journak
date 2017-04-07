@@ -17,6 +17,13 @@
 
 Route::group(['middleware' => ['web']], function () {
 
+    //region Обычный пользователь
+    Route::group(['middleware' => ['auth', 'role:engineer|admin']], function () {
+
+        Route::get('/operation_journal', ['as' => 'operation_journal', 'uses' => 'Dashboard\EngineerController@getOperationJournal']); //оперативный журнал
+
+    });
+    //endregion
 
     //region Кабинет администратора
     Route::group(['middleware' => ['auth', 'role:admin']], function () {

@@ -26249,8 +26249,7 @@ var getStyles = function( elem ) {
 		div.style.cssText =
 			"box-sizing:border-box;" +
 			"position:relative;display:block;" +
-			"margin:auto;border:1px;padding:1px;" +
-			"top:1%;width:50%";
+			"margin:auto;border:1px;padding:1px;" +bject, path) {h:50%";
 		div.innerHTML = "";
 		documentElement.appendChild( container );
 
@@ -47605,3 +47604,4 @@ $('#delete-action').click(function () {
 },{}]},{},[5]);
 
 //# sourceMappingURL=app.js.map
+p
