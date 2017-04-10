@@ -27,13 +27,18 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('operation_journal')}}">Оперативный журнал <span class="sr-only">(current)</span></a>
-                    </li>
-                    @if (Auth::user()->hasRole('admin'))
+
+                    @if (!Auth::guest())
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin')}}">Админка <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{route('operation_journal')}}">Оперативный журнал <span
+                                        class="sr-only">(current)</span></a>
                         </li>
+                        @if (Auth::user()->hasRole('admin'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('admin')}}">Админка <span
+                                            class="sr-only">(current)</span></a>
+                            </li>
+                        @endif
                     @endif
                     {{--<li class="nav-item">--}}
                     {{--<a class="nav-link" href="#">Link</a>--}}

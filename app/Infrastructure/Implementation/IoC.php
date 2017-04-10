@@ -11,7 +11,6 @@ class IoCServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('App\Infrastructure\Interfaces\Services\IMailerService', 'App\Infrastructure\Implementation\Services\MailerService');
-        $this->app->bind('App\Infrastructure\Interfaces\Services\IUserService', 'App\Infrastructure\Implementation\Services\UserService');
+        $this->app->bind('App\Infrastructure\Interfaces\Services\IIncidentService', 'App\Infrastructure\Implementation\Services\IncidentService');
     }
 }
