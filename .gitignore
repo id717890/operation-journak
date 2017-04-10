@@ -3,6 +3,7 @@
 /public/storage
 /public/build
 /public/css/app*
+/public/js/app*
 Homestead.yaml
 Homestead.json
 .idea
