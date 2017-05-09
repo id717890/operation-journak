@@ -6,6 +6,8 @@ interface IRepository
 {
     public function all($columns = array('*'));
 
+    public function all_sorted($sort_by, $attribute, $columns = array('*'));
+
 //    public function allSortedBy($attribute, $columns = array('*'));
 //
 //    public function allSortedByDesc($attribute, $columns = array('*'));

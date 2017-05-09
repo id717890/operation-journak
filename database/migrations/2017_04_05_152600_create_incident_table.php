@@ -17,6 +17,8 @@ class CreateIncidentTable extends Migration
             $table->increments('id');
             $table->date('start_date')->nullable(false);
             $table->date('end_date')->nullable();
+            $table->integer('dir_type_id')->unsigned();
+            $table->integer('object_caption')->unsigned();
             $table->integer('author_id')->unsigned();
             $table->string('who_was_notified')->nullable();
             $table->text('actions')->nullable();
@@ -26,6 +28,7 @@ class CreateIncidentTable extends Migration
             $table->timestamps();
 
             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('dir_type_id')->references('id')->on('dir_types')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

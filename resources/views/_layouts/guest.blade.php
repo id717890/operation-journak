@@ -2,6 +2,7 @@
 <html lang="{{ config('app.locale') }}">
 <head>
     <meta charset="utf-8"/>
+    <meta name="_token" content="<?php echo csrf_token(); ?>">
     <title>@yield('title')</title>
     {{--    {{Html::style('css2/bootstrap.css')}}--}}
     <!-- Styles -->

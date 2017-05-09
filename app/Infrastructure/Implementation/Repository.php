@@ -26,6 +26,19 @@ abstract class Repository implements IRepository
         return $this->model->get($columns);
     }
 
+    public function all_sorted($sort_by, $attribute, $columns = array('*'))
+    {
+        switch ($sort_by) {
+            case 'desc':
+                return $this->model->get($columns)->sortByDesc($attribute);
+                break;
+            case 'asc':
+                return $this->model->get($columns)->sortBy($attribute);
+                break;
+        }
+        return $this->model->get($columns)->sortBy($attribute);
+    }
+
     /**
      * @param int $perPage
      * @param array $columns
