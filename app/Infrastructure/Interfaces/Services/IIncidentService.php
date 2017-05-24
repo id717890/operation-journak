@@ -11,5 +11,12 @@ interface IIncidentService
      */
     public function get_all();
 
+    /**
+     * Создает новую запись в оперативном журнале
+     * @param $data
+     * @return mixed
+     */
+    public function new_incident($data);
+
 
 }

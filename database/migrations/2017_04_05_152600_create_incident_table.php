@@ -15,14 +15,14 @@ class CreateIncidentTable extends Migration
     {
         Schema::create('incidents', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('start_date')->nullable(false);
-            $table->date('end_date')->nullable();
+            $table->datetime('start_date')->nullable(false);
+            $table->datetime('end_date')->nullable();
             $table->integer('dir_type_id')->unsigned();
-            $table->integer('object_caption')->unsigned();
+            $table->text('object_caption');
             $table->integer('author_id')->unsigned();
             $table->string('who_was_notified')->nullable();
             $table->text('actions')->nullable();
-            $table->date('deadline')->nullable();
+            $table->dateTime('deadline')->nullable();
             $table->text('other')->nullable();
             $table->text('issue')->nullable(false);
             $table->timestamps();

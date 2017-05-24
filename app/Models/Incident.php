@@ -8,7 +8,8 @@ class Incident extends Model
 {
     protected $table = 'incidents';
 
-    protected $fillable = array('start_date', 'end_date', 'author_id', 'who_was_notified', 'actions', 'deadline', 'other', 'issue');
+    protected $fillable = array('start_date', 'end_date', 'dir_type_id','object_caption','author_id', 'who_was_notified', 'actions', 'deadline', 'other', 'issue');
 
     use Relations\BelongsTo\Users;
+    use Relations\BelongsTo\DirType;
 }

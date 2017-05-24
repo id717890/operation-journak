@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Requests\Engineer\FormOperJournalCreate;
 use App\Infrastructure\Interfaces\Services\IDirGlobalService;
 use App\Infrastructure\Interfaces\Services\IDirTypesService;
 use App\Infrastructure\Interfaces\Services\IIncidentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use Response;
 
@@ -36,6 +38,13 @@ class EngineerController extends Controller
             return Response::json(['success' => false]);
 
         }
+    }
+
+    public function postOperationJournalCreate(FormOperJournalCreate $request)
+    {
+        $this->incidentService->new_incident(Input::all());
+        return redirect()->route('operation_journal');
+
     }
 
     public function getOperationJournalCreate()

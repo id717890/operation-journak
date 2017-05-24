@@ -2,7 +2,11 @@
 
 @section('styles')
     {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
-
+    <style type="text/css">
+        .alert{
+            margin-bottom: 0;
+        }
+    </style>
 @endsection
 
 @section('scripts')
@@ -28,15 +32,15 @@
                     beforeSend: function () {
                         $('#object-list').empty();
                         $('.loading-container').show();
+                        $('#ObjectModalLabel').html('Список доступных объектов');
                     },
                     success: function (response) {
                         if (response.success) {
-                            console.log(response.values.length);
                             $.each(response.values, function (key, value) {
                                 $('#object-list').append(
                                         "<div class=\"col-xl-4 col-lg-4 col-md-6 col-sm-12\">" +
                                         "<div class=\"checkbox-custom checkbox-primary\" style=\"text-align: left\">" +
-                                        "<input id=\"obj-" + key + "\" name=\"obj-" + key + "\" type=\"checkbox\" value=\"1\">" +
+                                        "<input id=\"obj-" + key + "\" name=\"obj-list[]\" type=\"checkbox\" value='" + value.caption + "'>" +
                                         "<label for=\"obj-" + key + "\">" + value.caption + "</label>" +
                                         "</div></div>");
                             });
@@ -62,6 +66,21 @@
 
                 $('#object-list').empty();
             });
+
+            $('#submit-objects').click(function () {
+                var val = [];
+                $('input[name="obj-list[]"]:checked').each(function (i) {
+                    val[i] = $(this).val();
+                });
+                $('#obj_caption').val(val.join(', '));
+                $('#ObjectModal').modal('hide');
+            });
+
+            $('#reset-objects').click(function () {
+                $('input[name="obj-list[]"]').each(function () {
+                    this.checked = false;
+                });
+            });
         })
     </script>
 @endsection
@@ -70,54 +89,82 @@
     <div class="row">
         <div class="col-12">
             <h4 class="text-center">Журнал фиксации оперативных событий</h4>
-
+            {!! Form::open([
+                    'url'=>route('operation_journal.create'),
+                    'type'=>'POST',
+                    'id'=>'form_oper_journal'
+                    ]) !!}
             <div class="card">
                 <div class="card-block">
                     <div class="row">
-                        <div class="col-xl-4 col-md-12 text-center">
-                            <h4>АО "Транснефть-Сибирь"</h4>
-                        </div>
-                        <div class="col-xl-4 col-md-12 text-center">
+                        <div class="col-xl-3 col-md-12 text-center">
                             <h4>РДП Урай</h4>
                         </div>
-                        <div class="col-xl-4 col-md-12 text-center">
+                        <div class="col-xl-6 col-md-12 text-center">
+
+                            <h4><img src="../img/tn-logo-3.png" style="width: 80px"> АО "Транснефть-Сибирь" <img
+                                        src="../img/tn-logo-3.png" style="width: 80px"></h4>
+                        </div>
+                        <div class="col-xl-3 col-md-12 text-center ">
                             <h4 style="font-weight: bolder;">{{date('d.m.Y H:i:s')}}</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 d-block">
-                            <div class="form-group">
-                                {!! Form::label('start-date','Время начала',['style'=>'font-weight:bold']) !!}
+                            <div class="form-group <?php echo $errors->has('start_date') ? ' has-danger' : '' ?>">
+                                {!! Form::label('start_date','Время начала',['style'=>'font-weight:bold']) !!}
 
-                                {!! Form::text('start-date',date('d.m.Y H:i'),array(
-                                'id'=>'start-date',
+                                {!! Form::text('start_date',date('d.m.Y H:i'),array(
+                                'id'=>'start_date',
                                 'class'=>'form-control datetimepicker1',
                                 'placeholder'=>'Время начала',
-                                'value'=> old('start-date'))) !!}
+                                'value'=> old('start_date'))) !!}
+                                @if ($errors->has('start_date'))
+                                    <div class="alert alert-danger"
+                                         style="margin-top: 5px ">{{$errors->first('start_date')}}</div>
+                                @endif
                             </div>
+
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 d-block">
                             <div class="form-group">
-                                {!! Form::label('end-date','Время окончания',['style'=>'font-weight:bold']) !!}
+                                {!! Form::label('end_date','Время окончания',['style'=>'font-weight:bold']) !!}
 
-                                {!! Form::text('end-date',null,array(
-                                'id'=>'end-date',
+                                {!! Form::text('end_date',null,array(
+                                'id'=>'end_date',
                                 'class'=>'form-control datetimepicker2',
                                 'value'=> old('end-date'))) !!}
                             </div>
+                        </div>
+                        <div class="form-group col-xl-6 col-md-12 <?php echo $errors->has('who_was_notified') ? ' has-danger' : '' ?>">
+                            {!! Form::label('who_was_notified','Оповещение о неисправности / Ответственный',['style'=>'font-weight:bold']) !!}
+
+                            {!! Form::text('who_was_notified','Диспетчер, Оператор',array(
+                            'id'=>'who_was_notified',
+                            'class'=>'form-control ',
+                            'placeholder'=>'Кто оповещен о неисправности?',
+                            'value'=> old('who_was_notified'))) !!}
+                            @if ($errors->has('who_was_notified'))
+                                <div class="alert alert-danger"
+                                     style="margin-top: 5px ">{{$errors->first('who_was_notified')}}</div>
+                            @endif
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 15px">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header">Объект</div>
+                                <div class="card-header" style="padding: 0.3rem 1.25rem">Объект</div>
                                 <div class="card-block">
                                     <div class="row">
-                                        <div class="form-group col-xl-2 col-md-6 col-sm-12">
+                                        <div class="form-group col-xl-4 col-md-12 mb-0 <?php echo $errors->has('dir_type') ? ' has-danger' : '' ?>">
                                             {!! Form::label('dir_type_label','Тип объекта',['style'=>'font-weight:bold']) !!}
                                             {!! Form::select('dir_type',$types,null,['placeholder'=>'','class'=>'form-control','id'=>'dir_type']) !!}
+                                            @if ($errors->has('dir_type'))
+                                                <div class="alert alert-danger"
+                                                     style="margin-top: 5px ">{{$errors->first('dir_type')}}</div>
+                                            @endif
                                         </div>
-                                        <div class="form-group col-xl-2 col-md-6 col-sm-12">
+                                        <div class="form-group col-xl-8 col-md-12 mb-0 <?php echo $errors->has('obj_caption') ? ' has-danger' : '' ?>">
                                             {!! Form::label('obj_caption','Объект',['style'=>'font-weight:bold']) !!}
 
                                             {!! Form::text('obj_caption',null,array(
@@ -125,35 +172,32 @@
                                             'id'=>'obj_caption',
                                             'class'=>'form-control',
                                             'value'=> old('obj_caption'), 'disabled'=>'disabled')) !!}
+                                            @if ($errors->has('obj_caption'))
+                                                <div class="alert alert-danger"
+                                                     style="margin-top: 5px ">{{$errors->first('obj_caption')}}</div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="form-group col-12">
-                            {!! Form::label('who-was-notified','Оповещение о неисправности',['style'=>'font-weight:bold']) !!}
-
-                            {!! Form::text('who-was-notified','Диспетчер, Оператор',array(
-                            'id'=>'who-was-notified',
-                            'class'=>'form-control ',
-                            'placeholder'=>'Кто оповещен о неисправности?',
-                            'value'=> old('who-was-notified'))) !!}
-                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xl-9 col-sm-12">
-                            <div class="form-group">
-                                {!! Form::label('actions','Мероприятия по устранению',['style'=>'font-weight:bold']) !!}
+                            <div class="form-group <?php echo $errors->has('issue') ? ' has-danger' : '' ?>">
+                                {!! Form::label('issue','Описание проблемы / Проводимые работы',['style'=>'font-weight:bold']) !!}
 
-                                {!! Form::textarea('actions',null,array(
-                                'id'=>'actions',
-                                'class'=>'form-control ',
+                                {!! Form::textarea('issue',null,array(
+                                'id'=>'issue',
+                                'class'=>'form-control',
                                 'rows'=>2,
-                                'value'=> old('actions'))) !!}
+                                'value'=> old('issue'))) !!}
+                                @if ($errors->has('issue'))
+                                    <div class="alert alert-danger"
+                                         style="margin-top: 5px ">{{$errors->first('issue')}}</div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-xl-3 col-sm-12">
@@ -169,16 +213,16 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-12">
-                            {!! Form::label('issue','Описание проблемы',['style'=>'font-weight:bold']) !!}
+                        <div class="form-group col-xl-6 col-md-12">
+                            {!! Form::label('actions','Мероприятия по устранению',['style'=>'font-weight:bold']) !!}
 
-                            {!! Form::textarea('issue',null,array(
-                            'id'=>'issue',
-                            'class'=>'form-control',
+                            {!! Form::textarea('actions',null,array(
+                            'id'=>'actions',
+                            'class'=>'form-control ',
                             'rows'=>2,
-                            'value'=> old('issue'))) !!}
+                            'value'=> old('actions'))) !!}
                         </div>
-                        <div class="form-group col-12">
+                        <div class="form-group col-xl-6 col-md-12">
                             {!! Form::label('other','Примечание',['style'=>'font-weight:bold']) !!}
 
                             {!! Form::textarea('other',null,array(
@@ -189,32 +233,38 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-4 col-md-12" st>
-                            <a class="btn btn-remark-default w-100 mb-3">Назад</a>
+                        <div class="col-xl-2 col-md-12" st>
+                            <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i class="fa fa-arrow-left"></i> Назад</a>
                         </div>
-                        <div class="col-xl-4 col-md-12" st>
-                            <a class="btn btn-remark-warning w-100 mb-3">Очистить</a>
+                        <div class="col-xl-2 col-md-12" st>
+                            <a href="#" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i> Очистить</a>
                         </div>
-                        <div class="col-xl-4 col-md-12" st>
-                            <a class="btn btn-remark-success w-100 ">Сохранить</a>
+                        <div class="col-xl-2 col-md-12" st>
+                            <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i> Сохранить</button>
                         </div>
                     </div>
 
                 </div>
             </div>
+            {!! Form::close() !!}
         </div>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="ObjectModal" tabindex="-1" role="dialog" aria-labelledby="ObjectModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog objects-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ObjectModalLabel">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-header d-block">
+                    <button type="button" class="btn btn-remark-primary" id="submit-objects">ОК</button>
+                    <button type="button" class="btn btn-remark-warning" id="reset-objects">Очистить</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                 </div>
                 <div class="modal-body">
                     <div class="loading-container" style="text-align: center">
@@ -225,10 +275,6 @@
                         </div>
                     </div>
                     <div id="object-list" class="row d-flex"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>

@@ -1,26 +1,5 @@
 @extends('_layouts/guest')
 
-@section('styles')
-    {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
-
-@endsection
-
-@section('scripts')
-    {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
-
-
-    <script type="text/javascript">
-        $(function () {
-
-            $.datetimepicker.setLocale('ru');
-
-            $('.datetimepicker1, .datetimepicker2').datetimepicker({
-                format: 'd.m.Y H:i'
-            });
-        })
-    </script>
-@endsection
-
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -214,10 +193,7 @@
                         <colgroup>
                             <col class="width-30">
                             <col class="width-150">
-                            <col>
-                            <col>
-                            <col>
-                            <col>
+                            <col class="width-100">
                             <col>
                             <col>
                             <col class="width-150">
@@ -227,12 +203,9 @@
                         <tr>
                             <th>#</th>
                             <th>Начало</th>
-                            <th>МН</th>
-                            <th>НПС</th>
-                            <th>ЛУ</th>
-                            <th>КП</th>
-                            <th>Рез.нитка</th>
-                            <th>Неисправность</th>
+                            <th title="Тип объекта">Тип</th>
+                            <th>Объект</th>
+                            <th title="Описание неисправности или проводимых работ">Описание</th>
                             <th>Дежурный</th>
                             <th></th>
                         </tr>
@@ -244,11 +217,8 @@
                                 <tr>
                                     <td>{{$i}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
-                                    <td>...</td>
-                                    <td>НПС "Ягодное"</td>
-                                    <td>...</td>
-                                    <td>...</td>
-                                    <td>...</td>
+                                    <td>{{$incident->dir_type->caption}}</td>
+                                    <td>{{$incident->object_caption}}</td>
                                     <td>{{$incident->issue}}</td>
                                     <td>{{$incident->user->name}}</td>
                                     <td>
@@ -263,6 +233,8 @@
                                 </tr>
                                 <?php $i++; ?>
                             @endforeach
+                        @else
+                        <tr><td colspan="7" class="text-center">Записи отсутствуют</td></tr>
                         @endif
                         </tbody>
                     </table>

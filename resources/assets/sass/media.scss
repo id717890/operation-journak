@@ -1,22 +1,38 @@
 @media (min-width: 576px) {
+  .objects-dialog {
+    width: 95% !important;
+  }
 }
 
 @media (min-width: 768px) {
+  .objects-dialog {
+    width: 95% !important;
+  }
 }
 
 @media (min-width: 992px) {
+  .objects-dialog {
+    width: 85% !important;
+  }
 }
 
 @media (min-width: 1200px) {
+  .objects-dialog {
+    width: 80% !important;
+  }
 }
 
-@media (max-width: 576px){
-  .left-sidebar{
+@media (max-width: 576px) {
+  .left-sidebar {
     display: none;
   }
 
-  .admin-header{
+  .admin-header {
     position: relative;
+  }
+
+  .objects-dialog {
+    width: 95% !important;
   }
 }
 

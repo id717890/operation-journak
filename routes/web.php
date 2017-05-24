@@ -20,6 +20,7 @@ Route::group(['middleware' => ['web']], function () {
     //region Обычный пользователь
     Route::group(['middleware' => ['auth', 'role:engineer|admin']], function () {
         Route::post('/operation_journal/filter-obj/{id}', ['as' => 'operation_journal.filter-obj', 'uses' => 'Dashboard\EngineerController@postFilterDirGlobalByType']); //Ajax запрос для выбора списка объектов по типу объекта
+        Route::post('/operation_journal/create', ['as' => 'operation_journal.create', 'uses' => 'Dashboard\EngineerController@postOperationJournalCreate']); //добавление записи в журнал
         Route::get('/operation_journal/create', ['as' => 'operation_journal.create', 'uses' => 'Dashboard\EngineerController@getOperationJournalCreate']); //добавление записи в журнал
         Route::get('/operation_journal', ['as' => 'operation_journal', 'uses' => 'Dashboard\EngineerController@getOperationJournal']); //оперативный журнал
 
