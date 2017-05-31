@@ -3,7 +3,7 @@
 @section('styles')
     {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
     <style type="text/css">
-        .alert{
+        .alert {
             margin-bottom: 0;
         }
     </style>
@@ -81,6 +81,10 @@
                     this.checked = false;
                 });
             });
+
+            $('#clear-form').click(function(){
+                $('#form_oper_journal')[0].reset();
+            });
         })
     </script>
 @endsection
@@ -133,7 +137,7 @@
                                 {!! Form::text('end_date',null,array(
                                 'id'=>'end_date',
                                 'class'=>'form-control datetimepicker2',
-                                'value'=> old('end-date'))) !!}
+                                'value'=> old('end_date'))) !!}
                             </div>
                         </div>
                         <div class="form-group col-xl-6 col-md-12 <?php echo $errors->has('who_was_notified') ? ' has-danger' : '' ?>">
@@ -167,11 +171,20 @@
                                         <div class="form-group col-xl-8 col-md-12 mb-0 <?php echo $errors->has('obj_caption') ? ' has-danger' : '' ?>">
                                             {!! Form::label('obj_caption','Объект',['style'=>'font-weight:bold']) !!}
 
-                                            {!! Form::text('obj_caption',null,array(
-                                            'placeholder'=>'Укажите объект',
-                                            'id'=>'obj_caption',
-                                            'class'=>'form-control',
-                                            'value'=> old('obj_caption'), 'disabled'=>'disabled')) !!}
+                                            @if(old('dir_type')!=null)
+                                                {!! Form::text('obj_caption',null,array(
+                                                    'placeholder'=>'Укажите объект',
+                                                    'id'=>'obj_caption',
+                                                    'class'=>'form-control',
+                                                    'value'=> old('obj_caption'))) !!}
+                                            @else
+                                                {!! Form::text('obj_caption',null,array(
+                                                    'placeholder'=>'Укажите объект',
+                                                    'id'=>'obj_caption',
+                                                    'class'=>'form-control',
+                                                    'value'=> old('obj_caption'), 'disabled'=>'disabled')) !!}
+                                            @endif
+
                                             @if ($errors->has('obj_caption'))
                                                 <div class="alert alert-danger"
                                                      style="margin-top: 5px ">{{$errors->first('obj_caption')}}</div>
@@ -234,13 +247,16 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-2 col-md-12" st>
-                            <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i class="fa fa-arrow-left"></i> Назад</a>
+                            <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i
+                                        class="fa fa-arrow-left"></i> Назад</a>
                         </div>
                         <div class="col-xl-2 col-md-12" st>
-                            <a href="#" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i> Очистить</a>
+                            <a href="#" id="clear-form" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i> Очистить</a>
                         </div>
                         <div class="col-xl-2 col-md-12" st>
-                            <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i> Сохранить</button>
+                            <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i>
+                                Сохранить
+                            </button>
                         </div>
                     </div>
 

@@ -18,5 +18,20 @@ interface IIncidentService
      */
     public function new_incident($data);
 
+    /**
+     * Поиск записи в оперативном журнале по id записи
+     * @param $id
+     * @return mixed
+     */
+    public function find_incident_by_id($id);
+
+    /**
+     * Редактирование записи в оперативном журнале
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function update_incident($id, $data);
+
 
 }

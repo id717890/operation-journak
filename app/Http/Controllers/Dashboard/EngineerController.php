@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use Response;
+use Session;
 
 
 class EngineerController extends Controller
@@ -27,6 +28,28 @@ class EngineerController extends Controller
         $this->incidentService = $incidentService;
         $this->dirTypeService = $dirTypesService;
         $this->dirGlobalService = $dirGlobalService;
+    }
+
+    public function postOperationJournalEdit(FormOperJournalCreate $request, $id)
+    {
+        $incident = $this->incidentService->find_incident_by_id($id);
+        if ($incident == null) {
+            Session::flash('error_msg', 'Запись с данным id не найдена');
+            return redirect()->back();
+        }
+        $this->incidentService->update_incident($id, Input::all());
+        return redirect()->route('operation_journal');
+    }
+
+    public function getOperationJournalEdit($id)
+    {
+        $incident = $this->incidentService->find_incident_by_id($id);
+        if ($incident == null) {
+            Session::flash('error_msg', 'Запись с таким id не найдена');
+            return redirect()->back();
+        } else return View('dashboard.engineer.operation_journal_edit')
+            ->with('types', $this->dirTypeService->get_types_cm())
+            ->with('incident', $incident);
     }
 
     public function postFilterDirGlobalByType($id)

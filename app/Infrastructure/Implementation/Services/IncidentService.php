@@ -58,4 +58,53 @@ class IncidentService implements IIncidentService
             Session::flash('error_msg', $e->getMessage());
         }
     }
+
+    /**
+     * Поиск записи в оперативном журнале по id записи
+     * @param $id
+     * @return mixed
+     */
+    public function find_incident_by_id($id)
+    {
+        try {
+            $incident = $this->context->find($id);
+            if ($incident == null) Session::flash('error_msg', 'Запись с таким id не найдена');
+            return $incident;
+        } catch (Exception $e) {
+            Session::flash('error_msg', $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Редактирование записи в оперативном журнале
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function update_incident($id, $data)
+    {
+        try {
+            DB::beginTransaction();
+            $incident = $this->context->find($id);
+            if ($incident == null) throw new Exception('Запись не найдена');
+            $this->context->update([
+                'start_date' => date("Y-m-d H:i:s", strtotime(Input::get('start_date'))),
+                'end_date' => Input::get('end_date') != '' && !is_null(Input::get('end_date')) ? date("Y-m-d H:i:s", strtotime(Input::get('end_date'))) : null,
+                'dir_type_id' => Input::get('dir_type'),
+                'object_caption' => Input::get('obj_caption'),
+                'author_id' => Auth::user()->id,
+                'who_was_notified' => Input::get('who_was_notified'),
+                'actions' => Input::get('actions'),
+                'deadline' => Input::get('deadline') != '' && !is_null(Input::get('deadline')) ? date("Y-m-d H:i:s", strtotime(Input::get('deadline'))) : null,
+                'other' => Input::get('other'),
+                'issue' => Input::get('issue'),
+            ], $id);
+            DB::commit();
+            Session::flash('success_msg', 'Данные успешно сохранены');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error_msg', $e->getMessage());
+        }
+    }
 }

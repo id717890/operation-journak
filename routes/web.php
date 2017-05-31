@@ -19,6 +19,8 @@ Route::group(['middleware' => ['web']], function () {
 
     //region Обычный пользователь
     Route::group(['middleware' => ['auth', 'role:engineer|admin']], function () {
+        Route::post('/operation_journal/edit/{id}', ['as' => 'operation_journal.edit', 'uses' => 'Dashboard\EngineerController@postOperationJournalEdit']); //POST редактирование записи в журнале
+        Route::get('/operation_journal/edit/{id}', ['as' => 'operation_journal.edit', 'uses' => 'Dashboard\EngineerController@getOperationJournalEdit']); //редактирование записи в журнале
         Route::post('/operation_journal/filter-obj/{id}', ['as' => 'operation_journal.filter-obj', 'uses' => 'Dashboard\EngineerController@postFilterDirGlobalByType']); //Ajax запрос для выбора списка объектов по типу объекта
         Route::post('/operation_journal/create', ['as' => 'operation_journal.create', 'uses' => 'Dashboard\EngineerController@postOperationJournalCreate']); //добавление записи в журнал
         Route::get('/operation_journal/create', ['as' => 'operation_journal.create', 'uses' => 'Dashboard\EngineerController@getOperationJournalCreate']); //добавление записи в журнал
