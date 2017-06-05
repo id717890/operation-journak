@@ -107,4 +107,55 @@ class IncidentService implements IIncidentService
             Session::flash('error_msg', $e->getMessage());
         }
     }
+
+    /**
+     * Все открытые записи
+     * @return mixed
+     */
+    public function get_opened()
+    {
+        return $this->context->incident_opened_and_not_deleted();
+    }
+
+    /**
+     * Все открытые записи, с указанием кол-ва записей на странице
+     * @param $size
+     * @return mixed
+     */
+    public function get_opened_size($size)
+    {
+        return $this->context->incident_opened_and_not_deleted_size($size);
+    }
+
+    /**
+     * Все закрытые записи
+     * @return mixed
+     */
+    public function get_closed()
+    {
+        return $this->context->incident_closed_and_not_deleted();
+    }
+
+    /**
+     * Удаление записи по id
+     * @param $id
+     * @return mixed
+     */
+    public function remove_by_id($id)
+    {
+        try {
+            $user = $this->context->find($id);
+            if ($user == null) throw new Exception('Запись с указанным id в журнале не найдена');
+            DB::beginTransaction();
+            $this->context->update([
+                'author_id' => Auth::user()->id,
+                'is_delete' => true
+            ], $id);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
 }

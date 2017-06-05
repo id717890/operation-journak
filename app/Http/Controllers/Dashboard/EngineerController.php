@@ -30,6 +30,11 @@ class EngineerController extends Controller
         $this->dirGlobalService = $dirGlobalService;
     }
 
+    public function postOperationJournalDelete($id)
+    {
+        if ($this->incidentService->remove_by_id($id)) return $id; else return 0;
+    }
+
     public function postOperationJournalEdit(FormOperJournalCreate $request, $id)
     {
         $incident = $this->incidentService->find_incident_by_id($id);
@@ -67,7 +72,6 @@ class EngineerController extends Controller
     {
         $this->incidentService->new_incident(Input::all());
         return redirect()->route('operation_journal');
-
     }
 
     public function getOperationJournalCreate()
@@ -75,8 +79,17 @@ class EngineerController extends Controller
         return view('dashboard.engineer.operation_journal_create')->with('types', $this->dirTypeService->get_types_cm());
     }
 
-    public function getOperationJournal()
+    public function getOperationJournalPageSize($size=50)
     {
-        return view('dashboard.engineer.operation_journal')->with('incidents', $this->incidentService->get_all());
+        return view('dashboard.engineer.operation_journal')
+            ->with('incidents', $this->incidentService->get_opened_size($size))
+            ->with('sizes', config('constants.paginate_sizes'));
     }
+
+//    public function getOperationJournal()
+//    {
+//        return view('dashboard.engineer.operation_journal')
+//            ->with('incidents', $this->incidentService->get_opened())
+//            ->with('sizes', config('constants.paginate_sizes'));
+//    }
 }

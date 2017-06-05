@@ -7,6 +7,10 @@
   width: 30px;
 }
 
+.width-35 {
+  width: 35px;
+}
+
 .width-40 {
   width: 40px;
 }
@@ -63,6 +67,18 @@ table .btn-xs {
   content: "*";
   vertical-align: baseline;
   color: red;
+}
+
+.btn-for-add {
+  display: none;
+}
+
+.table-with-btn-add{
+  margin-bottom: 1rem !important;
+}
+
+.table-with-btn-add tr:hover .btn-for-add{
+  display: block;
 }
 
 //input, div{

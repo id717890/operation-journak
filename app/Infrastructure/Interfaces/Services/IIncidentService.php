@@ -12,6 +12,25 @@ interface IIncidentService
     public function get_all();
 
     /**
+     * Все открытые записи
+     * @return mixed
+     */
+    public function get_opened();
+
+    /**
+     * Все открытые записи, с указанием кол-ва записей на странице
+     * @param $size
+     * @return mixed
+     */
+    public function get_opened_size($size);
+
+    /**
+     * Все закрытые записи
+     * @return mixed
+     */
+    public function get_closed();
+
+    /**
      * Создает новую запись в оперативном журнале
      * @param $data
      * @return mixed
@@ -32,6 +51,13 @@ interface IIncidentService
      * @return mixed
      */
     public function update_incident($id, $data);
+
+    /**
+     * Удаление записи по id
+     * @param $id
+     * @return mixed
+     */
+    public function remove_by_id($id);
 
 
 }
