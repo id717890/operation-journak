@@ -54,7 +54,9 @@ Route::group(['middleware' => ['web']], function () {
 
     Auth::routes();
 
-    Route::get('/home', 'HomeController@index');
+//    Route::get('/home', 'HomeController@index');
+    Route::get('/hash_hash/{str}', ['as' => 'hash', 'uses' => 'GuestController@getHashString']); //GET отчеты по деньгам по месяцам (экспорт в Excel)
+
 });
 
 
