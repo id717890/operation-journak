@@ -10,14 +10,19 @@ class GuestController extends Controller
 {
     public function index()
     {
-        return View('guest.index');
+        if (Auth::check()) {
+            return redirect()->route('operation_journal');
+        }
+        return redirect()->route('login');
+
     }
 
     public function detectRole()
     {
         if (Auth::check()) {
-            if (Auth::user()->hasRole('admin')) return redirect()->route('admin');
+//            if (Auth::user()->hasRole('admin')) return redirect()->route('admin');
+            return redirect()->route('operation_journal');
         }
-        return redirect()->route('auth.register');
+        return redirect()->route('auth.login');
     }
 }

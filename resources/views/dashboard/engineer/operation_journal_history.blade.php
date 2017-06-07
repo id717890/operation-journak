@@ -33,6 +33,10 @@
                 }
                 return false;
             });
+
+            $('#search-btn').click(function(){
+                $('#loading-element').show();
+            })
         });
 
         function ClearStartDate() {
@@ -137,7 +141,7 @@
                                                     'value'=> old('issue'))) !!}
                                     </div>
                                     <div class="col-xl-3 col-md-4 col-sm-12">
-                                        <button type="submit" class="btn btn-remark-success w-100 "
+                                        <button type="submit" id="search-btn" class="btn btn-remark-success w-100 "
                                                 style="bottom: 0; position: absolute; cursor: pointer">
                                             <i class="fa fa-search"></i>
                                             Поиск

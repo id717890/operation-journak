@@ -15,5 +15,6 @@ class IoCServiceProvider extends ServiceProvider
         $this->app->bind('App\Infrastructure\Interfaces\Services\IDirTypesService', 'App\Infrastructure\Implementation\Services\DirTypesService');
         $this->app->bind('App\Infrastructure\Interfaces\Services\IUserService', 'App\Infrastructure\Implementation\Services\UserService');
         $this->app->bind('App\Infrastructure\Interfaces\Services\IIncidentService', 'App\Infrastructure\Implementation\Services\IncidentService');
+        $this->app->bind('App\Infrastructure\Interfaces\Services\IMailerService', 'App\Infrastructure\Implementation\Services\MailerService');
     }
 }

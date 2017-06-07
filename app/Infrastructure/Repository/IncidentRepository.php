@@ -59,12 +59,11 @@ class IncidentRepository extends Repository
                 ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))))
                 ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
         }
-
         if ($start_date != null && $end_date == null) {
 //            dd('2');
             $data
-                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i")))
-                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i")));
+                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i",strtotime(date("Y"."-12-31 23:59")))))
+                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i",strtotime(date("Y"."-12-31 23:59")))));
         }
 
         if ($start_date == null && $end_date != null) {

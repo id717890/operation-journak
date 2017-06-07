@@ -34,6 +34,7 @@ class EngineerController extends Controller
         $this->userService = $userService;
     }
 
+
     public function getOperationJournalHistory($size = 50)
     {
         return view('dashboard.engineer.operation_journal_history')

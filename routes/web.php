@@ -19,7 +19,7 @@ Route::group(['middleware' => ['web']], function () {
 
     //region Обычный пользователь
     Route::group(['middleware' => ['auth', 'role:engineer|admin']], function () {
-        Route::get('/operation_journal/history/{size?}{start_date?}{end?}{type?}{auth?}{obj?}{issue?}', ['as' => 'operation_journal_history', 'uses' => 'Dashboard\EngineerController@getOperationJournalHistory']); //оперативный журнал
+        Route::get('/operation_journal/history/{size?}', ['as' => 'operation_journal_history', 'uses' => 'Dashboard\EngineerController@getOperationJournalHistory']); //оперативный журнал
 
         Route::post('/operation_journal/delete/{id}', ['as' => 'operation_journal.delete', 'uses' => 'Dashboard\EngineerController@postOperationJournalDelete']); //POST удаление записи в журнале
         Route::post('/operation_journal/edit/{id}', ['as' => 'operation_journal.edit', 'uses' => 'Dashboard\EngineerController@postOperationJournalEdit']); //POST редактирование записи в журнале

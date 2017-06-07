@@ -80,7 +80,7 @@
     <div class="container-fluid" style="padding-top: 15px;">
         @yield('content')
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="{{ asset('js/tether.1.4.0.min.js') }}"></script>
     <script src="{{ asset(elixir('js/app.js')) }}"></script>
     @yield('scripts')
 </div>
