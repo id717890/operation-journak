@@ -49,6 +49,12 @@ interface IUserService
      */
     public function is_exist_name($name);
 
+    /**
+     * Выгружает список пользователей для combobox
+     * @return mixed
+     */
+    public function get_users_cm();
+
     public function change_password($user, $new_password);
 
     public function lock($user);

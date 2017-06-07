@@ -15,12 +15,32 @@ class IncidentSeeder extends Seeder
         DB::table('incidents')->delete();
 
 
-        for($i=1;$i<=1100;$i++)
+        for($i=1;$i<=10;$i++)
         {
             DB::table('incidents')->insert([
                 'id' => $i,
                 'start_date' => date("2017-04-07 18:00:00"),
                 'end_date' => null,
+                'dir_type_id' => 1,
+                'object_caption' => str_random(20),
+                'author_id' => 1,
+                'who_was_notified' => 'Диспетчер, Оператор',
+                'actions' => 'Выезд бригада ТМ',
+                'deadline' => date("2017-04-07"),
+                'other' => null,
+                'issue' => 'Затопление колодца К2',
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+
+        }
+
+        for($i=11;$i<=57;$i++)
+        {
+            DB::table('incidents')->insert([
+                'id' => $i,
+                'start_date' => date("2017-04-07 18:00:00"),
+                'end_date' => date(rand(2016,2017)."-".rand(1,12)."-".rand(1,25)." 18:00:00"),
                 'dir_type_id' => 1,
                 'object_caption' => str_random(20),
                 'author_id' => 1,

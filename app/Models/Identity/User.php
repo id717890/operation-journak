@@ -11,6 +11,9 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+use App\Models\Scopes\IsNotDeleted;
+use App\Models\Scopes\IsDeleted;
+
 use Illuminate\Support\Facades\Password;
 
 
@@ -123,6 +126,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+
+    use IsDeleted;
+    use IsNotDeleted;
 }
 
 //class User extends Authenticatable

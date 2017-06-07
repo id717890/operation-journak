@@ -1,5 +1,9 @@
 @extends('_layouts/guest')
 
+@section('title')
+    Оперативный журнал - новая запись
+@endsection
+
 @section('styles')
     {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
     <style type="text/css">
@@ -82,10 +86,18 @@
                 });
             });
 
-            $('#clear-form').click(function(){
+            $('#clear-form').click(function () {
                 $('#form_oper_journal')[0].reset();
             });
-        })
+        });
+
+        function ClearStartDate() {
+            $('#start_date').val('');
+        }
+
+        function ClearEndDate() {
+            $('#end_date').val('');
+        }
     </script>
 @endsection
 
@@ -118,26 +130,40 @@
                             <div class="form-group <?php echo $errors->has('start_date') ? ' has-danger' : '' ?>">
                                 {!! Form::label('start_date','Время начала',['style'=>'font-weight:bold']) !!}
 
-                                {!! Form::text('start_date',date('d.m.Y H:i'),array(
-                                'id'=>'start_date',
-                                'class'=>'form-control datetimepicker1',
-                                'placeholder'=>'Время начала',
-                                'value'=> old('start_date'))) !!}
+                                <div class="input-group">
+                                    {!! Form::text('start_date',date('d.m.Y H:i'),array(
+                                        'id'=>'start_date',
+                                        'class'=>'form-control datetimepicker1',
+                                        'placeholder'=>'Время начала',
+                                        'value'=> old('start_date'))) !!}
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-secondary" onclick="ClearStartDate()" type="button">
+                                            <i class="fa fa-eraser"></i>
+                                        </button>
+                                    </span>
+                                </div>
                                 @if ($errors->has('start_date'))
                                     <div class="alert alert-danger"
                                          style="margin-top: 5px ">{{$errors->first('start_date')}}</div>
                                 @endif
                             </div>
-
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 d-block">
                             <div class="form-group">
                                 {!! Form::label('end_date','Время окончания',['style'=>'font-weight:bold']) !!}
 
-                                {!! Form::text('end_date',null,array(
-                                'id'=>'end_date',
-                                'class'=>'form-control datetimepicker2',
-                                'value'=> old('end_date'))) !!}
+                                <div class="input-group">
+                                    {!! Form::text('end_date',null,array(
+                                        'id'=>'end_date',
+                                        'placeholder'=>'Время окончания',
+                                        'class'=>'form-control datetimepicker2',
+                                        'value'=> old('end_date'))) !!}
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-secondary" onclick="ClearEndDate()" type="button">
+                                            <i class="fa fa-eraser"></i>
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group col-xl-6 col-md-12 <?php echo $errors->has('who_was_notified') ? ' has-danger' : '' ?>">
@@ -251,7 +277,8 @@
                                         class="fa fa-arrow-left"></i> Назад</a>
                         </div>
                         <div class="col-xl-2 col-md-12" st>
-                            <a href="#" id="clear-form" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i> Очистить</a>
+                            <a href="#" id="clear-form" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i>
+                                Очистить</a>
                         </div>
                         <div class="col-xl-2 col-md-12" st>
                             <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i>

@@ -158,4 +158,31 @@ class IncidentService implements IIncidentService
             return false;
         }
     }
+
+    /**
+     * Все закрытые записи, с указанием кол-ва записей на странице
+     * @param $size
+     * @return mixed
+     */
+    public function get_closed_size($size)
+    {
+        return $this->context->incident_closed_and_not_deleted_size($size);
+
+    }
+
+    /**
+     * Поиск записи в журнале по параметрам
+     * @param $size
+     * @param $start_date
+     * @param $end_date
+     * @param $author
+     * @param $dir_type
+     * @param $obj_caption
+     * @param $issue
+     * @return mixed
+     */
+    public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue)
+    {
+        return $this->context->find_incident_by_parameters($size,$start_date, $end_date, $author, $dir_type, $obj_caption, $issue);
+    }
 }

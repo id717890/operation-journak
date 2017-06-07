@@ -10,4 +10,13 @@ class UsersRepository extends Repository
     {
         return 'App\Models\Identity\User';
     }
+
+    /**
+     * Инциденты не удаленные и НЕ закрытые
+     * @return mixed
+     */
+    public function all_not_deleted()
+    {
+        return $this->model->isNotDeleted()->orderBy('name')->get();
+    }
 }

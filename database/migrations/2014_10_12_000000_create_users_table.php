@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->boolean('lockout_enabled')->default(0);
             $table->rememberToken();
             $table->string('confirm_token',100)->nullable()->default(null);
+            $table->boolean('is_delete')->nullable(false)->default(false);
             $table->timestamps();
         });
     }

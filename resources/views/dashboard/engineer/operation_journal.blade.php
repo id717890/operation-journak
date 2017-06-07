@@ -1,5 +1,9 @@
 @extends('_layouts/guest')
 
+@section('title')
+    Оперативный журнал
+@endsection
+
 @section('scripts')
     <script>
         $(function () {
@@ -26,25 +30,21 @@
                 <div class="col-12 mb-3">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fa fa-rocket"> </i> Оперативный</a>
+                            <a class="nav-link active" href="{{route('operation_journal')}}"><i
+                                        class="fa fa-rocket"> </i> Оперативный</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-clock-o"> </i> История</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-search"> </i> Поиск</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa fa-file-excel-o"> </i> Отчет</a>
+                            <a class="nav-link" href="{{route('operation_journal_history')}}"><i
+                                        class="fa fa-clock-o"> </i> История</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 d-block">
-                    <div class="form-group col-12 d-flex" style="flex-flow: row">
+                    <div class="col-12 d-flex" style="flex-flow: row">
                         <div class="col-sm-1">
-                            {!! Form::select('page-size',$sizes,$incidents->perPage(),['class'=>'form-control page-size','id'=>'page-size-1']) !!}
+                            {!! Form::select('page-size',$sizes,$incidents->perPage(),['class'=>'form-control page-size','id'=>'page-size-1','style'=>'; margin-bottom: 1rem']) !!}
                         </div>
                         <div class="col-sm-11">
                             {{ $incidents->links('vendor.pagination.bootstrap-4') }}
@@ -106,14 +106,20 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="7" class="text-center">Записи отсутствуют</td>
+                                <td colspan="8" class="text-center">
+                                    <a href="{{route('operation_journal.create')}}"
+                                       class="btn btn-xs btn-remark-success">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </a>
+                                    Записи отсутствуют
+                                </td>
                             </tr>
                         @endif
                         </tbody>
                     </table>
-                    <div class="form-group col-12 d-flex" style="flex-flow: row">
+                    <div class="col-12 d-flex" style="flex-flow: row;">
                         <div class="col-sm-1">
-                            {!! Form::select('page-size',$sizes,$incidents->perPage(),['class'=>'form-control page-size','id'=>'page-size-2']) !!}
+                            {!! Form::select('page-size',$sizes,$incidents->perPage(),['class'=>'form-control page-size','id'=>'page-size-1']) !!}
                         </div>
                         <div class="col-sm-11">
                             {{ $incidents->links('vendor.pagination.bootstrap-4') }}

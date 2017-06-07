@@ -1,5 +1,9 @@
 @extends('_layouts/guest')
 
+@section('title')
+    Оперативный журнал - редактирование
+@endsection
+
 @section('styles')
     {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
     <style type="text/css">
@@ -86,11 +90,19 @@
                 e.stopPropagation();
                 e.preventDefault();
                 $('#end_date, #obj_caption, #issue, #actions, #other').val('');
-                $('#dir_type').prop('selectedIndex',0);
+                $('#dir_type').prop('selectedIndex', 0);
                 $('#obj_caption').attr('disabled', true);
 
             });
-        })
+        });
+
+        function ClearStartDate() {
+            $('#start_date').val('');
+        }
+
+        function ClearEndDate() {
+            $('#end_date').val('');
+        }
     </script>
 @endsection
 
@@ -124,11 +136,18 @@
                                 <div class="form-group <?php echo $errors->has('start_date') ? ' has-danger' : '' ?>">
                                     {!! Form::label('start_date','Время начала',['style'=>'font-weight:bold']) !!}
 
-                                    {!! Form::text('start_date',date('d.m.Y H:i',strtotime($incident->start_date)),array(
-                                    'id'=>'start_date',
-                                    'class'=>'form-control datetimepicker1',
-                                    'placeholder'=>'Время начала',
-                                    'value'=> old('start_date'))) !!}
+                                    <div class="input-group">
+                                        {!! Form::text('start_date',date('d.m.Y H:i',strtotime($incident->start_date)),array(
+                                            'id'=>'start_date',
+                                            'class'=>'form-control datetimepicker1',
+                                            'placeholder'=>'Время начала',
+                                            'value'=> old('start_date'))) !!}
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-secondary" onclick="ClearStartDate()" type="button">
+                                            <i class="fa fa-eraser"></i>
+                                        </button>
+                                    </span>
+                                    </div>
                                     @if ($errors->has('start_date'))
                                         <div class="alert alert-danger"
                                              style="margin-top: 5px ">{{$errors->first('start_date')}}</div>
@@ -139,10 +158,18 @@
                                 <div class="form-group">
                                     {!! Form::label('end_date','Время окончания',['style'=>'font-weight:bold']) !!}
 
-                                    {!! Form::text('end_date', $incident->end_date!=null ? date('d.m.Y H:i',strtotime($incident->end_date)) : null,array(
-                                    'id'=>'end_date',
-                                    'class'=>'form-control datetimepicker2',
-                                    'value'=> old('end_date'))) !!}
+                                    <div class="input-group">
+                                        {!! Form::text('end_date', $incident->end_date!=null ? date('d.m.Y H:i',strtotime($incident->end_date)) : null,array(
+                                                'id'=>'end_date',
+                                                'placeholder'=>'Время окончания',
+                                                'class'=>'form-control datetimepicker2',
+                                                'value'=> old('end_date'))) !!}
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-secondary" onclick="ClearEndDate()" type="button">
+                                                <i class="fa fa-eraser"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group col-xl-6 col-md-12 <?php echo $errors->has('who_was_notified') ? ' has-danger' : '' ?>">

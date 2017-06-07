@@ -147,4 +147,16 @@ class UserService implements IUserService
             return false;
         }
     }
+
+    /**
+     * Выгружает список пользователей для combobox
+     * @return mixed
+     */
+    public function get_users_cm()
+    {
+        $values = [];
+        foreach ($this->context->all_not_deleted() as $item)
+            $values[$item->id] = $item->name;
+        return $values;
+    }
 }
