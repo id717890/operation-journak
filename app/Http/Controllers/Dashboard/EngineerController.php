@@ -10,6 +10,7 @@ use App\Infrastructure\Interfaces\Services\IUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 use Response;
 use Session;
 
@@ -88,13 +89,14 @@ class EngineerController extends Controller
 
     public function postFilterDirGlobalByType($id)
     {
-        try {
+//        try {
             $values = $this->dirGlobalService->get_objects_by_type($id);
-            return Response::json(['success' => true, 'values' => $values]);
-        } catch (Exception $e) {
-            return Response::json(['success' => false]);
-
-        }
+            return View('partial.filter_objects')->with('obj_list',$values);
+//            return Response::json(['success' => true, 'values' => View('partial.filter_objects')->with('obj_list',$values)]);
+//        } catch (Exception $e) {
+//            return Response::json(['success' => false]);
+//
+//        }
     }
 
     public function postOperationJournalCreate(FormOperJournalCreate $request)

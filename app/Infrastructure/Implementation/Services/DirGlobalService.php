@@ -26,6 +26,16 @@ class DirGlobalService implements IDirGlobalService
      */
     public function get_objects_by_type($dir_type_id)
     {
-        return $this->context->get_objects_by_type($dir_type_id);
+        $data = [];
+        $groups = $this->context->get_groups_by_type($dir_type_id);
+        foreach ($groups as $group) {
+            $obj_list = [];
+            $objects = $this->context->get_objects_by_type_and_group($dir_type_id, $group->group_name);
+            foreach ($objects as $object) {
+                $obj_list[$object->id] = $object;
+            }
+            $data[$group->group_name] = $obj_list;
+        }
+        return $data;
     }
 }

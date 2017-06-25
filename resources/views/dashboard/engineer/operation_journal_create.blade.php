@@ -39,16 +39,37 @@
                         $('#ObjectModalLabel').html('Список доступных объектов');
                     },
                     success: function (response) {
-                        if (response.success) {
-                            $.each(response.values, function (key, value) {
-                                $('#object-list').append(
-                                        "<div class=\"col-xl-4 col-lg-4 col-md-6 col-sm-12\">" +
-                                        "<div class=\"checkbox-custom checkbox-primary\" style=\"text-align: left\">" +
-                                        "<input id=\"obj-" + key + "\" name=\"obj-list[]\" type=\"checkbox\" value='" + value.caption + "'>" +
-                                        "<label for=\"obj-" + key + "\">" + value.caption + "</label>" +
-                                        "</div></div>");
-                            });
-                        }
+                        $('#object-list').html(response);
+
+//                        if (response.success) {
+//
+//                            $count_groups=Object.keys(response.values).length;
+//                            $id_block=1;
+//                            $.each(response.values, function (key, groups) {
+//                                if ($count_groups==1){
+//                                    $('#object-list').append(
+//                                            "<div class=\"col-sm-12\" id=\"object-group-\""+$id_block+">" +
+//                                            "</div>"
+//
+//                                    );
+//                                }
+//
+//
+//                                $.each(groups, function (id, object) {
+//
+//                                    console.log(object);
+//
+//                                });
+//
+//
+////                                $('#object-list').append(
+////                                        "<div class=\"col-xl-4 col-lg-4 col-md-6 col-sm-12\">" +
+////                                        "<div class=\"checkbox-custom checkbox-primary\" style=\"text-align: left\">" +
+////                                        "<input id=\"obj-" + key + "\" name=\"obj-list[]\" type=\"checkbox\" value='" + value.caption + "'>" +
+////                                        "<label for=\"obj-" + key + "\">" + value.caption + "</label>" +
+////                                        "</div></div>");
+//                            });
+//                        }
                         $('.loading-container').hide();
                     },
                     error: function () {
