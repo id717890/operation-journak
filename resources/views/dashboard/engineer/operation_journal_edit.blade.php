@@ -39,16 +39,17 @@
                         $('#ObjectModalLabel').html('Список доступных объектов');
                     },
                     success: function (response) {
-                        if (response.success) {
-                            $.each(response.values, function (key, value) {
-                                $('#object-list').append(
-                                        "<div class=\"col-xl-4 col-lg-4 col-md-6 col-sm-12\">" +
-                                        "<div class=\"checkbox-custom checkbox-primary\" style=\"text-align: left\">" +
-                                        "<input id=\"obj-" + key + "\" name=\"obj-list[]\" type=\"checkbox\" value='" + value.caption + "'>" +
-                                        "<label for=\"obj-" + key + "\">" + value.caption + "</label>" +
-                                        "</div></div>");
-                            });
-                        }
+                        $('#object-list').html(response);
+//                        if (response.success) {
+//                            $.each(response.values, function (key, value) {
+//                                $('#object-list').append(
+//                                        "<div class=\"col-xl-4 col-lg-4 col-md-6 col-sm-12\">" +
+//                                        "<div class=\"checkbox-custom checkbox-primary\" style=\"text-align: left\">" +
+//                                        "<input id=\"obj-" + key + "\" name=\"obj-list[]\" type=\"checkbox\" value='" + value.caption + "'>" +
+//                                        "<label for=\"obj-" + key + "\">" + value.caption + "</label>" +
+//                                        "</div></div>");
+//                            });
+//                        }
                         $('.loading-container').hide();
                     },
                     error: function () {

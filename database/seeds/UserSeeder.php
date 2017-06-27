@@ -39,8 +39,8 @@ class UserSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'id' => 2,
-            'name' => 'Менеджер',
-            'email' => 'manager@gmail.com',
+            'name' => 'Сербин Ю.В.',
+            'email' => 'SerbinYV',
             'password' => Hash::make('2'),
             'email_confirmed' => true,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
