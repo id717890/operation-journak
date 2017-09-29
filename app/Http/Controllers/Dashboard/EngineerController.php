@@ -55,8 +55,7 @@ class EngineerController extends Controller
             ->with('author', Input::get('author'))
             ->with('dir_type', Input::get('dir_type'))
             ->with('obj_caption', Input::get('obj_caption'))
-            ->with('issue', Input::get('issue'))
-            ;
+            ->with('issue', Input::get('issue'));
     }
 
     //region Оперативный журнал
@@ -82,16 +81,30 @@ class EngineerController extends Controller
         if ($incident == null) {
             Session::flash('error_msg', 'Запись с таким id не найдена');
             return redirect()->back();
-        } else return View('dashboard.engineer.operation_journal_edit')
-            ->with('types', $this->dirTypeService->get_types_cm())
-            ->with('incident', $incident);
+        } else {
+            $objects_str = '';
+            foreach ($incident->objects as $object) {
+                $objects_str = $objects_str . $object->object_id . ',';
+            }
+            $objects_str = substr($objects_str, 0, strlen($objects_str) - 1);
+
+            return View('dashboard.engineer.operation_journal_edit')
+                ->with('types', $this->dirTypeService->get_types_cm())
+                ->with('incident', $incident)
+                ->with('objects', $objects_str);
+        }
+
+
     }
 
     public function postFilterDirGlobalByType($id)
     {
 //        try {
-            $values = $this->dirGlobalService->get_objects_by_type($id);
-            return View('partial.filter_objects')->with('obj_list',$values);
+        $values = $this->dirGlobalService->get_objects_by_type($id);
+        return View('partial.filter_objects')
+            ->with('obj_list', $values)
+            ->with('obj_selected', explode(',', Input::get('objects')));
+
 //            return Response::json(['success' => true, 'values' => View('partial.filter_objects')->with('obj_list',$values)]);
 //        } catch (Exception $e) {
 //            return Response::json(['success' => false]);
@@ -101,6 +114,8 @@ class EngineerController extends Controller
 
     public function postOperationJournalCreate(FormOperJournalCreate $request)
     {
+        dd(Input::all());
+
         $this->incidentService->new_incident(Input::all());
         return redirect()->route('operation_journal');
     }

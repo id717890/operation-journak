@@ -12,6 +12,7 @@ class Incident extends Model
 
     use Relations\BelongsTo\Users;
     use Relations\BelongsTo\DirType;
+    use Relations\HasMany\ObjectsOfIncident;
     use Scopes\IsClosed;
     use Scopes\IsOpened;
     use Scopes\IsDeleted;

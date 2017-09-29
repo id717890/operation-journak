@@ -16,7 +16,6 @@
 @section('scripts')
     {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
 
-
     <script type="text/javascript">
         $(function () {
 
@@ -29,10 +28,14 @@
             $('#obj_caption').click(function () {
                 var id = $('#dir_type').val();
                 var token = $('meta[name=_token]').attr('content');
+                var url = '{{ route("operation_journal.filter-obj", ":id") }}';
+                var objects=$('#obj_id').val();
+                url = url.replace(':id', id);
+
                 $.ajax({
                     method: "POST",
-                    url: '../operation_journal/filter-obj/' + id,
-                    data: {'_token': token},
+                    url: url,
+                    data: {'_token': token, 'objects':objects},
                     beforeSend: function () {
                         $('#object-list').empty();
                         $('.loading-container').show();
@@ -84,9 +87,11 @@
                 var id = $('#dir_type').val();
                 if (id != '') {
                     $('#obj_caption').removeAttr('disabled').val('');
+                    $('#obj_id').val('');
                 }
                 else {
                     $('#obj_caption').attr('disabled', 'disabled').val('');
+                    $('#obj_id').val('');
                 }
 
                 $('#object-list').empty();
@@ -240,7 +245,7 @@
                                                      style="margin-top: 5px ">{{$errors->first('obj_caption')}}</div>
                                             @endif
 
-                                            {!! Form::text('obj_id',null,['id'=>'obj_id']) !!}
+                                            {!! Form::hidden('obj_id',null,['id'=>'obj_id']) !!}
                                         </div>
                                     </div>
                                 </div>

@@ -24,7 +24,8 @@ $groups = array_keys($obj_list);
                     ?>">
                         <div class="checkbox-custom checkbox-primary" tyle="text-align: left">
                             <input id="{{'obj-'.+$object->id}}" name="obj-list[]" type="checkbox"
-                                   value="{{$object->caption}}" data-id="{{$object->id}}">
+                                   value="{{$object->caption}}" data-id="{{$object->id}}"
+                            <?php if (in_array($object->id,$obj_selected)) echo 'checked'; else echo ''  ?>>
                             <label for="{{'obj-'.+$object->id}}">{{$object->caption}}</label>
                         </div>
                     </div>

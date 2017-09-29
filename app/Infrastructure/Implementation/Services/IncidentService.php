@@ -43,7 +43,6 @@ class IncidentService implements IIncidentService
     public function new_incident($data)
     {
         try {
-
             DB::beginTransaction();
             $incident = $this->context->create([
                 'start_date' => date("Y-m-d H:i:s", strtotime(Input::get('start_date'))),
@@ -117,6 +116,23 @@ class IncidentService implements IIncidentService
                 'other' => Input::get('other'),
                 'issue' => Input::get('issue'),
             ], $id);
+
+            $incident->objects()->delete();
+
+            if (!is_null(Input::get('obj_id'))) {
+                $insert_data = [];
+                foreach (explode(',', Input::get('obj_id')) as $item) {
+                    array_push($insert_data, [
+                        'incident_id' => $incident->id,
+                        'object_id' => intval($item),
+                        'created_at'=>date('Y-m-d H:i:s')
+                    ]);
+                }
+                $this->incidentObjectService->new_incident_object($insert_data);
+            }
+
+
+
             DB::commit();
             Session::flash('success_msg', 'Данные успешно сохранены');
         } catch (Exception $e) {
@@ -161,8 +177,8 @@ class IncidentService implements IIncidentService
     public function remove_by_id($id)
     {
         try {
-            $user = $this->context->find($id);
-            if ($user == null) throw new Exception('Запись с указанным id в журнале не найдена');
+            $incident = $this->context->find($id);
+            if ($incident == null) throw new Exception('Запись с указанным id в журнале не найдена');
             DB::beginTransaction();
             $this->context->update([
                 'author_id' => Auth::user()->id,

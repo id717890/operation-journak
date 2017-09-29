@@ -29,10 +29,14 @@
             $('#obj_caption').click(function () {
                 var id = $('#dir_type').val();
                 var token = $('meta[name=_token]').attr('content');
+                var url = '{{ route("operation_journal.filter-obj", ":id") }}';
+                var objects = $('#obj_id').val();
+                url = url.replace(':id', id);
+
                 $.ajax({
                     method: "POST",
-                    url: '../../operation_journal/filter-obj/' + id,
-                    data: {'_token': token},
+                    url: url,
+                    data: {'_token': token, 'objects': objects},
                     beforeSend: function () {
                         $('#object-list').empty();
                         $('.loading-container').show();
@@ -64,9 +68,11 @@
                 var id = $('#dir_type').val();
                 if (id != '') {
                     $('#obj_caption').removeAttr('disabled').val('');
+                    $('#obj_id').val('');
                 }
                 else {
                     $('#obj_caption').attr('disabled', 'disabled').val('');
+                    $('#obj_id').val('');
                 }
 
                 $('#object-list').empty();
@@ -74,10 +80,13 @@
 
             $('#submit-objects').click(function () {
                 var val = [];
+                var val_id=[];
                 $('input[name="obj-list[]"]:checked').each(function (i) {
                     val[i] = $(this).val();
+                    val_id[i]=$(this).data('id');
                 });
                 $('#obj_caption').val(val.join(', '));
+                $('#obj_id').val(val_id.join(', '));
                 $('#ObjectModal').modal('hide');
             });
 
@@ -213,6 +222,7 @@
                                                     <div class="alert alert-danger"
                                                          style="margin-top: 5px ">{{$errors->first('obj_caption')}}</div>
                                                 @endif
+                                                {!! Form::hidden('obj_id',$objects,['id'=>'obj_id']) !!}
                                             </div>
                                         </div>
                                     </div>

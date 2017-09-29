@@ -46,13 +46,17 @@
                         <div class="col-sm-1">
                             {!! Form::select('page-size',$sizes,$incidents->perPage(),['class'=>'form-control page-size','id'=>'page-size-1','style'=>'; margin-bottom: 1rem']) !!}
                         </div>
+                        <div class="col-sm-1">
+                            <a href="{{route('operation_journal.create')}}" class="btn btn-xs btn-remark-success">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Новая запись
+                            </a>
+                        </div>
                         <div class="col-sm-11">
                             {{ $incidents->links('vendor.pagination.bootstrap-4') }}
                         </div>
                     </div>
                     <table class="table table-striped table-condensed table-hover table-sm table-with-btn-add">
                         <colgroup>
-                            <col class="width-35">
                             <col class="width-30">
                             <col class="width-150">
                             <col class="width-100">
@@ -63,7 +67,6 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th></th>
                             <th>#</th>
                             <th>Начало</th>
                             <th title="Тип объекта">Тип</th>
@@ -78,12 +81,6 @@
                             <?php $i = 1; ?>
                             @foreach($incidents as $incident)
                                 <tr id="{{'item-'.$incident->id}}">
-                                    <td>
-                                        <a href="{{route('operation_journal.create')}}"
-                                           class="btn btn-xs btn-remark-success btn-for-add">
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </a>
-                                    </td>
                                     <td>{{$incident->id}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
                                     <td>{{$incident->dir_type->caption}}</td>
@@ -95,22 +92,20 @@
                                            class="btn btn-xs btn-remark-primary">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                         </a>
+                                        @if (Auth::user()->hasRole('admin'))
                                         <a href="#" class="btn btn-xs btn-remark-danger btn-delete" data-toggle="modal"
                                            data-target="#AskRemove"
                                            data-url="{{route('operation_journal.delete',['id'=>$incident->id])}}">
                                             <i class="fa fa-remove" aria-hidden="true"></i>
                                         </a>
+                                            @endif
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="8" class="text-center">
-                                    <a href="{{route('operation_journal.create')}}"
-                                       class="btn btn-xs btn-remark-success">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                    </a>
+                                <td colspan="7" class="text-center">
                                     Записи отсутствуют
                                 </td>
                             </tr>
