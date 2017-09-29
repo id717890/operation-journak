@@ -21,4 +21,19 @@ class IncidentObjectService implements IIncidentObjectService
     }
 
 
+    /**
+     * Создает новую запись в incident_objects
+     * @param $data
+     * @return mixed
+     */
+    public function new_incident_object($data)
+    {
+        try {
+            DB::beginTransaction();
+            $this->context->insert($data);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
 }

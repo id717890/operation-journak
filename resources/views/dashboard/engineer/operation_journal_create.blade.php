@@ -94,10 +94,13 @@
 
             $('#submit-objects').click(function () {
                 var val = [];
+                var val_id=[];
                 $('input[name="obj-list[]"]:checked').each(function (i) {
                     val[i] = $(this).val();
+                    val_id[i]=$(this).data('id');
                 });
                 $('#obj_caption').val(val.join(', '));
+                $('#obj_id').val(val_id.join(', '));
                 $('#ObjectModal').modal('hide');
             });
 
@@ -236,6 +239,8 @@
                                                 <div class="alert alert-danger"
                                                      style="margin-top: 5px ">{{$errors->first('obj_caption')}}</div>
                                             @endif
+
+                                            {!! Form::text('obj_id',null,['id'=>'obj_id']) !!}
                                         </div>
                                     </div>
                                 </div>

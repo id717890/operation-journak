@@ -13,9 +13,10 @@ class IncidentSeeder extends Seeder
     {
         /*Add incidents*/
         DB::table('incidents')->delete();
+        DB::table('incident_objects')->delete();
 
 
-        for($i=1;$i<=10;$i++)
+        for($i=1;$i<=1;$i++)
         {
             DB::table('incidents')->insert([
                 'id' => $i,
@@ -35,7 +36,7 @@ class IncidentSeeder extends Seeder
 
         }
 
-        for($i=11;$i<=57;$i++)
+        for($i=11;$i<=12;$i++)
         {
             DB::table('incidents')->insert([
                 'id' => $i,

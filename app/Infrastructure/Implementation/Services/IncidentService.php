@@ -15,10 +15,15 @@ use Illuminate\Support\Facades\Input;
 class IncidentService implements IIncidentService
 {
     private $context;
+    private $incidentObjectService;
 
-    public function __construct(IncidentRepository $context)
+    public function __construct(
+        IncidentRepository $context
+        , IncidentObjectService $incidentObjectService
+    )
     {
         $this->context = $context;
+        $this->incidentObjectService = $incidentObjectService;
     }
 
     /**
@@ -38,8 +43,9 @@ class IncidentService implements IIncidentService
     public function new_incident($data)
     {
         try {
+
             DB::beginTransaction();
-            $this->context->create([
+            $incident = $this->context->create([
                 'start_date' => date("Y-m-d H:i:s", strtotime(Input::get('start_date'))),
                 'end_date' => Input::get('end_date') != '' && !is_null(Input::get('end_date')) ? date("Y-m-d H:i:s", strtotime(Input::get('end_date'))) : null,
                 'dir_type_id' => Input::get('dir_type'),
@@ -51,6 +57,17 @@ class IncidentService implements IIncidentService
                 'other' => Input::get('other'),
                 'issue' => Input::get('issue'),
             ]);
+            if (!is_null(Input::get('obj_id'))) {
+                $insert_data = [];
+                foreach (explode(',', Input::get('obj_id')) as $item) {
+                    array_push($insert_data, [
+                        'incident_id' => $incident->id,
+                        'object_id' => intval($item),
+                        'created_at'=>date('Y-m-d H:i:s')
+                    ]);
+                }
+                $this->incidentObjectService->new_incident_object($insert_data);
+            }
             DB::commit();
             Session::flash('success_msg', 'Запись успешно сохранена');
         } catch (Exception $e) {
@@ -183,6 +200,6 @@ class IncidentService implements IIncidentService
      */
     public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue)
     {
-        return $this->context->find_incident_by_parameters($size,$start_date, $end_date, $author, $dir_type, $obj_caption, $issue);
+        return $this->context->find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue);
     }
 }
