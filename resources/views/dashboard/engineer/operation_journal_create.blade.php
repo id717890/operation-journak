@@ -29,13 +29,13 @@
                 var id = $('#dir_type').val();
                 var token = $('meta[name=_token]').attr('content');
                 var url = '{{ route("operation_journal.filter-obj", ":id") }}';
-                var objects=$('#obj_id').val();
+                var objects = $('#obj_id').val();
                 url = url.replace(':id', id);
 
                 $.ajax({
                     method: "POST",
                     url: url,
-                    data: {'_token': token, 'objects':objects},
+                    data: {'_token': token, 'objects': objects},
                     beforeSend: function () {
                         $('#object-list').empty();
                         $('.loading-container').show();
@@ -43,36 +43,6 @@
                     },
                     success: function (response) {
                         $('#object-list').html(response);
-
-//                        if (response.success) {
-//
-//                            $count_groups=Object.keys(response.values).length;
-//                            $id_block=1;
-//                            $.each(response.values, function (key, groups) {
-//                                if ($count_groups==1){
-//                                    $('#object-list').append(
-//                                            "<div class=\"col-sm-12\" id=\"object-group-\""+$id_block+">" +
-//                                            "</div>"
-//
-//                                    );
-//                                }
-//
-//
-//                                $.each(groups, function (id, object) {
-//
-//                                    console.log(object);
-//
-//                                });
-//
-//
-////                                $('#object-list').append(
-////                                        "<div class=\"col-xl-4 col-lg-4 col-md-6 col-sm-12\">" +
-////                                        "<div class=\"checkbox-custom checkbox-primary\" style=\"text-align: left\">" +
-////                                        "<input id=\"obj-" + key + "\" name=\"obj-list[]\" type=\"checkbox\" value='" + value.caption + "'>" +
-////                                        "<label for=\"obj-" + key + "\">" + value.caption + "</label>" +
-////                                        "</div></div>");
-//                            });
-//                        }
                         $('.loading-container').hide();
                     },
                     error: function () {
@@ -99,10 +69,10 @@
 
             $('#submit-objects').click(function () {
                 var val = [];
-                var val_id=[];
+                var val_id = [];
                 $('input[name="obj-list[]"]:checked').each(function (i) {
                     val[i] = $(this).val();
-                    val_id[i]=$(this).data('id');
+                    val_id[i] = $(this).data('id');
                 });
                 $('#obj_caption').val(val.join(', '));
                 $('#obj_id').val(val_id.join(', '));
@@ -324,33 +294,5 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="ObjectModal" tabindex="-1" role="dialog" aria-labelledby="ObjectModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog objects-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ObjectModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-header d-block">
-                    <button type="button" class="btn btn-remark-primary" id="submit-objects">ОК</button>
-                    <button type="button" class="btn btn-remark-warning" id="reset-objects">Очистить</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                </div>
-                <div class="modal-body">
-                    <div class="loading-container" style="text-align: center">
-                        <div class="spinner">
-                            <div class="bounce1"></div>
-                            <div class="bounce2"></div>
-                            <div class="bounce3"></div>
-                        </div>
-                    </div>
-                    <div id="object-list" class="row d-flex"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('partial/modal_objects')
 @endsection

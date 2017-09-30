@@ -44,7 +44,7 @@ class EngineerController extends Controller
                 Input::get('end_date'),
                 Input::get('author'),
                 Input::get('dir_type'),
-                Input::get('obj_caption'),
+                Input::get('obj_id'),
                 Input::get('issue')
             ))
             ->with('sizes', config('constants.paginate_sizes'))
@@ -55,7 +55,8 @@ class EngineerController extends Controller
             ->with('author', Input::get('author'))
             ->with('dir_type', Input::get('dir_type'))
             ->with('obj_caption', Input::get('obj_caption'))
-            ->with('issue', Input::get('issue'));
+            ->with('issue', Input::get('issue'))
+            ->with('objects', Input::get('obj_id'));
     }
 
     //region Оперативный журнал

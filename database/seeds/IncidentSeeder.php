@@ -44,7 +44,7 @@ class IncidentSeeder extends Seeder
                 'end_date' => date(rand(2016,2017)."-".rand(1,12)."-".rand(1,25)." 18:00:00"),
                 'dir_type_id' => 1,
                 'object_caption' => str_random(20),
-                'author_id' => 1,
+                'author_id' => rand(1,2),
                 'who_was_notified' => 'Диспетчер, Оператор',
                 'actions' => 'Выезд бригада ТМ',
                 'deadline' => date("2017-04-07"),

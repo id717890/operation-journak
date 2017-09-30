@@ -26,17 +26,79 @@
 
 
             $('.page-size').change(function () {
-                var path = {!! json_encode(url('').'/operation_journal/history') !!};
-                var url = path + '/' + $(this).val();
-                if (url) {
-                    window.location = url;
-                }
-                return false;
+                var url = '{{route('operation_journal_history',['size'=>':size'])}}';
+                url = url.replace(':size', $(this).val());
+                window.location = url + window.location.search;
             });
 
-            $('#search-btn').click(function(){
+            $('#search-btn').click(function () {
                 $('#loading-element').show();
-            })
+            });
+
+            $('#obj_caption').click(function () {
+                var id = $('#dir_type').val();
+                var token = $('meta[name=_token]').attr('content');
+                var url = '{{ route("operation_journal.filter-obj", ":id") }}';
+                var objects = $('#obj_id').val();
+                url = url.replace(':id', id);
+
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: {'_token': token, 'objects': objects},
+                    beforeSend: function () {
+                        $('#object-list').empty();
+                        $('.loading-container').show();
+                        $('#ObjectModalLabel').html('Список доступных объектов');
+                    },
+                    success: function (response) {
+                        $('#object-list').html(response);
+                        $('.loading-container').hide();
+                    },
+                    error: function () {
+                        alert('Ошибка при выгрузке списка объектов');
+                    }
+                });
+
+                $('#ObjectModal').modal();
+            });
+
+            $('#dir_type').change(function () {
+                var id = $('#dir_type').val();
+                if (id != '') {
+                    $('#obj_caption').removeAttr('disabled').val('');
+                    $('#obj_id').val('');
+                }
+                else {
+                    $('#obj_caption').attr('disabled', 'disabled').val('');
+                    $('#obj_id').val('');
+                }
+
+                $('#object-list').empty();
+            });
+
+            $('#submit-objects').click(function () {
+                var val = [];
+                var val_id = [];
+                $('input[name="obj-list[]"]:checked').each(function (i) {
+                    val[i] = $(this).val();
+                    val_id[i] = $(this).data('id');
+                });
+                $('#obj_caption').val(val.join(', '));
+                $('#obj_id').val(val_id.join(', '));
+                $('#ObjectModal').modal('hide');
+            });
+
+            $('#reset-objects').click(function () {
+                $('input[name="obj-list[]"]').each(function () {
+                    this.checked = false;
+                });
+            });
+
+            $('#clear-form').click(function () {
+                $('#form_oper_journal')[0].reset();
+            });
+
         });
 
         function ClearStartDate() {
@@ -56,6 +118,7 @@
             @include('partial/notify_panel')
             @include('partial/delete_dialog')
             @include('partial/loading')
+            @include('partial/modal_objects')
             <div class="row">
                 <div class="col-12 mb-3">
                     <ul class="nav nav-tabs">
@@ -117,20 +180,31 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-md-4 col-sm-12">
+                                        {!! Form::label('author','Дежурный',['style'=>'font-weight:bold']) !!}
+                                        {!! Form::select('author',$users,$author!=null ? $author : null,['placeholder'=>'','class'=>'form-control','id'=>'author']) !!}
+                                    </div>
+                                    <div class="col-xl-3 col-md-4 col-sm-12"></div>
+                                    <div class="col-xl-3 col-md-4 col-sm-12">
                                         {!! Form::label('dir_type_label','Тип объекта',['style'=>'font-weight:bold']) !!}
                                         {!! Form::select('dir_type',$types,$dir_type!=null ? $dir_type : null,['placeholder'=>'','class'=>'form-control','id'=>'dir_type']) !!}
                                     </div>
                                     <div class="col-xl-3 col-md-4 col-sm-12">
-                                        {!! Form::label('author','Дежурный',['style'=>'font-weight:bold']) !!}
-                                        {!! Form::select('author',$users,$author!=null ? $author : null,['placeholder'=>'','class'=>'form-control','id'=>'author']) !!}
-                                    </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
                                         {!! Form::label('obj_caption','Объект',['style'=>'font-weight:bold']) !!}
-                                        {!! Form::text('obj_caption',$obj_caption!=null ? $obj_caption : null,array(
+
+                                        @if (!is_null($dir_type))
+                                            {!! Form::text('obj_caption',$obj_caption,array(
                                                     'placeholder'=>'Укажите объект',
                                                     'id'=>'obj_caption',
                                                     'class'=>'form-control',
                                                     'value'=> old('obj_caption'))) !!}
+                                        @else
+                                            {!! Form::text('obj_caption',null,array(
+                                                    'placeholder'=>'Укажите объект',
+                                                    'id'=>'obj_caption',
+                                                    'class'=>'form-control',
+                                                    'value'=> old('obj_caption'), 'disabled'=>'disabled')) !!}
+                                        @endif
+                                        {!! Form::hidden('obj_id', $objects,['id'=>'obj_id']) !!}
                                     </div>
                                     <div class="col-xl-3 col-md-4 col-sm-12">
                                         {!! Form::label('issue','Описание',['style'=>'font-weight:bold']) !!}
@@ -141,8 +215,9 @@
                                                     'value'=> old('issue'))) !!}
                                     </div>
                                     <div class="col-xl-3 col-md-4 col-sm-12">
+                                        <label>&nbsp;</label>
                                         <button type="submit" id="search-btn" class="btn btn-remark-success w-100 "
-                                                style="bottom: 0; position: absolute; cursor: pointer">
+                                                style="bottom: 0; position: relative; cursor: pointer">
                                             <i class="fa fa-search"></i>
                                             Поиск
                                         </button>
@@ -197,6 +272,7 @@
                                     <td>{{$incident->user->name}}</td>
                                     <td>
                                         <a href="{{route('operation_journal.edit',['id'=>$incident->id])}}"
+                                           target="_blank"
                                            class="btn btn-xs btn-remark-primary">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                         </a>

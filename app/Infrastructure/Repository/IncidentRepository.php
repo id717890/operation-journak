@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repository;
 use App\Infrastructure\Implementation\Repository;
 use App\Models\Incident;
 use Eloquent;
+use DB;
 
 class IncidentRepository extends Repository
 {
@@ -50,36 +51,66 @@ class IncidentRepository extends Repository
         return $this->model->isNotDeleted()->isClosed()->orderBy('start_date', 'desc')->get();
     }
 
-    public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue)
+    public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $objects, $issue)
     {
         $data = Incident::where('end_date', '!=', null)->orderBy('start_date', 'desc');
+
+        $sql = 'select i.* from incidents i';
+
+        if ($objects != null)
+        {
+            $data->whereHas('objects',function($q) use ($objects) {
+               $q->whereIn('object_id',explode(',',$objects));
+            });
+
+            $sql .= ' join incident_objects io on io.incident_id=i.id and io.object_id in (\'' . $objects . '\')';
+        }
+
+        $sql .= ' where end_date is not null';
+
+//        dd($objects);
+
         if ($start_date != null && $end_date != null) {
 //            dd('1');
-            $data
-                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))))
-                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
+            $data->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
+//                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
+
+            $sql .= ' and i.start_date>=\'' . date("Y-m-d H:i", strtotime($start_date)) . '\' and i.start_date<=\'' . date("Y-m-d H:i", strtotime($end_date)) . '\'';
         }
         if ($start_date != null && $end_date == null) {
 //            dd('2');
             $data
-                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i",strtotime(date("Y"."-12-31 23:59")))))
-                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i",strtotime(date("Y"."-12-31 23:59")))));
+                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime(date("Y" . "-12-31 23:59")))));
+//                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i",strtotime(date("Y"."-12-31 23:59")))));
+            $sql .= ' and i.start_date>=\'' . date("Y-m-d H:i", strtotime($start_date)) . '\' and i.start_date<=\'' . date("Y-m-d H:i", strtotime(date("Y" . "-12-31 23:59"))) . '\'';
         }
 
         if ($start_date == null && $end_date != null) {
 //            dd('3');
             $data
-                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime('1900-01-01 00:00')), date("Y-m-d H:i", strtotime($end_date))))
-                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime('1900-01-01 00:00')), date("Y-m-d H:i", strtotime($end_date))));
+                ->whereBetween('start_date', array(date("Y-m-d H:i", strtotime('1900-01-01 00:00')), date("Y-m-d H:i", strtotime($end_date))));
+//                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime('1900-01-01 00:00')), date("Y-m-d H:i", strtotime($end_date))));
+            $sql .= ' and i.start_date>=\'' . date("Y-m-d H:i", strtotime('1900-01-01 00:00')) . '\' and i.start_date<=\'' . date("Y-m-d H:i", strtotime($end_date)) . '\'';
         }
-        if ($author != null)
+        if ($author != null) {
+//            dd('4');
             $data->where('author_id', '=', $author);
-        if ($dir_type != null)
+            $sql .= ' and i.author_id=' . $author;
+        }
+        if ($dir_type != null) {
+//            dd('5');
             $data->where('dir_type_id', '=', $dir_type);
-        if ($obj_caption != null)
-            $data->where('object_caption', 'LIKE', '%' . $obj_caption . '%');
-        if ($issue != null)
+            $sql .= ' and i.dir_type_id=' . $dir_type;
+        }
+
+        if ($issue != null) {
+//            dd('7');
             $data->where('issue', 'like', '%' . $issue . '%');
+        }
+//        dd($sql);
+
+//        $test=DB::select($sql);
+//        dd($test);
         return $data->paginate($size);
     }
 }
