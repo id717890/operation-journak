@@ -16,12 +16,15 @@
   font-weight: bolder;
 }
 
-#login form input {
+#login form input, #login form select {
   background-color: #3b4148;
-  color: #8f9498;
+  color: white;
+  font-weight: bold;
   outline: none;
   height: 50px;
   border: none;
+  line-height: 50px;
+  font-size: 1.5rem;
 }
 
 #login form input[type="text"]:focus {

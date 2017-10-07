@@ -159,4 +159,16 @@ class UserService implements IUserService
             $values[$item->id] = $item->name;
         return $values;
     }
+
+    /**
+     * Выгружает список пользователей для combobox
+     * @return mixed
+     */
+    public function get_users_cm_with_email()
+    {
+        $values = [];
+        foreach ($this->context->all_not_deleted() as $item)
+            $values[$item->email] = $item->name;
+        return $values;
+    }
 }

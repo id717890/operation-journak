@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Infrastructure\Interfaces\Services\IUserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\Identity\User;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    private $userService;
     /**
      * Where to redirect users after login.
      *
@@ -31,11 +33,17 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
+     * @param IUserService $userService
      */
-    public function __construct()
+    public function __construct(IUserService $userService)
     {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->userService=$userService;
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login')->with('users',$this->userService->get_users_cm_with_email());
     }
 
     /*Переопределение метода login*/

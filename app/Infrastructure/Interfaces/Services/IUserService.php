@@ -55,6 +55,12 @@ interface IUserService
      */
     public function get_users_cm();
 
+    /**
+     * Выгружает список пользователей для combobox
+     * @return mixed
+     */
+    public function get_users_cm_with_email();
+
     public function change_password($user, $new_password);
 
     public function lock($user);

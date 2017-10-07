@@ -41,11 +41,10 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon"><i class="fa fa-at"></i></div>
-                            <input id="email" type="text" class="form-control" name="email" placeholder="Введите логин"
-                                   value="{{ old('email') }}" required autofocus>
+                            {!! Form::select('email',$users, null,['placeholder'=>'Ввежиье логин','class'=>'form-control','id'=>'email', 'required'=>'required' ,'autofocus'=>'autofocus']) !!}
+
                         </div>
                         @if ($errors->has('email'))
                             <div class="help-block text-danger" style="text-align: center">
