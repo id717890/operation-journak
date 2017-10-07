@@ -43,7 +43,7 @@
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon"><i class="fa fa-at"></i></div>
-                            {!! Form::select('email',$users, null,['placeholder'=>'Ввежиье логин','class'=>'form-control','id'=>'email', 'required'=>'required' ,'autofocus'=>'autofocus']) !!}
+                            {!! Form::select('email',$users, null,['placeholder'=>'Введите логин','class'=>'form-control','id'=>'email', 'required'=>'required' ,'autofocus'=>'autofocus']) !!}
 
                         </div>
                         @if ($errors->has('email'))

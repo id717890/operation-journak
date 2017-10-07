@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'Юсупов З.А.',
-            'email' => 'jusupovz@gmail.com',
+            'email' => 'YusupovZA',
             'email_confirmed' => true,
             'password' => Hash::make('1'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
@@ -46,6 +46,42 @@ class UserSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+        DB::table('users')->insert([
+            'id' => 3,
+            'name' => 'Шакирова Е.Ю.',
+            'email' => 'ShakirovaEY',
+            'email_confirmed' => true,
+            'password' => Hash::make('3'),
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('users')->insert([
+            'id' => 4,
+            'name' => 'Шкилёва Н.А.',
+            'email' => 'ShkilevaNA',
+            'email_confirmed' => true,
+            'password' => Hash::make('4'),
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('users')->insert([
+            'id' => 5,
+            'name' => 'Туганова И.В.',
+            'email' => 'TuganovaIV',
+            'email_confirmed' => true,
+            'password' => Hash::make('5'),
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('users')->insert([
+            'id' => 6,
+            'name' => 'Евтушенко Н.М.',
+            'email' => 'EvtushenkoNM',
+            'email_confirmed' => true,
+            'password' => Hash::make('6'),
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
 
 
         DB::table('role_user')->delete();
@@ -55,6 +91,22 @@ class UserSeeder extends Seeder
         ]);
         DB::table('role_user')->insert([
             'user_id' => 2,
+            'role_id' => 2
+        ]);
+        DB::table('role_user')->insert([
+            'user_id' => 3,
+            'role_id' => 2
+        ]);
+        DB::table('role_user')->insert([
+            'user_id' => 4,
+            'role_id' => 2
+        ]);
+        DB::table('role_user')->insert([
+            'user_id' => 5,
+            'role_id' => 2
+        ]);
+        DB::table('role_user')->insert([
+            'user_id' => 6,
             'role_id' => 2
         ]);
     }

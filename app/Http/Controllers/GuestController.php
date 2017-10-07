@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Mockery\CountValidator\Exception;
 
 class GuestController extends Controller
 {
@@ -20,11 +21,15 @@ class GuestController extends Controller
 
     public function detectRole()
     {
-        if (Auth::check()) {
+        try {
+            if (Auth::check()) {
 //            if (Auth::user()->hasRole('admin')) return redirect()->route('admin');
-            return redirect()->route('operation_journal');
+                return redirect()->route('operation_journal');
+            }
+            return redirect()->route('auth.login');
+        } catch (Exception $e) {
+            redirect()->route('auth.login');
         }
-        return redirect()->route('auth.login');
     }
 
     public function getHashString($str)
