@@ -37,6 +37,10 @@
                             <a class="nav-link" href="{{route('operation_journal_history')}}"><i
                                         class="fa fa-clock-o"> </i> История</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('export_journal')}}"><i
+                                        class="fa fa-download"> </i> Экспорт</a>
+                        </li>
                     </ul>
                 </div>
             </div>

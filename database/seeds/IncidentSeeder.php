@@ -20,7 +20,7 @@ class IncidentSeeder extends Seeder
         {
             DB::table('incidents')->insert([
                 'id' => $i,
-                'start_date' => date("2017-04-07 18:00:00"),
+                'start_date' => date('2017-m-d 18:00:00'),
                 'end_date' => null,
                 'dir_type_id' => 1,
                 'object_caption' => str_random(20),
@@ -36,18 +36,18 @@ class IncidentSeeder extends Seeder
 
         }
 
-        for($i=11;$i<=12;$i++)
+        for($i=11;$i<=109;$i++)
         {
             DB::table('incidents')->insert([
                 'id' => $i,
-                'start_date' => date("2017-04-07 18:00:00"),
+                'start_date' => date('2017-m-d '.rand(0,23).':'.rand(0,59).':00'),
                 'end_date' => date(rand(2016,2017)."-".rand(1,12)."-".rand(1,25)." 18:00:00"),
                 'dir_type_id' => 1,
                 'object_caption' => str_random(20),
                 'author_id' => rand(1,2),
                 'who_was_notified' => 'Диспетчер, Оператор',
                 'actions' => 'Выезд бригада ТМ',
-                'deadline' => date("2017-04-07"),
+                'deadline' => date("2017-m-d"),
                 'other' => null,
                 'issue' => 'Затопление колодца К2',
                 'created_at' => DB::raw('CURRENT_TIMESTAMP'),

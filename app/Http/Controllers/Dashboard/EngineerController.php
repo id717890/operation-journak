@@ -35,6 +35,26 @@ class EngineerController extends Controller
         $this->userService = $userService;
     }
 
+    //region Экспорт в файл
+    public function getExportJournal($size = 50)
+    {
+        $start_date=!is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i',strtotime(date('Y-m-d').' 00:00'));
+        $end_date=!is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i',strtotime(date('Y-m-d').' 23:59'));
+
+        return view('dashboard.engineer.export_to_file')
+            ->with('incidents', $this->incidentService->find_incident_by_dates($size, $start_date, $end_date))
+            ->with('start_date', $start_date)
+            ->with('end_date', $end_date)
+            ->with('size', $size)
+            ->with('sizes', config('constants.paginate_sizes'))
+
+            ;
+
+
+    }
+
+    //endregion
+
 
     public function getOperationJournalHistory($size = 50)
     {

@@ -19,6 +19,8 @@ Route::group(['middleware' => ['web']], function () {
 
     //region Обычный пользователь
     Route::group(['middleware' => ['auth', 'role:engineer|admin']], function () {
+        Route::get('/operation_journal/export_to_excel', ['as' => 'export_journal_to_excel', 'uses' => 'Dashboard\ReportController@getExportJournalToExcel']); //Выгрузка журнала в файл
+        Route::get('/operation_journal/export/{size?}', ['as' => 'export_journal', 'uses' => 'Dashboard\EngineerController@getExportJournal']); //Выгрузка журнала на страницу
         Route::get('/operation_journal/history/{size?}', ['as' => 'operation_journal_history', 'uses' => 'Dashboard\EngineerController@getOperationJournalHistory']); //оперативный журнал
 
         Route::post('/operation_journal/delete/{id}', ['as' => 'operation_journal.delete', 'uses' => 'Dashboard\EngineerController@postOperationJournalDelete']); //POST удаление записи в журнале

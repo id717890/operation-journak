@@ -57,10 +57,9 @@ class IncidentRepository extends Repository
 
         $sql = 'select i.* from incidents i';
 
-        if ($objects != null)
-        {
-            $data->whereHas('objects',function($q) use ($objects) {
-               $q->whereIn('object_id',explode(',',$objects));
+        if ($objects != null) {
+            $data->whereHas('objects', function ($q) use ($objects) {
+                $q->whereIn('object_id', explode(',', $objects));
             });
 
             $sql .= ' join incident_objects io on io.incident_id=i.id and io.object_id in (\'' . $objects . '\')';
@@ -112,5 +111,26 @@ class IncidentRepository extends Repository
 //        $test=DB::select($sql);
 //        dd($test);
         return $data->paginate($size);
+    }
+
+    public function find_incident_by_dates($size, $start_date, $end_date)
+    {
+        $data = Incident::where('start_date', '>=', '1900-01-01')->orderBy('start_date', 'desc');
+
+
+        if ($start_date != null && $end_date != null) {
+//            dd('1');
+            $data->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
+        }
+        if ($start_date != null && $end_date == null) {
+//            dd('2');
+            $data->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime(date("Y" . "-12-31 23:59")))));
+        }
+//
+        if ($start_date == null && $end_date != null) {
+//            dd('3');
+            $data->whereBetween('start_date', array(date("Y-m-d H:i", strtotime('1900-01-01 00:00')), date("Y-m-d H:i", strtotime($end_date))));
+        }
+        return $size == 0 ? $data->get() : $data->paginate($size);
     }
 }

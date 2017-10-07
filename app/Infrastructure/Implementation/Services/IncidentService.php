@@ -62,7 +62,7 @@ class IncidentService implements IIncidentService
                     array_push($insert_data, [
                         'incident_id' => $incident->id,
                         'object_id' => intval($item),
-                        'created_at'=>date('Y-m-d H:i:s')
+                        'created_at' => date('Y-m-d H:i:s')
                     ]);
                 }
                 $this->incidentObjectService->new_incident_object($insert_data);
@@ -125,12 +125,11 @@ class IncidentService implements IIncidentService
                     array_push($insert_data, [
                         'incident_id' => $incident->id,
                         'object_id' => intval($item),
-                        'created_at'=>date('Y-m-d H:i:s')
+                        'created_at' => date('Y-m-d H:i:s')
                     ]);
                 }
                 $this->incidentObjectService->new_incident_object($insert_data);
             }
-
 
 
             DB::commit();
@@ -217,5 +216,16 @@ class IncidentService implements IIncidentService
     public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue)
     {
         return $this->context->find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue);
+    }
+
+    /**
+     * @param $size
+     * @param $start_date
+     * @param $end_date
+     * @return mixed
+     */
+    public function find_incident_by_dates($size, $start_date, $end_date)
+    {
+        return $this->context->find_incident_by_dates($size, $start_date, $end_date);
     }
 }
