@@ -12,7 +12,7 @@ class DirGlobalSeeder extends Seeder
     public function run()
     {
         /*Add dir global*/
-        DB::table('dir_global')->delete();
+//        DB::table('dir_global')->delete();
 
         /*ЛУ*/
         DB::table('dir_global')->insert([
