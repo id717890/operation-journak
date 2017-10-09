@@ -116,7 +116,7 @@
                         @endif
                         </tbody>
                     </table>
-                    <div class="col-12 d-flex" style="flex-flow: row wrap">
+                    <div class="col-12 d-flex" style="flex-flow: row wrap; padding-top: 15px">
                         <div class="col-xl-2 col-lg-2 col-md-4 col-sm-12">
                             <a href="{{route('operation_journal.create')}}" class="btn btn-xs btn-remark-success w-100">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Новая запись

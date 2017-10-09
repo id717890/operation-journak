@@ -219,7 +219,7 @@
                         @endif
                         </tbody>
                     </table>
-                    <div class="col-12 d-flex" style="flex-flow: row">
+                    <div class="col-12 d-flex" style="flex-flow: row; padding-top: 15px">
                         <div class="col-sm-1">
                             {!! Form::select('page-size',$sizes,$incidents->perPage(),['class'=>'form-control page-size','id'=>'page-size-1']) !!}
                         </div>
