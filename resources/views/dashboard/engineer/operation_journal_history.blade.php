@@ -99,6 +99,18 @@
                 $('#form_oper_journal')[0].reset();
             });
 
+            $('#export-btn').click(function(){
+                $('#start-date-exp').val($('#start_date').val());
+                $('#end-date-exp').val($('#end_date').val());
+                $('#author-exp').val($('#author').val());
+                $('#dir-type-exp').val($('#dir_type').val());
+                $('#obj-id-exp').val($('#obj_id').val());
+                $('#issue-exp').val($('#issue').val());
+                $('#form_oper_journal_history_to_excel').submit();
+
+
+            });
+
         });
 
         function ClearStartDate() {
@@ -107,6 +119,13 @@
 
         function ClearEndDate() {
             $('#end_date').val('');
+        }
+
+        function ClearForm() {
+            ClearEndDate();
+            ClearStartDate();
+            $('#author, #dir_type, #obj_caption, #obj_id, #issue').val('');
+            $('#obj_caption').prop('disabled',true);
         }
     </script>
 @endsection
@@ -149,7 +168,7 @@
                                         'id'=>'form_oper_journal_history_search',
                                         ]) !!}
                                 <div class="row">
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         <div class="form-group <?php echo $errors->has('start_date') ? ' has-danger' : '' ?>">
                                             {!! Form::label('start_date','Время начала',['style'=>'font-weight:bold']) !!}
 
@@ -166,7 +185,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         <div class="form-group">
                                             {!! Form::label('end_date','Время окончания',['style'=>'font-weight:bold']) !!}
 
@@ -183,16 +202,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         {!! Form::label('author','Дежурный',['style'=>'font-weight:bold']) !!}
                                         {!! Form::select('author',$users,$author!=null ? $author : null,['placeholder'=>'','class'=>'form-control','id'=>'author']) !!}
                                     </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12"></div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         {!! Form::label('dir_type_label','Тип объекта',['style'=>'font-weight:bold']) !!}
                                         {!! Form::select('dir_type',$types,$dir_type!=null ? $dir_type : null,['placeholder'=>'','class'=>'form-control','id'=>'dir_type']) !!}
                                     </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         {!! Form::label('obj_caption','Объект',['style'=>'font-weight:bold']) !!}
 
                                         @if (!is_null($dir_type))
@@ -210,7 +228,7 @@
                                         @endif
                                         {!! Form::hidden('obj_id', $objects,['id'=>'obj_id']) !!}
                                     </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         {!! Form::label('issue','Описание',['style'=>'font-weight:bold']) !!}
                                         {!! Form::text('issue',$issue!=null ? $issue : null,array(
                                                     'placeholder'=>'Укажите описание работ/неисправности',
@@ -218,16 +236,43 @@
                                                     'class'=>'form-control',
                                                     'value'=> old('issue'))) !!}
                                     </div>
-                                    <div class="col-xl-3 col-md-4 col-sm-12">
-                                        <label>&nbsp;</label>
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
                                         <button type="submit" id="search-btn" class="btn btn-remark-success w-100 "
                                                 style="bottom: 0; position: relative; cursor: pointer">
                                             <i class="fa fa-search"></i>
                                             Поиск
                                         </button>
                                     </div>
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
+                                        <button type="button" id="export-btn" class="btn btn-remark-success w-100 "
+                                                style="bottom: 0; position: relative; cursor: pointer">
+                                            <i class="fa fa-download"></i>
+                                            Выгрузить
+                                        </button>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-sm-12">
+                                        <button type="button" id="clear-btn" class="btn btn-remark-danger w-100 "
+                                                style="bottom: 0; position: relative; cursor: pointer" onclick="ClearForm()">
+                                            <i class="fa fa-eraser"></i>
+                                            Очистить форму
+                                        </button>
+                                    </div>
                                 </div>
                                 {!! Form::close() !!}
+                                {!! Form::open([
+                                        'url'=>route('export_journal_history_to_excel'),
+                                        'method'=>'GET',
+                                        'style'=>'display:none',
+                                        'id'=>'form_oper_journal_history_to_excel',
+                                        ]) !!}
+                                <input type="text" id="start-date-exp" name="start_date">
+                                <input type="text" id="end-date-exp" name="end_date">
+                                <input type="text" id="author-exp" name="author">
+                                <input type="text" id="dir-type-exp" name="dir_type">
+                                <input type="text" id="obj-id-exp" name="obj_id">
+                                <input type="text" id="issue-exp" name="issue">
+                                {!! Form::close() !!}
+
                             </div>
                         </div>
                     </div>

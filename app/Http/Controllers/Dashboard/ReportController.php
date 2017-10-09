@@ -24,6 +24,22 @@ class ReportController extends Controller
         $this->reportService = $reportService;
     }
 
+    //region Экспорт в файл истории
+    public function postExportJournalHistoryToExcel()
+    {
+        $title = 'Выгрузка истории';
+        $this->reportService->export_journal_history_to_excel(
+        $this->incidentService->find_incident_by_parameters(0,
+            Input::get('start_date'),
+            Input::get('end_date'),
+            Input::get('author'),
+            Input::get('dir_type'),
+            Input::get('obj_id'),
+            Input::get('issue')
+        ), $title);
+    }
+    //endregion
+
     //region Экспорт в файл
     public function getExportJournalToExcel()
     {

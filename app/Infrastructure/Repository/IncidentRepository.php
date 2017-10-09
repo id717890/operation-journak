@@ -110,7 +110,7 @@ class IncidentRepository extends Repository
 
 //        $test=DB::select($sql);
 //        dd($test);
-        return $data->paginate($size);
+        return $size==0 ? $data->get() : $data->paginate($size);
     }
 
     public function find_incident_by_dates($size, $start_date, $end_date)
