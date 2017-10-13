@@ -84,7 +84,7 @@
                             <?php $i = 1; ?>
                             @foreach($incidents as $incident)
                                 <tr id="{{'item-'.$incident->id}}">
-                                    <td>{{$incident->id}}</td>
+                                    <td>{{$i}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
                                     <td>{{$incident->dir_type->caption}}</td>
                                     <td>{{$incident->object_caption}}</td>
