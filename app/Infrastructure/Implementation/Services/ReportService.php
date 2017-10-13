@@ -36,28 +36,44 @@ class ReportService implements IReportService
                 ));
 
                 $sheetArray[] = [$title];
-                $sheet->mergeCells('A' . $count_rows . ':I' . $count_rows);
+                $sheet->mergeCells('A' . $count_rows . ':H' . $count_rows);
                 $count_rows++;
 
-                $sheetArray[] = ['#', 'Начало', 'Окончание', 'Тип', 'Объект', 'Описание', 'Мероприятия', 'Прочее', 'Дежурный'];
-                $sheet->cell('A' . $count_rows . ':I' . $count_rows, function ($cell) {
+                $sheetArray[] = ['#', 'Начало', 'Окончание', 'Объект', 'Описание', 'Мероприятия', 'Прочее', 'Дежурный'];
+                $sheet->cell('A' . $count_rows . ':H' . $count_rows, function ($cell) {
                     $cell->setFontWeight('bold');
                 });
 
                 foreach ($incidents as $key => $value) {
-                    $sheetArray[] = [$value->id, date('d.m.y H:i', strtotime($value->start_date)), date('d.m.y H:i', strtotime($value->end_date)), $value->dir_type->caption, $value->object_caption, $value->issue, $value->actions, $value->other, $value->user->name];
+                    $sheetArray[] = [$value->id, date('d.m.y H:i', strtotime($value->start_date)), date('d.m.y H:i', strtotime($value->end_date)), $value->dir_type->caption.' - '.$value->object_caption, $value->issue, $value->actions, $value->other, $value->user->name];
                     $count_rows++;
                 }
 
                 $sheet->fromArray($sheetArray, null, 'A1', false, false);
-                $sheet->setAutoSize(true);
+//                $sheet->setAutoSize(true);
+                $sheet->setWidth([
+                   'A'=>4,
+                   'B'=>14,
+                   'C'=>14,
+                   'D'=>50,
+                   'E'=>60,
+                   'F'=>15,
+                   'G'=>15,
+                   'H'=>15,
+                ]);
+                $sheet->getStyle('A1:H'.$count_rows)->getAlignment()->setWrapText(true);
 
-                $sheet->cell('A1:I' . $count_rows, function ($cell) {
+                $sheet->cell('A1:H' . $count_rows, function ($cell) {
                     $cell->setAlignment('center');
                     $cell->setValignment('center');
                 });
 
-                $sheet->setBorder('A1:I' . $count_rows, 'thin');
+                $sheet->cell('D3:H' . $count_rows, function ($cell) {
+                    $cell->setAlignment('left');
+                    $cell->setValignment('center');
+                });
+
+                $sheet->setBorder('A1:H' . $count_rows, 'thin');
             });
         })->store('xls', storage_path('app/exports'));
         $this->file_force_download(storage_path('app/exports/' . $file_name . '.xls'));
@@ -95,28 +111,44 @@ class ReportService implements IReportService
                 ));
 
                 $sheetArray[] = [$title];
-                $sheet->mergeCells('A' . $count_rows . ':I' . $count_rows);
+                $sheet->mergeCells('A' . $count_rows . ':H' . $count_rows);
                 $count_rows++;
 
-                $sheetArray[] = ['#', 'Начало', 'Окончание', 'Тип', 'Объект', 'Описание', 'Мероприятия', 'Прочее', 'Дежурный'];
+                $sheetArray[] = ['#', 'Начало', 'Окончание', 'Объект', 'Описание', 'Мероприятия', 'Прочее', 'Дежурный'];
                 $sheet->cell('A' . $count_rows . ':I' . $count_rows, function ($cell) {
                     $cell->setFontWeight('bold');
                 });
 
                 foreach ($incidents as $key => $value) {
-                    $sheetArray[] = [$value->id, date('d.m.y H:i', strtotime($value->start_date)), date('d.m.y H:i', strtotime($value->end_date)), $value->dir_type->caption, $value->object_caption, $value->issue, $value->actions, $value->other, $value->user->name];
+                    $sheetArray[] = [$value->id, date('d.m.y H:i', strtotime($value->start_date)), date('d.m.y H:i', strtotime($value->end_date)), $value->dir_type->caption.' - '.$value->object_caption, $value->issue, $value->actions, $value->other, $value->user->name];
                     $count_rows++;
                 }
 
                 $sheet->fromArray($sheetArray, null, 'A1', false, false);
-                $sheet->setAutoSize(true);
+//                $sheet->setAutoSize(true);
+                $sheet->setWidth([
+                    'A'=>4,
+                    'B'=>14,
+                    'C'=>14,
+                    'D'=>50,
+                    'E'=>60,
+                    'F'=>15,
+                    'G'=>15,
+                    'H'=>15,
+                ]);
+                $sheet->getStyle('A1:H'.$count_rows)->getAlignment()->setWrapText(true);
 
-                $sheet->cell('A1:I' . $count_rows, function ($cell) {
+                $sheet->cell('A1:H' . $count_rows, function ($cell) {
                     $cell->setAlignment('center');
                     $cell->setValignment('center');
                 });
 
-                $sheet->setBorder('A1:I' . $count_rows, 'thin');
+                $sheet->cell('D3:H' . $count_rows, function ($cell) {
+                    $cell->setAlignment('left');
+                    $cell->setValignment('center');
+                });
+
+                $sheet->setBorder('A1:H' . $count_rows, 'thin');
             });
         })->store('xls', storage_path('app/exports'));
         $this->file_force_download(storage_path('app/exports/' . $file_name . '.xls'));

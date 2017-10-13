@@ -53,7 +53,7 @@ class IncidentRepository extends Repository
 
     public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $objects, $issue)
     {
-        $data = Incident::where('end_date', '!=', null)->orderBy('start_date', 'desc');
+        $data = Incident::where('end_date', '!=', null)->where('is_delete','=',false)->orderBy('start_date', 'desc');
 
         $sql = 'select i.* from incidents i';
 
@@ -115,7 +115,7 @@ class IncidentRepository extends Repository
 
     public function find_incident_by_dates($size, $start_date, $end_date)
     {
-        $data = Incident::where('start_date', '>=', '1900-01-01')->orderBy('start_date', 'desc');
+        $data = Incident::where('start_date', '>=', '1900-01-01')->where('is_delete','=',false)->orderBy('start_date', 'desc');
 
 
         if ($start_date != null && $end_date != null) {

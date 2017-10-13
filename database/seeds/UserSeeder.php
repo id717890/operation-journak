@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'name' => 'Юсупов З.А.',
             'email' => 'YusupovZA',
             'email_confirmed' => true,
-            'password' => Hash::make('1'),
+            'password' => Hash::make('Cegthg@hjkm04'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             'id' => 2,
             'name' => 'Сербин Ю.В.',
             'email' => 'SerbinYV',
-            'password' => Hash::make('2'),
+            'password' => Hash::make('22'),
             'email_confirmed' => true,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
             'name' => 'Шакирова Е.Ю.',
             'email' => 'ShakirovaEY',
             'email_confirmed' => true,
-            'password' => Hash::make('3'),
+            'password' => Hash::make('33'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
             'name' => 'Шкилёва Н.А.',
             'email' => 'ShkilevaNA',
             'email_confirmed' => true,
-            'password' => Hash::make('4'),
+            'password' => Hash::make('44'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
             'name' => 'Туганова И.В.',
             'email' => 'TuganovaIV',
             'email_confirmed' => true,
-            'password' => Hash::make('5'),
+            'password' => Hash::make('55'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
@@ -78,7 +78,7 @@ class UserSeeder extends Seeder
             'name' => 'Евтушенко Н.М.',
             'email' => 'EvtushenkoNM',
             'email_confirmed' => true,
-            'password' => Hash::make('6'),
+            'password' => Hash::make('66'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
