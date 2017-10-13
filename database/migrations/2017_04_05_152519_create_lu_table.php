@@ -13,11 +13,11 @@ class CreateLuTable extends Migration
      */
     public function up()
     {
-        Schema::create('dir_lu', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('caption');
-            $table->timestamps();
-        });
+//        Schema::create('dir_lu', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->string('caption');
+//            $table->timestamps();
+//        });
     }
 
     /**

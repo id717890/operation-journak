@@ -13,15 +13,17 @@ class CreateTableIncidentObjects extends Migration
      */
     public function up()
     {
-        Schema::create('incident_objects', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('incident_id')->unsigned();
-            $table->integer('object_id')->unsigned();
-            $table->timestamps();
+        if (!Schema::hasTable('incident_objects')) {
+            Schema::create('incident_objects', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('incident_id')->unsigned();
+                $table->integer('object_id')->unsigned();
+                $table->timestamps();
 
-            $table->foreign('incident_id')->references('id')->on('incidents')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('object_id')->references('id')->on('dir_global')->onDelete('cascade')->onUpdate('cascade');
-        });
+                $table->foreign('incident_id')->references('id')->on('incidents')->onDelete('cascade')->onUpdate('cascade');
+                $table->foreign('object_id')->references('id')->on('dir_global')->onDelete('cascade')->onUpdate('cascade');
+            });
+        }
     }
 
     /**
@@ -31,6 +33,6 @@ class CreateTableIncidentObjects extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incident_objects');
+//        Schema::dropIfExists('incident_objects');
     }
 }

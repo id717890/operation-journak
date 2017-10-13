@@ -204,7 +204,7 @@
                                 <tr id="{{'item-'.$incident->id}}">
                                     <td>{{$i}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
-                                    <td>{{date('d.m.Y H:i',strtotime($incident->end_date))}}</td>
+                                    <td>{{!is_null($incident->end_date) ? date('d.m.Y H:i',strtotime($incident->end_date)) : ''}}</td>
                                     <td>{{$incident->dir_type->caption}}</td>
                                     <td>{{$incident->object_caption}}</td>
                                     <td>{{$incident->issue}}</td>

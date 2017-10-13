@@ -13,24 +13,26 @@ class CreateIncidentTable extends Migration
      */
     public function up()
     {
-        Schema::create('incidents', function (Blueprint $table) {
-            $table->increments('id');
-            $table->datetime('start_date')->nullable(false);
-            $table->datetime('end_date')->nullable();
-            $table->integer('dir_type_id')->unsigned();
-            $table->text('object_caption');
-            $table->integer('author_id')->unsigned();
-            $table->string('who_was_notified')->nullable();
-            $table->text('actions')->nullable();
-            $table->dateTime('deadline')->nullable();
-            $table->text('other')->nullable();
-            $table->text('issue')->nullable(false);
-            $table->boolean('is_delete')->nullable(false)->default(false);
-            $table->timestamps();
+        if (!Schema::hasTable('incidents')) {
+            Schema::create('incidents', function (Blueprint $table) {
+                $table->increments('id');
+                $table->datetime('start_date')->nullable(false);
+                $table->datetime('end_date')->nullable();
+                $table->integer('dir_type_id')->unsigned();
+                $table->text('object_caption');
+                $table->integer('author_id')->unsigned();
+                $table->string('who_was_notified')->nullable();
+                $table->text('actions')->nullable();
+                $table->dateTime('deadline')->nullable();
+                $table->text('other')->nullable();
+                $table->text('issue')->nullable(false);
+                $table->boolean('is_delete')->nullable(false)->default(false);
+                $table->timestamps();
 
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('dir_type_id')->references('id')->on('dir_types')->onDelete('cascade')->onUpdate('cascade');
-        });
+                $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+                $table->foreign('dir_type_id')->references('id')->on('dir_types')->onDelete('cascade')->onUpdate('cascade');
+            });
+        }
     }
 
     /**
@@ -40,6 +42,6 @@ class CreateIncidentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incidents');
+//        Schema::dropIfExists('incidents');
     }
 }

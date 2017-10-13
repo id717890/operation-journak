@@ -54,10 +54,13 @@ class EngineerController extends Controller
 
     public function getOperationJournalHistory($size = 50)
     {
+        $start_date=!is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i',strtotime(date('Y-m-01').' 00:00'));
+        $end_date=!is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i',strtotime(date('Y-m-d').' 23:59'));
+
         return view('dashboard.engineer.operation_journal_history')
             ->with('incidents', $this->incidentService->find_incident_by_parameters($size,
-                Input::get('start_date'),
-                Input::get('end_date'),
+                $start_date,
+                $end_date,
                 Input::get('author'),
                 Input::get('dir_type'),
                 Input::get('obj_id'),
@@ -66,8 +69,8 @@ class EngineerController extends Controller
             ->with('sizes', config('constants.paginate_sizes'))
             ->with('types', $this->dirTypeService->get_types_cm())
             ->with('users', $this->userService->get_users_cm())
-            ->with('start_date', Input::get('start_date'))
-            ->with('end_date', Input::get('end_date'))
+            ->with('start_date', $start_date)
+            ->with('end_date', $end_date)
             ->with('author', Input::get('author'))
             ->with('dir_type', Input::get('dir_type'))
             ->with('obj_caption', Input::get('obj_caption'))
