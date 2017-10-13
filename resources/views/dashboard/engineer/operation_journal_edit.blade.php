@@ -127,7 +127,7 @@
                                         src="../../img/tn-logo-3.png" style="width: 80px"></h4>
                         </div>
                         <div class="col-xl-3 col-md-12 text-center ">
-                            <h4 style="font-weight: bolder;">{{date('d.m.Y H:i:s')}}</h4>
+                            <h4 style="font-weight: bolder;">{{date('d.m.Y H:i')}}</h4>
                         </div>
                     </div>
                     @if(isset($incident) && ($incident!=null))
@@ -272,15 +272,24 @@
                                 <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i
                                             class="fa fa-arrow-left"></i> Назад</a>
                             </div>
-                            <div class="col-xl-2 col-md-12" st>
-                                <a href="#" id="clear-form" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i>
-                                    Очистить</a>
-                            </div>
-                            <div class="col-xl-2 col-md-12" st>
-                                <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i>
-                                    Сохранить
-                                </button>
-                            </div>
+                            @if(isset($allow_edit) && $allow_edit)
+                                <div class="col-xl-2 col-md-12" st>
+                                    <a href="#" id="clear-form" class="btn btn-info w-100 mb-3"><i class="fa fa-eraser"></i>
+                                        Очистить</a>
+                                </div>
+                                <div class="col-xl-2 col-md-12" st>
+                                    <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i>
+                                        Сохранить
+                                    </button>
+                                </div>
+                                @else
+                                <div class="col-xl-4 col-md-12">
+                                    <div class="alert alert-remark-danger" style="text-align: center; font-weight: bold">
+                                        <i class="fa fa-warning"></i>
+                                        Редактировать эту запись запрещено
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     @else
                         <div class="row">
@@ -290,8 +299,6 @@
                         </div>
 
                     @endif
-
-
                 </div>
             </div>
             {!! Form::close() !!}

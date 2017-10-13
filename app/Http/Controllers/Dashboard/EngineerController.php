@@ -6,6 +6,7 @@ use App\Http\Requests\Engineer\FormOperJournalCreate;
 use App\Infrastructure\Interfaces\Services\IDirGlobalService;
 use App\Infrastructure\Interfaces\Services\IDirTypesService;
 use App\Infrastructure\Interfaces\Services\IIncidentService;
+use App\Infrastructure\Interfaces\Services\ISettingsService;
 use App\Infrastructure\Interfaces\Services\IUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -21,41 +22,43 @@ class EngineerController extends Controller
     private $dirTypeService;
     private $dirGlobalService;
     private $userService;
+    private $settingsService;
 
     public function __construct(
         IIncidentService $incidentService
         , IDirTypesService $dirTypesService
         , IDirGlobalService $dirGlobalService
         , IUserService $userService
+        , ISettingsService $settingsService
     )
     {
         $this->incidentService = $incidentService;
         $this->dirTypeService = $dirTypesService;
         $this->dirGlobalService = $dirGlobalService;
         $this->userService = $userService;
+        $this->settingsService = $settingsService;
     }
 
     //region Экспорт в файл
     public function getExportJournal($size = 50)
     {
-        $start_date=!is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i',strtotime(date('Y-m-d').' 00:00'));
-        $end_date=!is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i',strtotime(date('Y-m-d').' 23:59'));
+        $start_date = !is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i', strtotime(date('Y-m-d') . ' 00:00'));
+        $end_date = !is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i', strtotime(date('Y-m-d') . ' 23:59'));
         return view('dashboard.engineer.export_to_file')
             ->with('incidents', $this->incidentService->find_incident_by_dates($size, $start_date, $end_date))
             ->with('start_date', $start_date)
             ->with('end_date', $end_date)
             ->with('size', $size)
-            ->with('sizes', config('constants.paginate_sizes'))
-            ;
+            ->with('sizes', config('constants.paginate_sizes'));
     }
 
     //endregion
 
-
+    //region История оперативного журнала
     public function getOperationJournalHistory($size = 50)
     {
-        $start_date=!is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i',strtotime(date('Y-m-01').' 00:00'));
-        $end_date=!is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i',strtotime(date('Y-m-d').' 23:59'));
+        $start_date = !is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i', strtotime(date('Y-m-01') . ' 00:00'));
+        $end_date = !is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i', strtotime(date('Y-m-d') . ' 23:59'));
 
         return view('dashboard.engineer.operation_journal_history')
             ->with('incidents', $this->incidentService->find_incident_by_parameters($size,
@@ -77,13 +80,17 @@ class EngineerController extends Controller
             ->with('issue', Input::get('issue'))
             ->with('objects', Input::get('obj_id'));
     }
+    //endregion
 
     //region Оперативный журнал
+    //region Удаление записи в оперативном журнале
     public function postOperationJournalDelete($id)
     {
         if ($this->incidentService->remove_by_id($id)) return $id; else return 0;
     }
+    //endregion
 
+    //region Редактирование записи в оперативном журнале
     public function postOperationJournalEdit(FormOperJournalCreate $request, $id)
     {
         $incident = $this->incidentService->find_incident_by_id($id);
@@ -91,10 +98,17 @@ class EngineerController extends Controller
             Session::flash('error_msg', 'Запись с данным id не найдена');
             return redirect()->back();
         }
+        if(!$this->settingsService->is_allow_edit(is_null($incident->end_date) ? null : $incident->updated_at->format('Y-m-d H:i')))
+        {
+            Session::flash('error_msg', 'Редактировать эту запись запрещено!');
+            return redirect()->route('operation_journal');
+        }
         $this->incidentService->update_incident($id, Input::all());
         return redirect()->route('operation_journal');
     }
+    //endregion
 
+    //region Представление для редактирования записи в оперативном журнале
     public function getOperationJournalEdit($id)
     {
         $incident = $this->incidentService->find_incident_by_id($id);
@@ -107,16 +121,17 @@ class EngineerController extends Controller
                 $objects_str = $objects_str . $object->object_id . ',';
             }
             $objects_str = substr($objects_str, 0, strlen($objects_str) - 1);
-
+            $allow_edit = $this->settingsService->is_allow_edit(is_null($incident->end_date) ? null : $incident->updated_at->format('Y-m-d H:i'));
             return View('dashboard.engineer.operation_journal_edit')
                 ->with('types', $this->dirTypeService->get_types_cm())
                 ->with('incident', $incident)
-                ->with('objects', $objects_str);
+                ->with('objects', $objects_str)
+                ->with('allow_edit', $allow_edit);
         }
-
-
     }
+    //endregion
 
+    //region Фильтр объектов через Ajax
     public function postFilterDirGlobalByType($id)
     {
 //        try {
@@ -131,24 +146,31 @@ class EngineerController extends Controller
 //
 //        }
     }
+    //endregion
 
+    //region Создание новой записи в оперативном журнале
     public function postOperationJournalCreate(FormOperJournalCreate $request)
     {
 //        dd(Input::all());
         $this->incidentService->new_incident(Input::all());
         return redirect()->route('operation_journal');
     }
+    //endregion
 
+    //region Представление для новой записи в оперативном журнале
     public function getOperationJournalCreate()
     {
         return view('dashboard.engineer.operation_journal_create')->with('types', $this->dirTypeService->get_types_cm());
     }
+    //endregion
 
+    //region Оперативный журнал инженера
     public function getOperationJournal($size = 50)
     {
         return view('dashboard.engineer.operation_journal')
             ->with('incidents', $this->incidentService->get_opened_size($size))
             ->with('sizes', config('constants.paginate_sizes'));
     }
+    //endregion
     //endregion
 }

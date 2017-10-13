@@ -10,4 +10,12 @@ interface ISettingsService
     public function get($key);
 
     public function get_settings();
+
+    /**
+     * Проверяет доступно ли редактирование записи
+     * Проверяет прошло ли "inspire_minutes" между временем редактирования и текущим временем
+     * @param $date
+     * @return mixed
+     */
+    public function is_allow_edit($date);
 }

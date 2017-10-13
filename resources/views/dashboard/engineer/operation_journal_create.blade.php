@@ -19,6 +19,14 @@
     <script type="text/javascript">
         $(function () {
 
+//            setInterval(function(){
+//                var date=new Date();
+//                var dateStr=date.getDay()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+//
+//
+//                $('#timer').text(dateStr);
+//            }, 1000);
+
             $.datetimepicker.setLocale('ru');
 
             $('.datetimepicker1, .datetimepicker2').datetimepicker({
@@ -121,7 +129,7 @@
                                         src="../img/tn-logo-3.png" style="width: 80px"></h4>
                         </div>
                         <div class="col-xl-3 col-md-12 text-center ">
-                            <h4 style="font-weight: bolder;">{{date('d.m.Y H:i:s')}}</h4>
+                            <h4 style="font-weight: bolder;" id="timer">{{date('d.m.Y H:i')}}</h4>
                         </div>
                     </div>
                     <div class="row">

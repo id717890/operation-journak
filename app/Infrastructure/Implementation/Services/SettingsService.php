@@ -87,4 +87,21 @@ class SettingsService implements ISettingsService
             return null;
         }
     }
+
+    /**
+     * Проверяет доступно ли редактирование записи
+     * Проверяет прошло ли "inspire_minutes" между временем редактирования и текущим временем
+     * @param $date
+     * @return mixed
+     */
+    public function is_allow_edit($date)
+    {
+        if (is_null($date)) return true;
+        $minutes = $this->get('inspire_minutes');
+        if (is_null($minutes)) return true;
+        $updated_at = strtotime($date);
+        $now = time();
+        $diff = round(($now - $updated_at) / 60);
+        return $diff <= $minutes;
+    }
 }

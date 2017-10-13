@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call('SettingsSeeder');
 //        $this->call('DirTypeSeeder');
 //        $this->call('IncidentSeeder');
-//        $this->call('DirGlobalSeeder');
+        $this->call('DirGlobalSeeder');
+        $this->call('DirNpsSeeder');
+        $this->call('DirLuSeeder');
+        $this->call('DirLkpSeeder');
+        $this->call('DirMnSeeder');
     }
 }

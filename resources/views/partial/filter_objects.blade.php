@@ -10,8 +10,8 @@ $groups = array_keys($obj_list);
         if ($count_groups == 1) echo 'col-sm-12';
         elseif ($count_groups == 2) echo 'col-xl-6 col-lg-6 col-md-6 col-sm-12';
         elseif ($count_groups == 3) echo 'col-xl-4 col-lg-6 col-md-6 col-sm-12';
-        elseif ($count_groups >= 4) echo 'col-xl-4 col-lg-6 col-md-6 col-sm-12';
-        ?>">
+        elseif ($count_groups >= 4) echo 'col-xl-3 col-lg-6 col-md-6 col-sm-12';
+        ?>" style="margin-bottom: 15px">
             <label class="font-weight-bold">{{$group}}</label>
 
             <div class="row">

@@ -64,7 +64,8 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Yekaterinburg',
+    'timezone' => 'Europe/Moscow',
+//    'timezone' => 'Asia/Yekaterinburg',
 
     /*
     |--------------------------------------------------------------------------

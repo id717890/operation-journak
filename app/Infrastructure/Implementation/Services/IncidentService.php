@@ -130,8 +130,6 @@ class IncidentService implements IIncidentService
                 }
                 $this->incidentObjectService->new_incident_object($insert_data);
             }
-
-
             DB::commit();
             Session::flash('success_msg', 'Данные успешно сохранены');
         } catch (Exception $e) {
