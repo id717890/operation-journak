@@ -68,7 +68,7 @@
         <div class="row">
             <div class="col-md-2 col-sm-3 left-sidebar">
                 <ul class="nav nav-sidebar d-block">
-                    <li class="{{ Request::is('users') ? 'active' : '' }}">
+                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
                         <a href="{{route('users')}}">
                             <i class="fa fa-user-circle" title="Пользователи"></i>
                             <span class="title-link">Пользователи</span>
@@ -80,9 +80,17 @@
                         <a href="{{route('dir.nps')}}">
                             <i class="fa fa-connectdevelop" title="Пользователи"></i>
                             <span>Справочник "НПС"</span>
-                        </a></li>
-                    <li><a href="#">Справочник "ЛУ"</a></li>
-                    <li><a href="#">Справочник "КП"</a></li>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('object-type*') ? 'active' : '' }}">
+                        <a href="{{route('object.type')}}">
+                            <i class="fa fa-connectdevelop" title="Типы объектов"></i>
+                            <span>Типы объектов</span>
+                        </a>
+                    </li>
+
+                    <li><a href="#">Типы объектов</a></li>
+                    <li><a href="#">Объекты</a></li>
                 </ul>
             </div>
             <div class="col-md-10 offset-md-2 col-sm-9 offset-sm-3 wrapper-content-admin">
