@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call('DirLuSeeder');
         $this->call('DirLkpSeeder');
         $this->call('DirMnSeeder');
+        $this->call('DirIssuesSeeder');
     }
 }

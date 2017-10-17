@@ -88,6 +88,12 @@
                             <span>Типы объектов</span>
                         </a>
                     </li>
+                    <li class="{{ Request::is('issue*') ? 'active' : '' }}">
+                        <a href="{{route('issues')}}">
+                            <i class="fa fa-connectdevelop" title="Типы объектов"></i>
+                            <span>Типы мероприятий</span>
+                        </a>
+                    </li>
 
                     <li><a href="#">Типы объектов</a></li>
                     <li><a href="#">Объекты</a></li>
@@ -102,7 +108,8 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="{{ asset('js/tether.1.4.0.min.js') }}"></script>
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>--}}
     <script src="{{ asset(elixir('js/app.js')) }}"></script>
     @yield('scripts')
 </div>

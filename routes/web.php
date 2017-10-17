@@ -38,12 +38,23 @@ Route::group(['middleware' => ['web']], function () {
 
     //region Кабинет администратора
     Route::group(['middleware' => ['auth', 'role:admin']], function () {
+        //region Справочник мероприятий и типов работ
+        Route::post('/issue/delete/{id}', ['as' => 'issue.delete', 'uses' => 'Dashboard\IssueController@postIssueDelete']);
+        Route::post('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@postIssueEdit']);
+        Route::get('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@getIssueEdit']);
+        Route::post('/issue/create', ['as' => 'issue.create', 'uses' => 'Dashboard\IssueController@postIssueCreate']);
+        Route::get('/issue/create', ['as' => 'issue.create', 'uses' => 'Dashboard\IssueController@getIssueCreate']);
+        Route::get('/issues', ['as' => 'issues', 'uses' => 'Dashboard\IssueController@getIssues']);
+        //endregion
+
+        //region Справочник типов объектов
         Route::post('/object-type/delete/{id}', ['as' => 'object.type.delete', 'uses' => 'Dashboard\ObjectTypeController@postTypeDelete']); //POST удаление типа объекта
         Route::post('/object-type/edit/{id}', ['as' => 'object.type.edit', 'uses' => 'Dashboard\ObjectTypeController@postTypeEdit']); //POST редактирование типа объекта
         Route::get('/object-type/edit/{id}', ['as' => 'object.type.edit', 'uses' => 'Dashboard\ObjectTypeController@getTypeEdit']); //редактирование типа объекта
         Route::post('/object-type/create', ['as' => 'object.type.create', 'uses' => 'Dashboard\ObjectTypeController@postTypeCreate']); //POST Создание нового типа объекта
         Route::get('/object-type/create', ['as' => 'object.type.create', 'uses' => 'Dashboard\ObjectTypeController@getTypeCreate']); //Создание нового типа объкта
         Route::get('/object-type', ['as' => 'object.type', 'uses' => 'Dashboard\ObjectTypeController@getTypes']); //Справочник типов объектов
+        //endregion
 
         Route::get('/dir/nps', ['as' => 'dir.nps', 'uses' => 'Dashboard\DirectoryController@getNps']); //справочник НПС
 

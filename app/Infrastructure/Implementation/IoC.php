@@ -11,6 +11,7 @@ class IoCServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind('App\Infrastructure\Interfaces\Services\IDirIssuesService', 'App\Infrastructure\Implementation\Services\DirIssuesService');
         $this->app->bind('App\Infrastructure\Interfaces\Services\ISettingsService', 'App\Infrastructure\Implementation\Services\SettingsService');
         $this->app->bind('App\Infrastructure\Interfaces\Services\IReportService', 'App\Infrastructure\Implementation\Services\ReportService');
         $this->app->bind('App\Infrastructure\Interfaces\Services\IDirGlobalService', 'App\Infrastructure\Implementation\Services\DirGlobalService');
