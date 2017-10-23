@@ -11,4 +11,9 @@ class DirIssuesRepository extends Repository
     {
         return 'App\Models\DirIssues';
     }
+
+    function find_by_query($q)
+    {
+        return $this->model->where('caption', 'like', '%' . $q . '%')->get();
+    }
 }

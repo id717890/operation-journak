@@ -7,5 +7,10 @@ return [
         50 => 50,
         100 => 100,
         500 => 500,
-    ]
+    ],
+    'operation_journal' => [
+        'default_staff' => [10000]
+
+    ],
+    'delimeter_symbol'=>'|@|'
 ];

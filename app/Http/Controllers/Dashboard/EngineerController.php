@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Requests\Engineer\FormOperJournalCreate;
 use App\Infrastructure\Interfaces\Services\IDirGlobalService;
+use App\Infrastructure\Interfaces\Services\IDirIssuesService;
+use App\Infrastructure\Interfaces\Services\IDirStaffsService;
 use App\Infrastructure\Interfaces\Services\IDirTypesService;
 use App\Infrastructure\Interfaces\Services\IIncidentService;
 use App\Infrastructure\Interfaces\Services\ISettingsService;
@@ -23,6 +25,9 @@ class EngineerController extends Controller
     private $dirGlobalService;
     private $userService;
     private $settingsService;
+    private $dirIssuesService;
+    private $dirStaffsService;
+
 
     public function __construct(
         IIncidentService $incidentService
@@ -30,6 +35,8 @@ class EngineerController extends Controller
         , IDirGlobalService $dirGlobalService
         , IUserService $userService
         , ISettingsService $settingsService
+        , IDirIssuesService $dirIssuesService
+        , IDirStaffsService $dirStaffsService
     )
     {
         $this->incidentService = $incidentService;
@@ -37,6 +44,10 @@ class EngineerController extends Controller
         $this->dirGlobalService = $dirGlobalService;
         $this->userService = $userService;
         $this->settingsService = $settingsService;
+        $this->dirStaffsService = $dirStaffsService;
+
+        $this->dirIssuesService = $dirIssuesService;
+
     }
 
     //region Экспорт в файл
@@ -93,13 +104,15 @@ class EngineerController extends Controller
     //region Редактирование записи в оперативном журнале
     public function postOperationJournalEdit(FormOperJournalCreate $request, $id)
     {
+//        dd(Input::all());
+        if (!is_null(old('object')))
+            dd(old('object'));
         $incident = $this->incidentService->find_incident_by_id($id);
         if ($incident == null) {
             Session::flash('error_msg', 'Запись с данным id не найдена');
             return redirect()->back();
         }
-        if(!$this->settingsService->is_allow_edit(is_null($incident->end_date) ? null : $incident->updated_at->format('Y-m-d H:i')))
-        {
+        if (!$this->settingsService->is_allow_edit(is_null($incident->end_date) ? null : $incident->updated_at->format('Y-m-d H:i'))) {
             Session::flash('error_msg', 'Редактировать эту запись запрещено!');
             return redirect()->route('operation_journal');
         }
@@ -114,18 +127,18 @@ class EngineerController extends Controller
         $incident = $this->incidentService->find_incident_by_id($id);
         if ($incident == null) {
             Session::flash('error_msg', 'Запись с таким id не найдена');
-            return redirect()->back();
+            return redirect()->route('operation_journal');
         } else {
-            $objects_str = '';
-            foreach ($incident->objects as $object) {
-                $objects_str = $objects_str . $object->object_id . ',';
-            }
-            $objects_str = substr($objects_str, 0, strlen($objects_str) - 1);
             $allow_edit = $this->settingsService->is_allow_edit(is_null($incident->end_date) ? null : $incident->updated_at->format('Y-m-d H:i'));
             return View('dashboard.engineer.operation_journal_edit')
-                ->with('types', $this->dirTypeService->get_types_cm())
+                ->with('staffs', $this->dirStaffsService->get_staff_suggest())
+                ->with('staff_default', $this->dirStaffsService->default_staff())
+                ->with('staff_selected', $incident->get_array_of_staff())
+                ->with('issues', $this->dirIssuesService->get_issues_suggest())
+                ->with('issue_selected', $incident->get_array_of_issue())
+                ->with('objects', $this->dirGlobalService->get_objects_suggest())
+                ->with('object_selected', $incident->get_array_of_object())
                 ->with('incident', $incident)
-                ->with('objects', $objects_str)
                 ->with('allow_edit', $allow_edit);
         }
     }
@@ -151,7 +164,6 @@ class EngineerController extends Controller
     //region Создание новой записи в оперативном журнале
     public function postOperationJournalCreate(FormOperJournalCreate $request)
     {
-//        dd(Input::all());
         $this->incidentService->new_incident(Input::all());
         return redirect()->route('operation_journal');
     }
@@ -160,7 +172,12 @@ class EngineerController extends Controller
     //region Представление для новой записи в оперативном журнале
     public function getOperationJournalCreate()
     {
-        return view('dashboard.engineer.operation_journal_create')->with('types', $this->dirTypeService->get_types_cm());
+//        dd($this->dirStaffsService->default_staff());
+        return view('dashboard.engineer.operation_journal_create')
+            ->with('staffs', $this->dirStaffsService->get_staff_suggest())
+            ->with('staff_default', $this->dirStaffsService->default_staff())
+            ->with('issues', $this->dirIssuesService->get_issues_suggest())
+            ->with('objects', $this->dirGlobalService->get_objects_suggest());
     }
     //endregion
 

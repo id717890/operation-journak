@@ -39,6 +39,7 @@ Route::group(['middleware' => ['web']], function () {
     //region Кабинет администратора
     Route::group(['middleware' => ['auth', 'role:admin']], function () {
         //region Справочник мероприятий и типов работ
+        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта
         Route::post('/issue/delete/{id}', ['as' => 'issue.delete', 'uses' => 'Dashboard\IssueController@postIssueDelete']);
         Route::post('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@postIssueEdit']);
         Route::get('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@getIssueEdit']);

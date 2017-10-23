@@ -26,8 +26,9 @@ class FormOperJournalCreate extends FormRequest
         return [
             'start_date' => 'required',
             'who_was_notified' => 'required',
-            'dir_type' => 'required',
-            'obj_caption' => 'required',
+            'object' => 'required',
+//            'dir_type' => 'required',
+//            'obj_caption' => 'required',
             'issue' => 'required',
         ];
     }
@@ -37,8 +38,9 @@ class FormOperJournalCreate extends FormRequest
         return [
             'start_date.required' => 'Заполните обязательное поле',
             'who_was_notified.required' => 'Заполните обязательное поле',
-            'dir_type.required' => 'Заполните обязательное поле',
-            'obj_caption.required' => 'Заполните обязательное поле',
+            'object.required' => 'Заполните обязательное поле',
+//            'dir_type.required' => 'Заполните обязательное поле',
+//            'obj_caption.required' => 'Заполните обязательное поле',
             'issue.required' => 'Заполните обязательное поле'
         ];
     }

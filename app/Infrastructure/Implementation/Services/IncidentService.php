@@ -17,6 +17,8 @@ class IncidentService implements IIncidentService
     private $context;
     private $incidentObjectService;
 
+    private $delimeter_symbol;
+
     public function __construct(
         IncidentRepository $context
         , IncidentObjectService $incidentObjectService
@@ -24,6 +26,7 @@ class IncidentService implements IIncidentService
     {
         $this->context = $context;
         $this->incidentObjectService = $incidentObjectService;
+        $this->delimeter_symbol = config('constants.delimeter_symbol');
     }
 
     /**
@@ -47,22 +50,25 @@ class IncidentService implements IIncidentService
             $incident = $this->context->create([
                 'start_date' => date("Y-m-d H:i:s", strtotime(Input::get('start_date'))),
                 'end_date' => Input::get('end_date') != '' && !is_null(Input::get('end_date')) ? date("Y-m-d H:i:s", strtotime(Input::get('end_date'))) : null,
-                'dir_type_id' => Input::get('dir_type'),
-                'object_caption' => Input::get('obj_caption'),
+//                'dir_type_id' => Input::get('dir_type'),
+//                'object_caption' => Input::get('obj_caption'),
                 'author_id' => Auth::user()->id,
-                'who_was_notified' => Input::get('who_was_notified'),
+                'who_was_notified' => implode($this->delimeter_symbol, Input::get('who_was_notified')),
                 'actions' => Input::get('actions'),
                 'deadline' => Input::get('deadline') != '' && !is_null(Input::get('deadline')) ? date("Y-m-d H:i:s", strtotime(Input::get('deadline'))) : null,
                 'other' => Input::get('other'),
-                'issue' => Input::get('issue'),
+                'issue' => implode($this->delimeter_symbol, Input::get('issue')),
             ]);
-            if (!is_null(Input::get('obj_id'))) {
+
+            $objects = Input::get('object');
+            if (!is_null($objects)) {
                 $insert_data = [];
-                foreach (explode(',', Input::get('obj_id')) as $item) {
+                foreach ($objects as $item) {
                     array_push($insert_data, [
                         'incident_id' => $incident->id,
                         'object_id' => intval($item),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
                 $this->incidentObjectService->new_incident_object($insert_data);
@@ -107,25 +113,26 @@ class IncidentService implements IIncidentService
             $this->context->update([
                 'start_date' => date("Y-m-d H:i:s", strtotime(Input::get('start_date'))),
                 'end_date' => Input::get('end_date') != '' && !is_null(Input::get('end_date')) ? date("Y-m-d H:i:s", strtotime(Input::get('end_date'))) : null,
-                'dir_type_id' => Input::get('dir_type'),
-                'object_caption' => Input::get('obj_caption'),
+//                'dir_type_id' => Input::get('dir_type'),
+//                'object_caption' => Input::get('obj_caption'),
                 'author_id' => Auth::user()->id,
-                'who_was_notified' => Input::get('who_was_notified'),
+                'who_was_notified' => implode($this->delimeter_symbol, Input::get('who_was_notified')),
                 'actions' => Input::get('actions'),
                 'deadline' => Input::get('deadline') != '' && !is_null(Input::get('deadline')) ? date("Y-m-d H:i:s", strtotime(Input::get('deadline'))) : null,
                 'other' => Input::get('other'),
-                'issue' => Input::get('issue'),
+                'issue' => implode($this->delimeter_symbol, Input::get('issue')),
             ], $id);
 
             $incident->objects()->delete();
-
-            if (!is_null(Input::get('obj_id'))) {
+            $objects = Input::get('object');
+            if (!is_null($objects)) {
                 $insert_data = [];
-                foreach (explode(',', Input::get('obj_id')) as $item) {
+                foreach ($objects as $item) {
                     array_push($insert_data, [
                         'incident_id' => $incident->id,
                         'object_id' => intval($item),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
                 $this->incidentObjectService->new_incident_object($insert_data);

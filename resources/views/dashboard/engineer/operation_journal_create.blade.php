@@ -5,96 +5,21 @@
 @endsection
 
 @section('styles')
-    {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
-    <style type="text/css">
-        .alert {
-            margin-bottom: 0;
-        }
-    </style>
+    {{--    {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}--}}
+    {{--    {{Html::style('content/magicsuggest/magicsuggest.css')}}--}}
 @endsection
 
 @section('scripts')
     {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
+    {{--    {{Html::script('content/typeahead/typeahead.bundle_10.js')}}--}}
 
     <script type="text/javascript">
+        //        var token = $('meta[name=_token]').attr('content');
         $(function () {
-
-//            setInterval(function(){
-//                var date=new Date();
-//                var dateStr=date.getDay()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
-//
-//
-//                $('#timer').text(dateStr);
-//            }, 1000);
-
             $.datetimepicker.setLocale('ru');
 
             $('.datetimepicker1, .datetimepicker2').datetimepicker({
                 format: 'd.m.Y H:i'
-            });
-
-            $('#obj_caption').click(function () {
-                var id = $('#dir_type').val();
-                var token = $('meta[name=_token]').attr('content');
-                var url = '{{ route("operation_journal.filter-obj", ":id") }}';
-                var objects = $('#obj_id').val();
-                url = url.replace(':id', id);
-
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: {'_token': token, 'objects': objects},
-                    beforeSend: function () {
-                        $('#object-list').empty();
-                        $('.loading-container').show();
-                        $('#ObjectModalLabel').html('Список доступных объектов');
-                    },
-                    success: function (response) {
-                        $('#object-list').html(response);
-                        $('.loading-container').hide();
-                    },
-                    error: function () {
-                        alert('Ошибка при удалении записи');
-                    }
-                });
-
-                $('#ObjectModal').modal();
-            });
-
-            $('#dir_type').change(function () {
-                var id = $('#dir_type').val();
-                if (id != '') {
-                    $('#obj_caption').removeAttr('disabled').val('');
-                    $('#obj_id').val('');
-                }
-                else {
-                    $('#obj_caption').attr('disabled', 'disabled').val('');
-                    $('#obj_id').val('');
-                }
-
-                $('#object-list').empty();
-            });
-
-            $('#submit-objects').click(function () {
-                var val = [];
-                var val_id = [];
-                $('input[name="obj-list[]"]:checked').each(function (i) {
-                    val[i] = $(this).val();
-                    val_id[i] = $(this).data('id');
-                });
-                $('#obj_caption').val(val.join(', '));
-                $('#obj_id').val(val_id.join(', '));
-                $('#ObjectModal').modal('hide');
-            });
-
-            $('#reset-objects').click(function () {
-                $('input[name="obj-list[]"]').each(function () {
-                    this.checked = false;
-                });
-            });
-
-            $('#clear-form').click(function () {
-                $('#form_oper_journal')[0].reset();
             });
         });
 
@@ -105,7 +30,68 @@
         function ClearEndDate() {
             $('#end_date').val('');
         }
+
+        function ClearForm(){
+            $('#start_date, #end_date, #deadline, #actions, #other').val('');
+        }
     </script>
+
+    {{Html::script('js/jquery.1.12.4.min.js')}}
+    {{Html::script('content/magicsuggest/magicsuggest.js')}}
+    <script type="text/javascript">
+        var jQuery_12 = jQuery.noConflict(true);
+        var issue, staff, object;
+
+        var staffs =<?php echo json_encode($staffs)?>;
+        var staff_default =<?php echo json_encode($staff_default)?>;
+        var issues =<?php echo json_encode($issues)?>;
+        var objects =<?php echo json_encode($objects)?>;
+
+        jQuery_12(function () {
+            staff = jQuery_12('#who_was_notified').magicSuggest({
+                data: staffs,
+                valueField: 'caption',
+                displayField: 'caption'
+            });
+
+            @if (!is_null(old('who_was_notified')))
+                staff.setValue(<?php echo json_encode(old('who_was_notified'))?>);
+            @else
+                @if (!$errors->has('who_was_notified'))
+                        staff.setValue(staff_default);
+                @endif
+            @endif
+
+            issue = jQuery_12('#issue').magicSuggest({
+                data: issues,
+                valueField: 'caption',
+                displayField: 'caption'
+            });
+
+            @if (!is_null(old('issue')))
+                issue.setValue(<?php echo json_encode(old('issue'))?>);
+            @endif
+
+            object = jQuery_12('#object').magicSuggest({
+                allowFreeEntries: false,
+                data: objects,
+                valueField: 'id',
+                displayField: 'caption'
+            });
+
+            @if (!is_null(old('object')))
+                object.setValue(<?php echo json_encode(old('object'))?>);
+            @endif
+
+             $('#clear-form').click(function () {
+                        ClearForm();
+                        staff.clear();
+                        issue.clear();
+                        object.clear();
+                    });
+        });
+    </script>
+
 @endsection
 
 @section('content')
@@ -115,7 +101,7 @@
             {!! Form::open([
                     'url'=>route('operation_journal.create'),
                     'type'=>'POST',
-                    'id'=>'form_oper_journal'
+                    'id'=>'form_create'
                     ]) !!}
             <div class="card">
                 <div class="card-block">
@@ -124,7 +110,6 @@
                             <h4>РДП Урай</h4>
                         </div>
                         <div class="col-xl-6 col-md-12 text-center">
-
                             <h4><img src="../img/tn-logo-3.png" style="width: 80px"> АО "Транснефть-Сибирь" <img
                                         src="../img/tn-logo-3.png" style="width: 80px"></h4>
                         </div>
@@ -176,11 +161,8 @@
                         <div class="form-group col-xl-6 col-md-12 <?php echo $errors->has('who_was_notified') ? ' has-danger' : '' ?>">
                             {!! Form::label('who_was_notified','Оповещение о неисправности / Ответственный',['style'=>'font-weight:bold']) !!}
 
-                            {!! Form::text('who_was_notified','Диспетчер, Оператор',array(
-                            'id'=>'who_was_notified',
-                            'class'=>'form-control ',
-                            'placeholder'=>'Кто оповещен о неисправности?',
-                            'value'=> old('who_was_notified'))) !!}
+                            <input id="who_was_notified" class="form-control" name="who_was_notified[]"
+                                   placeholder="Кто оповещен о неисправности">
                             @if ($errors->has('who_was_notified'))
                                 <div class="alert alert-danger"
                                      style="margin-top: 5px ">{{$errors->first('who_was_notified')}}</div>
@@ -189,47 +171,15 @@
                     </div>
                     <div class="row" style="margin-bottom: 15px">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header" style="padding: 0.3rem 1.25rem">Объект</div>
-                                <div class="card-block">
-                                    <div class="row">
-                                        <div class="form-group col-xl-4 col-md-12 mb-0 <?php echo $errors->has('dir_type') ? ' has-danger' : '' ?>">
-                                            {!! Form::label('dir_type_label','Тип объекта',['style'=>'font-weight:bold']) !!}
-                                            {!! Form::select('dir_type',$types,null,['placeholder'=>'','class'=>'form-control','id'=>'dir_type']) !!}
-                                            @if ($errors->has('dir_type'))
-                                                <div class="alert alert-danger"
-                                                     style="margin-top: 5px ">{{$errors->first('dir_type')}}</div>
-                                            @endif
-                                        </div>
-                                        <div class="form-group col-xl-8 col-md-12 mb-0 <?php echo $errors->has('obj_caption') ? ' has-danger' : '' ?>">
-                                            {!! Form::label('obj_caption','Объект',['style'=>'font-weight:bold']) !!}
-
-                                            @if(old('dir_type')!=null)
-                                                {!! Form::text('obj_caption',null,array(
-                                                    'placeholder'=>'Укажите объект',
-                                                    'id'=>'obj_caption',
-                                                    'class'=>'form-control',
-                                                    'value'=> old('obj_caption'))) !!}
-                                            @else
-                                                {!! Form::text('obj_caption',null,array(
-                                                    'placeholder'=>'Укажите объект',
-                                                    'id'=>'obj_caption',
-                                                    'class'=>'form-control',
-                                                    'value'=> old('obj_caption'), 'disabled'=>'disabled')) !!}
-                                            @endif
-
-                                            @if ($errors->has('obj_caption'))
-                                                <div class="alert alert-danger"
-                                                     style="margin-top: 5px ">{{$errors->first('obj_caption')}}</div>
-                                            @endif
-
-                                            {!! Form::hidden('obj_id',null,['id'=>'obj_id']) !!}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                {!! Form::label('object','Объект',['style'=>'font-weight:bold']) !!}
+                                <input id="object" class="form-control" name="object[]" placeholder="Укажите объект">
+                                @if ($errors->has('object'))
+                                    <div class="alert alert-danger"
+                                         style="margin-top: 5px ">{{$errors->first('object')}}</div>
+                                @endif
                             </div>
                         </div>
-
                     </div>
 
                     <div class="row">
@@ -237,11 +187,9 @@
                             <div class="form-group <?php echo $errors->has('issue') ? ' has-danger' : '' ?>">
                                 {!! Form::label('issue','Описание проблемы / Проводимые работы',['style'=>'font-weight:bold']) !!}
 
-                                {!! Form::textarea('issue',null,array(
-                                'id'=>'issue',
-                                'class'=>'form-control',
-                                'rows'=>2,
-                                'value'=> old('issue'))) !!}
+                                <input id="issue" class="form-control" name="issue[]"
+                                       placeholder="Укажите проблему / проводимые работы">
+
                                 @if ($errors->has('issue'))
                                     <div class="alert alert-danger"
                                          style="margin-top: 5px ">{{$errors->first('issue')}}</div>
@@ -280,7 +228,7 @@
                             'value'=> old('other'))) !!}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row d-flex" style="flex-flow: row wrap; justify-content: center">
                         <div class="col-xl-2 col-md-12" st>
                             <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i
                                         class="fa fa-arrow-left"></i> Назад</a>
@@ -301,6 +249,4 @@
             {!! Form::close() !!}
         </div>
     </div>
-
-    @include('partial/modal_objects')
 @endsection

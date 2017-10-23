@@ -6,3 +6,18 @@ body, html, #app{
 a {
   text-decoration: none!important;
 }
+
+.alert {
+  margin-bottom: 0;
+}
+
+/*.twitter-typeahead {*/
+/*width: 100%;*/
+/*}*/
+
+.ms-sel-item {
+  font-size: 16px !important;
+  color: black !important;
+  line-height: 24px;
+  font-family: 'Arial';
+}

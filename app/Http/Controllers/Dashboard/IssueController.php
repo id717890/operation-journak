@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Session;
+use Response;
+
 
 
 class IssueController extends Controller
@@ -17,6 +19,11 @@ class IssueController extends Controller
     public function __construct(IDirIssuesService $dirIssuesService)
     {
         $this->dirIssuesService = $dirIssuesService;
+    }
+
+    public function postIssuesJson()
+    {
+        return Response::json($this->dirIssuesService->get_issues_json(Input::get('query')));
     }
 
     public function postIssueDelete($id)

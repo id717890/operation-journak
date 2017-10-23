@@ -38,4 +38,18 @@ class DirGlobalService implements IDirGlobalService
         }
         return $data;
     }
+
+    /**
+     * Возвращает список объектов для списка
+     * @return mixed
+     */
+    public function get_objects_suggest()
+    {
+        $data = [];
+        $list = $this->context->all();
+        foreach ($list as $item) {
+            $data[] = ['id' => $item->id, 'caption' => $item->dir_type->caption . ' - ' . $item->caption];
+        }
+        return $data;
+    }
 }

@@ -11,4 +11,11 @@ interface IDirGlobalService
      * @return mixed
      */
     public function get_objects_by_type($dir_type_id);
+
+
+    /**
+     * Возвращает список объектов для списка
+     * @return mixed
+     */
+    public function get_objects_suggest();
 }

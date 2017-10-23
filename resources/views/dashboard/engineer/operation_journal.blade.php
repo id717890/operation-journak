@@ -62,7 +62,6 @@
                         <colgroup>
                             <col class="width-30">
                             <col class="width-150">
-                            <col class="width-100">
                             <col>
                             <col>
                             <col class="width-150">
@@ -72,7 +71,6 @@
                         <tr>
                             <th>#</th>
                             <th>Начало</th>
-                            <th title="Тип объекта">Тип</th>
                             <th>Объект</th>
                             <th title="Описание неисправности или проводимых работ">Описание</th>
                             <th>Дежурный</th>
@@ -86,9 +84,8 @@
                                 <tr id="{{'item-'.$incident->id}}">
                                     <td>{{$i}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
-                                    <td>{{$incident->dir_type->caption}}</td>
-                                    <td>{{$incident->object_caption}}</td>
-                                    <td>{{$incident->issue}}</td>
+                                    <td>{{$incident->object_caption()}}</td>
+                                    <td>{{$incident->issue_caption()}}</td>
                                     <td>{{$incident->user->name}}</td>
                                     <td>
                                         <a href="{{route('operation_journal.edit',['id'=>$incident->id])}}"

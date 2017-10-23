@@ -86,6 +86,4 @@ interface IIncidentService
      * @return mixed
      */
     public function find_incident_by_dates($size, $start_date, $end_date);
-
-
 }

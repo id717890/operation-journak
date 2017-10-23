@@ -1,19 +1,19 @@
 <?php
 namespace App\Infrastructure\Implementation\Services;
 
-use App\Infrastructure\Interfaces\Services\IDirIssuesService;
-use App\Infrastructure\Repository\DirIssuesRepository;
+use App\Infrastructure\Interfaces\Services\IDirStaffsService;
+use App\Infrastructure\Repository\DirStaffsRepository;
 use DB;
 use Mockery\CountValidator\Exception;
 use Session;
 use Hash;
 use Illuminate\Support\Facades\Input;
 
-class DirIssuesService implements IDirIssuesService
+class DirStaffsService implements IDirStaffsService
 {
     private $context;
 
-    public function __construct(DirIssuesRepository $context)
+    public function __construct(DirStaffsRepository $context)
     {
         $this->context = $context;
     }
@@ -101,28 +101,43 @@ class DirIssuesService implements IDirIssuesService
         return $this->context->all();
     }
 
-    public function get_issues_json($q)
+    /**
+     * Возвращает список сотрудников+должность+место работы для списка
+     * @return array
+     */
+    public function get_staff_suggest()
     {
         $data = [];
-        if (is_null($q) || $q == '') $list = $this->context->all();
-        else $list = $this->context->find_by_query($q);
+        $list = $this->context->all();
         foreach ($list as $item) {
-            $data[] = ['id' => $item->id, 'caption' => $item->caption];
+            $str=$item->fio;
+            if (!is_null($item->post) && $item->post != '') $str .= ' - ' . $item->post;
+            if (!is_null($item->department) && $item->department != '') $str .= ' - ' . $item->department;
+            $data[] = ['id' => $item->id, 'caption' => $str];
         }
         return $data;
     }
 
     /**
-     * Возвращает список видов неиспрвностей / работ для списка
+     * Получает значение по умолчания для поля "Кто был уведомлен"
      * @return mixed
      */
-    public function get_issues_suggest()
+    public function default_staff()
     {
-        $data = [];
-        $list = $this->context->all();
-        foreach ($list as $item) {
-            $data[] = ['id' => $item->id, 'caption' => $item->caption];
+        $conf = config('constants.operation_journal.default_staff');
+        if (!is_null($conf)) {
+            $data = [];
+            foreach ($conf as $item) {
+                $find = $this->context->find($item);
+                if (!is_null($find)) {
+                    $str = $find->fio;
+                    if (!is_null($find->post) && $find->post != '') $str .= ' - ' . $find->post;
+                    if (!is_null($find->department) && $find->department != '') $str .= ' - ' . $find->department;
+                    $data[] = ['id' => $find->id, 'caption' => $str];
+                }
+            }
+            return count($data) > 0 ? $data : null;
         }
-        return $data;
+        return null;
     }
 }

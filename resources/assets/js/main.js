@@ -24,8 +24,6 @@ $('.btn-delete').click(function () {
     //$.ajax({
     //    method: "POST",
     //    url: url,
-    //    beforeSend: function () {
-    //    },
     //    success: function (data) {
     //        alert('success');
     //    }
