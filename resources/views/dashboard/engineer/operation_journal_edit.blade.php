@@ -8,34 +8,47 @@
     {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
 
     <script type="text/javascript">
-        $(function () {
+        var is_edited = false;
 
-            $.datetimepicker.setLocale('ru');
+        @if (count($errors)>0)
+            is_edited = true;
+        @endif
 
-            $('.datetimepicker1, .datetimepicker2').datetimepicker({
-                format: 'd.m.Y H:i'
-            });
+    $(function () {
+                    $.datetimepicker.setLocale('ru');
 
-//            $('#clear-form').click(function (e) {
-//                e.stopPropagation();
-//                e.preventDefault();
-//                $('#end_date, #obj_caption, #issue, #actions, #other').val('');
-//                $('#dir_type').prop('selectedIndex', 0);
-//                $('#obj_caption').attr('disabled', true);
-//
-//            });
+                    $('.datetimepicker1, .datetimepicker2').datetimepicker({
+                        format: 'd.m.Y H:i'
+                    });
+                });
+
+        $('#start_date, #end_date, #deadline, #actions, #other').on('change', function () {
+            IsEdited();
         });
 
+        $('#back-to-journal').on('click', function (e) {
+            if (is_edited) {
+                e.preventDefault();
+                $('#question').html('Сохранить изменения?');
+                $('#cancel-btn').attr('href', '{{route('operation_journal')}}').removeAttr('data-dismiss');
+                $('#AskSaveChanges').modal('show');
+            }
+        });
+
+        $('#accept-btn').on('click', function () {
+            $('#form_edit').submit();
+        });
+
+        function IsEdited() {
+            is_edited = true;
+        }
+
         function ClearStartDate() {
-            $('#start_date').val('');
+            $('#start_date').val('').change();
         }
 
         function ClearEndDate() {
-            $('#end_date').val('');
-        }
-
-        function ClearForm(){
-            $('#start_date, #end_date, #deadline, #actions, #other').val('');
+            $('#end_date').val('').change();
         }
     </script>
 
@@ -65,11 +78,11 @@
             @else
                 @if (!$errors->has('who_was_notified'))
                     staff.setValue(staff_selected);
-                @endif
             @endif
+        @endif
 
 
-            issue = jQuery_12('#issue').magicSuggest({
+        issue = jQuery_12('#issue').magicSuggest({
                 data: issues,
                 valueField: 'caption',
                 displayField: 'caption'
@@ -80,10 +93,10 @@
             @else
                 @if (!$errors->has('issue'))
                     issue.setValue(issue_selected);
-                @endif
             @endif
+        @endif
 
-            object = jQuery_12('#object').magicSuggest({
+        object = jQuery_12('#object').magicSuggest({
                 allowFreeEntries: false,
                 data: objects,
                 valueField: 'id',
@@ -95,15 +108,25 @@
             @else
                 @if (!$errors->has('object'))
                         object.setValue(object_selected);
-                @endif
             @endif
+        @endif
 
-         $('#clear-form').click(function () {
+        jQuery_12(staff).on('selectionchange', function () {
+                        IsEdited();
+                    });
+            jQuery_12(object).on('selectionchange', function () {
+                IsEdited();
+            });
+            jQuery_12(issue).on('selectionchange', function () {
+                IsEdited();
+            });
+
+            $('#clear-form').click(function () {
                 ClearForm();
                 staff.clear();
-            issue.clear();
-            object.clear();
-                    });
+                issue.clear();
+                object.clear();
+            });
         });
     </script>
 @endsection
@@ -242,9 +265,10 @@
                                 'value'=> old('other'))) !!}
                             </div>
                         </div>
-                        <div class="row"  style="flex-flow: row wrap; justify-content: center">
+                        <div class="row" style="flex-flow: row wrap; justify-content: center">
                             <div class="col-xl-2 col-md-12" st>
-                                <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i
+                                <a href="{{route('operation_journal')}}" id="back-to-journal"
+                                   class="btn btn-remark-default w-100 mb-3"><i
                                             class="fa fa-arrow-left"></i> Назад</a>
                             </div>
                             @if(isset($allow_edit) && $allow_edit)
@@ -282,6 +306,5 @@
             {!! Form::close() !!}
         </div>
     </div>
-
-    @include('partial/modal_objects')
+    @include('partial/modals/modal-yes-no')
 @endsection

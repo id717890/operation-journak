@@ -4,34 +4,54 @@
     Оперативный журнал - новая запись
 @endsection
 
-@section('styles')
-    {{--    {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}--}}
-    {{--    {{Html::style('content/magicsuggest/magicsuggest.css')}}--}}
-@endsection
-
 @section('scripts')
     {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
-    {{--    {{Html::script('content/typeahead/typeahead.bundle_10.js')}}--}}
 
     <script type="text/javascript">
-        //        var token = $('meta[name=_token]').attr('content');
-        $(function () {
-            $.datetimepicker.setLocale('ru');
+        var is_edited = false;
 
-            $('.datetimepicker1, .datetimepicker2').datetimepicker({
-                format: 'd.m.Y H:i'
-            });
+        @if (count($errors)>0)
+            is_edited = true;
+        @endif
+
+        $(function () {
+                    $.datetimepicker.setLocale('ru');
+
+                    $('.datetimepicker1, .datetimepicker2').datetimepicker({
+                        format: 'd.m.Y H:i'
+                    });
+                });
+
+        $('#start_date, #end_date, #deadline, #actions, #other').on('change', function () {
+            IsEdited();
         });
 
+        $('#back-to-journal').on('click', function (e) {
+            if (is_edited) {
+                e.preventDefault();
+                $('#question').html('Сохранить изменения?');
+                $('#cancel-btn').attr('href', '{{route('operation_journal')}}').removeAttr('data-dismiss');
+                $('#AskSaveChanges').modal('show');
+            }
+        });
+
+        $('#accept-btn').on('click', function () {
+            $('#form_create').submit();
+        });
+
+        function IsEdited() {
+            is_edited = true;
+        }
+
         function ClearStartDate() {
-            $('#start_date').val('');
+            $('#start_date').val('').change();
         }
 
         function ClearEndDate() {
-            $('#end_date').val('');
+            $('#end_date').val('').change();
         }
 
-        function ClearForm(){
+        function ClearForm() {
             $('#start_date, #end_date, #deadline, #actions, #other').val('');
         }
     </script>
@@ -54,13 +74,14 @@
                 displayField: 'caption'
             });
 
+
             @if (!is_null(old('who_was_notified')))
                 staff.setValue(<?php echo json_encode(old('who_was_notified'))?>);
             @else
                 @if (!$errors->has('who_was_notified'))
                         staff.setValue(staff_default);
-                @endif
             @endif
+        @endif
 
             issue = jQuery_12('#issue').magicSuggest({
                 data: issues,
@@ -83,12 +104,22 @@
                 object.setValue(<?php echo json_encode(old('object'))?>);
             @endif
 
-             $('#clear-form').click(function () {
-                        ClearForm();
-                        staff.clear();
-                        issue.clear();
-                        object.clear();
+            jQuery_12(staff).on('selectionchange', function () {
+                        IsEdited();
                     });
+            jQuery_12(object).on('selectionchange', function () {
+                IsEdited();
+            });
+            jQuery_12(issue).on('selectionchange', function () {
+                IsEdited();
+            });
+
+            $('#clear-form').click(function () {
+                ClearForm();
+                staff.clear();
+                issue.clear();
+                object.clear();
+            });
         });
     </script>
 
@@ -230,7 +261,8 @@
                     </div>
                     <div class="row d-flex" style="flex-flow: row wrap; justify-content: center">
                         <div class="col-xl-2 col-md-12" st>
-                            <a href="{{route('operation_journal')}}" class="btn btn-remark-default w-100 mb-3"><i
+                            <a href="{{route('operation_journal')}}" id="back-to-journal"
+                               class="btn btn-remark-default w-100 mb-3"><i
                                         class="fa fa-arrow-left"></i> Назад</a>
                         </div>
                         <div class="col-xl-2 col-md-12" st>
@@ -238,7 +270,7 @@
                                 Очистить</a>
                         </div>
                         <div class="col-xl-2 col-md-12" st>
-                            <button type="submit" class="btn btn-remark-success w-100 "><i class="fa fa-check"></i>
+                            <button type="submit" class="btn btn-remark-success w-100"><i class="fa fa-check"></i>
                                 Сохранить
                             </button>
                         </div>
@@ -249,4 +281,5 @@
             {!! Form::close() !!}
         </div>
     </div>
+    @include('partial/modals/modal-yes-no')
 @endsection
