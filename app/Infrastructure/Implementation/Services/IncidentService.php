@@ -214,13 +214,13 @@ class IncidentService implements IIncidentService
      * @param $end_date
      * @param $author
      * @param $dir_type
-     * @param $obj_caption
+     * @param $objects
      * @param $issue
      * @return mixed
      */
-    public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue)
+    public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $objects, $issue)
     {
-        return $this->context->find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $obj_caption, $issue);
+        return $this->context->find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $objects, $issue);
     }
 
     /**

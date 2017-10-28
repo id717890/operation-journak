@@ -34,7 +34,7 @@ class ReportController extends Controller
             Input::get('end_date'),
             Input::get('author'),
             Input::get('dir_type'),
-            Input::get('obj_id'),
+            Input::get('object'),
             Input::get('issue')
         ), $title);
     }

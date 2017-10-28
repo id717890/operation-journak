@@ -70,14 +70,14 @@ class EngineerController extends Controller
     {
         $start_date = !is_null(Input::get('start_date')) ? Input::get('start_date') : date('Y-m-d H:i', strtotime(date('Y-m-01') . ' 00:00'));
         $end_date = !is_null(Input::get('end_date')) ? Input::get('end_date') : date('Y-m-d H:i', strtotime(date('Y-m-d') . ' 23:59'));
-
+//        dd(Input::all());
         return view('dashboard.engineer.operation_journal_history')
             ->with('incidents', $this->incidentService->find_incident_by_parameters($size,
                 $start_date,
                 $end_date,
                 Input::get('author'),
                 Input::get('dir_type'),
-                Input::get('obj_id'),
+                Input::get('object'),
                 Input::get('issue')
             ))
             ->with('sizes', config('constants.paginate_sizes'))
@@ -87,9 +87,11 @@ class EngineerController extends Controller
             ->with('end_date', $end_date)
             ->with('author', Input::get('author'))
             ->with('dir_type', Input::get('dir_type'))
-            ->with('obj_caption', Input::get('obj_caption'))
+            ->with('object', Input::get('object'))
             ->with('issue', Input::get('issue'))
-            ->with('objects', Input::get('obj_id'));
+//            ->with('objects', Input::get('obj_id'));
+            ->with('objects', $this->dirGlobalService->get_objects_suggest());
+
     }
     //endregion
 

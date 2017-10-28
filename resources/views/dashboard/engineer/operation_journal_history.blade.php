@@ -4,15 +4,6 @@
     Оперативный журнал - история
 @endsection
 
-@section('styles')
-    {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
-    <style type="text/css">
-        .alert {
-            margin-bottom: 0;
-        }
-    </style>
-@endsection
-
 @section('scripts')
     {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
 
@@ -24,7 +15,6 @@
                 format: 'd.m.Y H:i'
             });
 
-
             $('.page-size').change(function () {
                 var url = '{{route('operation_journal_history',['size'=>':size'])}}';
                 url = url.replace(':size', $(this).val());
@@ -33,66 +23,6 @@
 
             $('#search-btn').click(function () {
                 $('#loading-element').show();
-            });
-
-            $('#obj_caption').click(function () {
-                var id = $('#dir_type').val();
-                var token = $('meta[name=_token]').attr('content');
-                var url = '{{ route("operation_journal.filter-obj", ":id") }}';
-                var objects = $('#obj_id').val();
-                url = url.replace(':id', id);
-
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: {'_token': token, 'objects': objects},
-                    beforeSend: function () {
-                        $('#object-list').empty();
-                        $('.loading-container').show();
-                        $('#ObjectModalLabel').html('Список доступных объектов');
-                    },
-                    success: function (response) {
-                        $('#object-list').html(response);
-                        $('.loading-container').hide();
-                    },
-                    error: function () {
-                        alert('Ошибка при выгрузке списка объектов');
-                    }
-                });
-
-                $('#ObjectModal').modal();
-            });
-
-            $('#dir_type').change(function () {
-                var id = $('#dir_type').val();
-                if (id != '') {
-                    $('#obj_caption').removeAttr('disabled').val('');
-                    $('#obj_id').val('');
-                }
-                else {
-                    $('#obj_caption').attr('disabled', 'disabled').val('');
-                    $('#obj_id').val('');
-                }
-
-                $('#object-list').empty();
-            });
-
-            $('#submit-objects').click(function () {
-                var val = [];
-                var val_id = [];
-                $('input[name="obj-list[]"]:checked').each(function (i) {
-                    val[i] = $(this).val();
-                    val_id[i] = $(this).data('id');
-                });
-                $('#obj_caption').val(val.join(', '));
-                $('#obj_id').val(val_id.join(', '));
-                $('#ObjectModal').modal('hide');
-            });
-
-            $('#reset-objects').click(function () {
-                $('input[name="obj-list[]"]').each(function () {
-                    this.checked = false;
-                });
             });
 
             $('#clear-form').click(function () {
@@ -107,26 +37,41 @@
                 $('#obj-id-exp').val($('#obj_id').val());
                 $('#issue-exp').val($('#issue').val());
                 $('#form_oper_journal_history_to_excel').submit();
-
-
             });
-
         });
 
-        function ClearStartDate() {
-            $('#start_date').val('');
-        }
-
-        function ClearEndDate() {
-            $('#end_date').val('');
-        }
-
         function ClearForm() {
-            ClearEndDate();
-            ClearStartDate();
-            $('#author, #dir_type, #obj_caption, #obj_id, #issue').val('');
-            $('#obj_caption').prop('disabled',true);
+            $('#start_date, #end_date, #author, #dir_type, #issue').val('');
+            object.clear();
         }
+    </script>
+
+    {{Html::script('js/jquery.1.12.4.min.js')}}
+    {{Html::script('content/magicsuggest/magicsuggest.js')}}
+
+    <script type="text/javascript">
+        var jQuery_12 = jQuery.noConflict(true);
+        var object;
+
+        var objects =<?php echo json_encode($objects)?>;
+
+        jQuery_12(function () {
+            object = jQuery_12('#object').magicSuggest({
+                allowFreeEntries: false,
+                data: objects,
+                valueField: 'id',
+                displayField: 'caption'
+            });
+
+            @if (!is_null($object))
+                object.setValue(<?php echo json_encode($object)?>);
+            @endif
+
+            $('#clear-form').click(function () {
+                ClearForm();
+                object.clear();
+            });
+        });
     </script>
 @endsection
 
@@ -211,22 +156,8 @@
                                         {!! Form::select('dir_type',$types,$dir_type!=null ? $dir_type : null,['placeholder'=>'','class'=>'form-control','id'=>'dir_type']) !!}
                                     </div>
                                     <div class="col-xl-2 col-md-4 col-sm-12">
-                                        {!! Form::label('obj_caption','Объект',['style'=>'font-weight:bold']) !!}
-
-                                        @if (!is_null($dir_type))
-                                            {!! Form::text('obj_caption',$obj_caption,array(
-                                                    'placeholder'=>'Укажите объект',
-                                                    'id'=>'obj_caption',
-                                                    'class'=>'form-control',
-                                                    'value'=> old('obj_caption'))) !!}
-                                        @else
-                                            {!! Form::text('obj_caption',null,array(
-                                                    'placeholder'=>'Укажите объект',
-                                                    'id'=>'obj_caption',
-                                                    'class'=>'form-control',
-                                                    'value'=> old('obj_caption'), 'disabled'=>'disabled')) !!}
-                                        @endif
-                                        {!! Form::hidden('obj_id', $objects,['id'=>'obj_id']) !!}
+                                        {!! Form::label('object','Объект',['style'=>'font-weight:bold']) !!}
+                                        <input id="object" class="form-control" name="object[]" placeholder="Укажите объект">
                                     </div>
                                     <div class="col-xl-2 col-md-4 col-sm-12">
                                         {!! Form::label('issue','Описание',['style'=>'font-weight:bold']) !!}
@@ -290,7 +221,6 @@
                             <col class="width-30">
                             <col class="width-150">
                             <col class="width-150">
-                            <col class="width-100">
                             <col>
                             <col>
                             <col class="width-150">
@@ -301,7 +231,6 @@
                             <th>#</th>
                             <th>Начало</th>
                             <th>Окончание</th>
-                            <th title="Тип объекта">Тип</th>
                             <th>Объект</th>
                             <th title="Описание неисправности или проводимых работ">Описание</th>
                             <th>Дежурный</th>
@@ -316,9 +245,8 @@
                                     <td>{{$i}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->end_date))}}</td>
-                                    <td>{{$incident->dir_type->caption}}</td>
-                                    <td>{{$incident->object_caption}}</td>
-                                    <td>{{$incident->issue}}</td>
+                                    <td>{{$incident->object_caption()}}</td>
+                                    <td>{{$incident->issue_caption()}}</td>
                                     <td>{{$incident->user->name}}</td>
                                     <td>
                                         <a href="{{route('operation_journal.edit',['id'=>$incident->id])}}"
@@ -332,7 +260,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="8" class="text-center">Записи отсутствуют</td>
+                                <td colspan="7" class="text-center">Записи отсутствуют</td>
                             </tr>
                         @endif
                         </tbody>

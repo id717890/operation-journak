@@ -53,28 +53,26 @@ class IncidentRepository extends Repository
 
     public function find_incident_by_parameters($size, $start_date, $end_date, $author, $dir_type, $objects, $issue)
     {
-        $data = Incident::where('end_date', '!=', null)->where('is_delete','=',false)->orderBy('start_date', 'desc');
+        $data = Incident::where('end_date', '!=', null)->where('is_delete', '=', false)->orderBy('start_date', 'desc');
 
         $sql = 'select i.* from incidents i';
 
         if ($objects != null) {
             $data->whereHas('objects', function ($q) use ($objects) {
-                $q->whereIn('object_id', explode(',', $objects));
+                $q->whereIn('object_id', $objects);
             });
 
-            $sql .= ' join incident_objects io on io.incident_id=i.id and io.object_id in (\'' . $objects . '\')';
+//            $sql .= ' join incident_objects io on io.incident_id=i.id and io.object_id in (\'' . $objects . '\')';
         }
 
-        $sql .= ' where end_date is not null';
-
+//        $sql .= ' where end_date is not null';
 //        dd($objects);
 
         if ($start_date != null && $end_date != null) {
 //            dd('1');
             $data->whereBetween('start_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
 //                ->orWhereBetween('end_date', array(date("Y-m-d H:i", strtotime($start_date)), date("Y-m-d H:i", strtotime($end_date))));
-
-            $sql .= ' and i.start_date>=\'' . date("Y-m-d H:i", strtotime($start_date)) . '\' and i.start_date<=\'' . date("Y-m-d H:i", strtotime($end_date)) . '\'';
+//            $sql .= ' and i.start_date>=\'' . date("Y-m-d H:i", strtotime($start_date)) . '\' and i.start_date<=\'' . date("Y-m-d H:i", strtotime($end_date)) . '\'';
         }
         if ($start_date != null && $end_date == null) {
 //            dd('2');
@@ -97,9 +95,14 @@ class IncidentRepository extends Repository
             $sql .= ' and i.author_id=' . $author;
         }
         if ($dir_type != null) {
+            $data->whereHas('objects', function ($q) use ($dir_type) {
+                $q->whereHas('object', function ($q2) use ($dir_type) {
+                    $q2->where('dir_type_id', '=', $dir_type);
+                });
+            });
 //            dd('5');
-            $data->where('dir_type_id', '=', $dir_type);
-            $sql .= ' and i.dir_type_id=' . $dir_type;
+//            $data->where('dir_type_id', '=', $dir_type);
+//            $sql .= ' and i.dir_type_id=' . $dir_type;
         }
 
         if ($issue != null) {
@@ -110,12 +113,12 @@ class IncidentRepository extends Repository
 
 //        $test=DB::select($sql);
 //        dd($test);
-        return $size==0 ? $data->get() : $data->paginate($size);
+        return $size == 0 ? $data->get() : $data->paginate($size);
     }
 
     public function find_incident_by_dates($size, $start_date, $end_date)
     {
-        $data = Incident::where('start_date', '>=', '1900-01-01')->where('is_delete','=',false)->orderBy('start_date', 'desc');
+        $data = Incident::where('start_date', '>=', '1900-01-01')->where('is_delete', '=', false)->orderBy('start_date', 'desc');
 
 
         if ($start_date != null && $end_date != null) {
