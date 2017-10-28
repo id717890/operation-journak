@@ -4,15 +4,6 @@
     Экпорта данных в файл
 @endsection
 
-@section('styles')
-    {{Html::style('datetimepicker/jquery.datetimepicker.min.css')}}
-    <style type="text/css">
-        .alert {
-            margin-bottom: 0;
-        }
-    </style>
-@endsection
-
 @section('scripts')
     {{Html::script('datetimepicker/jquery.datetimepicker.full.min.js')}}
 
@@ -24,10 +15,10 @@
                 format: 'd.m.Y H:i'
             });
 
-            $('#start_date').change(function(){
-               $('#start-date-view').val($(this).val());
+            $('#start_date').change(function () {
+                $('#start-date-view').val($(this).val());
             });
-            $('#end_date').change(function(){
+            $('#end_date').change(function () {
                 $('#end-date-view').val($(this).val());
             });
 
@@ -39,21 +30,17 @@
         });
 
         function ClearStartDate() {
-            $('#start_date').val('');
-            $('#start-date-view').val('');
+            $('#start_date, #start-date-view').val('');
         }
 
         function ClearEndDate() {
-            $('#end_date').val('');
-            $('#end-date-view').val('');
+            $('#end_date, #end-date-view').val('');
         }
 
         function ClearForm() {
             ClearEndDate();
             ClearStartDate();
         }
-
-
     </script>
 @endsection
 
@@ -151,14 +138,17 @@
                                             <i class="fa fa-search"></i>
                                             Посмотреть на странице
                                         </button>
-                                        <input type="hidden" name="start_date" id="start-date-view" value="{{$start_date!=null ? date('d.m.Y H:i',strtotime($start_date)) : null}}">
-                                        <input type="hidden" name="end_date" id="end-date-view" value="{{$end_date!=null ? date('d.m.Y H:i',strtotime($end_date)) : null}}">
+                                        <input type="hidden" name="start_date" id="start-date-view"
+                                               value="{{$start_date!=null ? date('d.m.Y H:i',strtotime($start_date)) : null}}">
+                                        <input type="hidden" name="end_date" id="end-date-view"
+                                               value="{{$end_date!=null ? date('d.m.Y H:i',strtotime($end_date)) : null}}">
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="col-xl-2 col-md-4 col-sm-12">
                                         <label>&nbsp;</label>
                                         <button type="button" id="clear-btn" class="btn btn-remark-danger w-100 "
-                                                style="bottom: 0; position: relative; cursor: pointer" onclick="ClearForm()">
+                                                style="bottom: 0; position: relative; cursor: pointer"
+                                                onclick="ClearForm()">
                                             <i class="fa fa-eraser"></i>
                                             Очистить форму
                                         </button>
@@ -181,7 +171,6 @@
                             <col class="width-30">
                             <col class="width-150">
                             <col class="width-150">
-                            <col class="width-100">
                             <col>
                             <col>
                             <col class="width-150">
@@ -191,7 +180,6 @@
                             <th>#</th>
                             <th>Начало</th>
                             <th>Окончание</th>
-                            <th title="Тип объекта">Тип</th>
                             <th>Объект</th>
                             <th title="Описание неисправности или проводимых работ">Описание</th>
                             <th>Дежурный</th>
@@ -205,8 +193,7 @@
                                     <td>{{$i}}</td>
                                     <td>{{date('d.m.Y H:i',strtotime($incident->start_date))}}</td>
                                     <td>{{!is_null($incident->end_date) ? date('d.m.Y H:i',strtotime($incident->end_date)) : ''}}</td>
-                                    <td>{{$incident->dir_type->caption}}</td>
-                                    <td>{{$incident->object_caption}}</td>
+                                    <td>{{$incident->object_caption()}}</td>
                                     <td>{{$incident->issue}}</td>
                                     <td>{{$incident->user->name}}</td>
                                 </tr>

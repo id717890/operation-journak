@@ -45,7 +45,7 @@ class ReportService implements IReportService
                 });
 
                 foreach ($incidents as $key => $value) {
-                    $sheetArray[] = [$key+1, date('d.m.y H:i', strtotime($value->start_date)), !is_null($value->end_date) ? date('d.m.Y H:i',strtotime($value->end_date)) : '', $value->dir_type->caption.' - '.$value->object_caption, $value->issue, $value->actions, $value->other, $value->user->name];
+                    $sheetArray[] = [$key+1, date('d.m.y H:i', strtotime($value->start_date)), !is_null($value->end_date) ? date('d.m.Y H:i',strtotime($value->end_date)) : '', $value->object_caption(), $value->issue, $value->actions, $value->other, $value->user->name];
                     $count_rows++;
                 }
 
