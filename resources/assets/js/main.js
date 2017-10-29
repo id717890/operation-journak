@@ -20,22 +20,18 @@ $.ajaxSetup({headers: {'csrftoken': '{{ csrf_token() }}'}});
 
 $('.btn-delete').click(function () {
     var url = $(this).data("url");
-    $('#delete-action').attr('href', url);
-    //$.ajax({
-    //    method: "POST",
-    //    url: url,
-    //    success: function (data) {
-    //        alert('success');
-    //    }
-    //});
+    var method = $(this).data("method");
+    $('#delete-action').attr('href', url).attr('method', method);
 });
 
 $('#delete-action').click(function () {
     event.preventDefault();
     var url = $(this).attr("href");
+    var method = $(this).attr("method");
     var token = $('meta[name=_token]').attr('content');
+
     $.ajax({
-        method: "POST",
+        method: method != null ? method : "POST",
         url: url,
         data: {'_token': token},
         beforeSend: function () {

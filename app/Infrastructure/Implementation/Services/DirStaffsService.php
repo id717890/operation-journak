@@ -27,8 +27,7 @@ class DirStaffsService implements IDirStaffsService
     {
         try {
             $object = $this->context->find($id);
-            if ($object == null) throw new Exception('Вид мероприятия / работ / неисправности не найден');
-//            if (count($type->objects) != 0) throw new Exception('Удаление не возможно, т.к. существуют связанные записи.');
+            if ($object == null) throw new Exception('Объект не найден');
             DB::beginTransaction();
             $this->context->delete($id);
             DB::commit();
@@ -49,10 +48,13 @@ class DirStaffsService implements IDirStaffsService
     {
         try {
             $object = $this->context->find($id);
-            if ($object == null) throw new Exception('Вид мероприятия / работ / неисправности не найден');
+            if ($object == null) throw new Exception('Объект не найлен');
             DB::beginTransaction();
             $this->context->update([
-                'caption' => Input::get('caption')
+                'fio' => Input::get('fio'),
+                'phone' => Input::get('phone'),
+                'post' => Input::get('post'),
+                'department' => Input::get('department')
             ], $id);
             DB::commit();
             Session::flash('success_msg', 'Данные успешно сохранены');
@@ -82,10 +84,13 @@ class DirStaffsService implements IDirStaffsService
         try {
             DB::beginTransaction();
             $this->context->create([
-                'caption' => Input::get('caption')
+                'fio' => Input::get('fio'),
+                'phone' => Input::get('phone'),
+                'post' => Input::get('post'),
+                'department' => Input::get('department'),
             ]);
             DB::commit();
-            Session::flash('success_msg', 'Новый вид мероприятия / работ успешно создан');
+            Session::flash('success_msg', 'Новый сотрудник успешно создан');
         } catch (Exception $e) {
             DB::rollBack();
             Session::flash('error_msg', $e->getMessage());
@@ -110,7 +115,7 @@ class DirStaffsService implements IDirStaffsService
         $data = [];
         $list = $this->context->all();
         foreach ($list as $item) {
-            $str=$item->fio;
+            $str = $item->fio;
             if (!is_null($item->post) && $item->post != '') $str .= ' - ' . $item->post;
             if (!is_null($item->department) && $item->department != '') $str .= ' - ' . $item->department;
             $data[] = ['id' => $item->id, 'caption' => $str];

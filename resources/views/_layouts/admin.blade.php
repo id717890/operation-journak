@@ -74,14 +74,6 @@
                             <span class="title-link">Пользователи</span>
                         </a>
                     </li>
-                </ul>
-                <ul class="nav nav-sidebar d-block">
-                    <li class="{{ Request::is('dir/nps') ? 'active' : '' }}">
-                        <a href="{{route('dir.nps')}}">
-                            <i class="fa fa-connectdevelop" title="Пользователи"></i>
-                            <span>Справочник "НПС"</span>
-                        </a>
-                    </li>
                     <li class="{{ Request::is('object-type*') ? 'active' : '' }}">
                         <a href="{{route('object.type')}}">
                             <i class="fa fa-connectdevelop" title="Типы объектов"></i>
@@ -91,7 +83,13 @@
                     <li class="{{ Request::is('issue*') ? 'active' : '' }}">
                         <a href="{{route('issues')}}">
                             <i class="fa fa-connectdevelop" title="Типы объектов"></i>
-                            <span>Типы мероприятий</span>
+                            <span>Виды работ / неисправностей</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('staffs*') ? 'active' : '' }}">
+                        <a href="{{route('staff.index')}}">
+                            <i class="fa fa-connectdevelop" title="Персонал"></i>
+                            <span>Персонал</span>
                         </a>
                     </li>
 
