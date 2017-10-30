@@ -9,33 +9,11 @@ use Session;
 use Hash;
 use Illuminate\Support\Facades\Input;
 
-class DirStaffsService implements IDirStaffsService
+class DirStaffsService extends BaseCrudService implements IDirStaffsService
 {
-    private $context;
-
     public function __construct(DirStaffsRepository $context)
     {
-        $this->context = $context;
-    }
-
-    /**
-     * Удаляет объект из базы
-     * @param $id
-     * @return mixed
-     */
-    public function remove_object($id)
-    {
-        try {
-            $object = $this->context->find($id);
-            if ($object == null) throw new Exception('Объект не найден');
-            DB::beginTransaction();
-            $this->context->delete($id);
-            DB::commit();
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            return false;
-        }
+        parent::__construct($context);
     }
 
     /**
@@ -65,16 +43,6 @@ class DirStaffsService implements IDirStaffsService
     }
 
     /**
-     * Поиск объекта по id
-     * @param $id
-     * @return mixed
-     */
-    public function find_object_by_id($id)
-    {
-        return $this->context->find($id);
-    }
-
-    /**
      * Создает новый объект
      * @param $data
      * @return mixed
@@ -95,15 +63,6 @@ class DirStaffsService implements IDirStaffsService
             DB::rollBack();
             Session::flash('error_msg', $e->getMessage());
         }
-    }
-
-    /**
-     * Все записи из таблицы
-     * @return mixed
-     */
-    public function get_objects()
-    {
-        return $this->context->all();
     }
 
     /**

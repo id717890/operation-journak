@@ -174,7 +174,6 @@ class EngineerController extends Controller
     //region Представление для новой записи в оперативном журнале
     public function getOperationJournalCreate()
     {
-//        dd($this->dirStaffsService->default_staff());
         return view('dashboard.engineer.operation_journal_create')
             ->with('staffs', $this->dirStaffsService->get_staff_suggest())
             ->with('staff_default', $this->dirStaffsService->default_staff())
