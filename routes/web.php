@@ -39,16 +39,17 @@ Route::group(['middleware' => ['web']], function () {
     //region Кабинет администратора
     Route::group(['middleware' => ['auth', 'role:admin']], function () {
         Route::resource('staff', 'Dashboard\StaffController');
+        Route::resource('issue', 'Dashboard\IssueController');
 
-        //region Справочник мероприятий и типов работ
-        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта
-        Route::post('/issue/delete/{id}', ['as' => 'issue.delete', 'uses' => 'Dashboard\IssueController@postIssueDelete']);
-        Route::post('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@postIssueEdit']);
-        Route::get('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@getIssueEdit']);
-        Route::post('/issue/create', ['as' => 'issue.create', 'uses' => 'Dashboard\IssueController@postIssueCreate']);
-        Route::get('/issue/create', ['as' => 'issue.create', 'uses' => 'Dashboard\IssueController@getIssueCreate']);
-        Route::get('/issues', ['as' => 'issues', 'uses' => 'Dashboard\IssueController@getIssues']);
-        //endregion
+//        //region Справочник мероприятий и типов работ
+//        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта
+//        Route::post('/issue/delete/{id}', ['as' => 'issue.delete', 'uses' => 'Dashboard\IssueController@postIssueDelete']);
+//        Route::post('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@postIssueEdit']);
+//        Route::get('/issue/edit/{id}', ['as' => 'issue.edit', 'uses' => 'Dashboard\IssueController@getIssueEdit']);
+//        Route::post('/issue/create', ['as' => 'issue.create', 'uses' => 'Dashboard\IssueController@postIssueCreate']);
+//        Route::get('/issue/create', ['as' => 'issue.create', 'uses' => 'Dashboard\IssueController@getIssueCreate']);
+//        Route::get('/issues', ['as' => 'issues', 'uses' => 'Dashboard\IssueController@getIssues']);
+//        //endregion
 
         //region Справочник типов объектов
         Route::post('/object-type/delete/{id}', ['as' => 'object.type.delete', 'uses' => 'Dashboard\ObjectTypeController@postTypeDelete']); //POST удаление типа объекта

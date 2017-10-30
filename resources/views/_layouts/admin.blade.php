@@ -74,27 +74,26 @@
                             <span class="title-link">Пользователи</span>
                         </a>
                     </li>
+                </ul>
+                <ul class="nav nav-sidebar d-block">
                     <li class="{{ Request::is('object-type*') ? 'active' : '' }}">
                         <a href="{{route('object.type')}}">
-                            <i class="fa fa-connectdevelop" title="Типы объектов"></i>
+                            <i class="fa fa-folder-o" title="Типы объектов"></i>
                             <span>Типы объектов</span>
                         </a>
                     </li>
                     <li class="{{ Request::is('issue*') ? 'active' : '' }}">
-                        <a href="{{route('issues')}}">
-                            <i class="fa fa-connectdevelop" title="Типы объектов"></i>
+                        <a href="{{route('issue.index')}}">
+                            <i class="fa fa-folder-o" title="Виды работ / неисправностей"></i>
                             <span>Виды работ / неисправностей</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('staffs*') ? 'active' : '' }}">
+                    <li class="{{ Request::is('staff*') ? 'active' : '' }}">
                         <a href="{{route('staff.index')}}">
-                            <i class="fa fa-connectdevelop" title="Персонал"></i>
+                            <i class="fa fa-folder-o" title="Персонал"></i>
                             <span>Персонал</span>
                         </a>
                     </li>
-
-                    <li><a href="#">Типы объектов</a></li>
-                    <li><a href="#">Объекты</a></li>
                 </ul>
             </div>
             <div class="col-md-10 offset-md-2 col-sm-9 offset-sm-3 wrapper-content-admin">
