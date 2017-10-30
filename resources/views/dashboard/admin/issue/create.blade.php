@@ -30,7 +30,7 @@
     <div class="form-group">
         <div class="col-12">
             <input type="submit" class="btn btn-remark-success" value="Сохранить">
-            <a href="{{route('issue.index')}}" class="btn btn-remark-default">Отмена</a>
+            <a href="{{route($index_route)}}" class="btn btn-remark-default">Отмена</a>
         </div>
     </div>
     {{ Form::close() }}

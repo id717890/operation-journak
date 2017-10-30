@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\BaseBackendController;
 use App\Http\Requests\Dashboard\Admin\FormIssueCreate;
 use App\Infrastructure\Interfaces\Services\IDirIssuesService;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 
 

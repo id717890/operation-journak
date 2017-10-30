@@ -6,7 +6,7 @@
 @section('content')
     <h3>{{$header_text['edit']}}</h3>
     {!! Form::open([
-        'url'=>route('issue.update',$object_item->id),
+        'url'=>route('object-type.update',$object_item->id),
         'method'=>'PUT',
         'id'=>'form_edit'
         ]) !!}

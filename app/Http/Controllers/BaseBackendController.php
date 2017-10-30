@@ -83,7 +83,7 @@ class BaseBackendController extends Controller
      */
     protected function create()
     {
-        return View($this->getDirectory() . '.create');
+        return View($this->getDirectory() . '.create')->with('index_route',$this->indexRoute);
     }
 
     /**
@@ -99,7 +99,9 @@ class BaseBackendController extends Controller
             Session::flash('error_msg', 'Указанный объект не найден');
             return redirect()->route($this->indexRoute);
         } else
-            return View($this->getDirectory() . '.edit')->with('object_item', $object);
+            return View($this->getDirectory() . '.edit')
+                ->with('object_item', $object)
+                ->with('index_route',$this->indexRoute);
     }
 
     /**

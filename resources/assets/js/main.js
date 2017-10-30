@@ -39,12 +39,15 @@ $('#delete-action').click(function () {
             $('#loading-element').show();
         },
         success: function (data) {
-            $('#item-' + data).effect('highlight', {}, 100, function () {
-                $(this).fadeOut('fast', function () {
-                    $(this).remove();
+            if (data != 0) {
+                $('#item-' + data).effect('highlight', {}, 100, function () {
+                    $(this).fadeOut('fast', function () {
+                        $(this).remove();
+                    });
                 });
-            });
-            $('#loading-element').hide();
+                $('#loading-element').hide();
+            }
+            else location.reload();
         },
         error: function () {
             alert('Ошибка при удалении записи');

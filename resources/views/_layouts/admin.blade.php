@@ -77,7 +77,7 @@
                 </ul>
                 <ul class="nav nav-sidebar d-block">
                     <li class="{{ Request::is('object-type*') ? 'active' : '' }}">
-                        <a href="{{route('object.type')}}">
+                        <a href="{{route('object-type.index')}}">
                             <i class="fa fa-folder-o" title="Типы объектов"></i>
                             <span>Типы объектов</span>
                         </a>

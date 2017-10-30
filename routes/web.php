@@ -40,6 +40,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['middleware' => ['auth', 'role:admin']], function () {
         Route::resource('staff', 'Dashboard\StaffController');
         Route::resource('issue', 'Dashboard\IssueController');
+        Route::resource('object-type', 'Dashboard\ObjectTypeController');
 
 //        //region Справочник мероприятий и типов работ
 //        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта
@@ -51,14 +52,14 @@ Route::group(['middleware' => ['web']], function () {
 //        Route::get('/issues', ['as' => 'issues', 'uses' => 'Dashboard\IssueController@getIssues']);
 //        //endregion
 
-        //region Справочник типов объектов
-        Route::post('/object-type/delete/{id}', ['as' => 'object.type.delete', 'uses' => 'Dashboard\ObjectTypeController@postTypeDelete']); //POST удаление типа объекта
-        Route::post('/object-type/edit/{id}', ['as' => 'object.type.edit', 'uses' => 'Dashboard\ObjectTypeController@postTypeEdit']); //POST редактирование типа объекта
-        Route::get('/object-type/edit/{id}', ['as' => 'object.type.edit', 'uses' => 'Dashboard\ObjectTypeController@getTypeEdit']); //редактирование типа объекта
-        Route::post('/object-type/create', ['as' => 'object.type.create', 'uses' => 'Dashboard\ObjectTypeController@postTypeCreate']); //POST Создание нового типа объекта
-        Route::get('/object-type/create', ['as' => 'object.type.create', 'uses' => 'Dashboard\ObjectTypeController@getTypeCreate']); //Создание нового типа объкта
-        Route::get('/object-type', ['as' => 'object.type', 'uses' => 'Dashboard\ObjectTypeController@getTypes']); //Справочник типов объектов
-        //endregion
+//        //region Справочник типов объектов
+//        Route::post('/object-type/delete/{id}', ['as' => 'object.type.delete', 'uses' => 'Dashboard\ObjectTypeController@postTypeDelete']); //POST удаление типа объекта
+//        Route::post('/object-type/edit/{id}', ['as' => 'object.type.edit', 'uses' => 'Dashboard\ObjectTypeController@postTypeEdit']); //POST редактирование типа объекта
+//        Route::get('/object-type/edit/{id}', ['as' => 'object.type.edit', 'uses' => 'Dashboard\ObjectTypeController@getTypeEdit']); //редактирование типа объекта
+//        Route::post('/object-type/create', ['as' => 'object.type.create', 'uses' => 'Dashboard\ObjectTypeController@postTypeCreate']); //POST Создание нового типа объекта
+//        Route::get('/object-type/create', ['as' => 'object.type.create', 'uses' => 'Dashboard\ObjectTypeController@getTypeCreate']); //Создание нового типа объкта
+//        Route::get('/object-type', ['as' => 'object.type', 'uses' => 'Dashboard\ObjectTypeController@getTypes']); //Справочник типов объектов
+//        //endregion
 
         //region Управление пользователями
         Route::post('/users/delete/{id}', ['as' => 'user.delete', 'uses' => 'Dashboard\AdminController@postUserDelete']); //POST удаление пользователя

@@ -1,21 +1,21 @@
 @extends("_layouts/admin")
 @section('title')
-    {{$header_text['edit']}}
+    {{$header_text['create']}}
 @endsection
 
 @section('content')
-    <h3>{{$header_text['edit']}}</h3>
+    <h3>{{$header_text['create']}}</h3>
     {!! Form::open([
-        'url'=>route('issue.update',$object_item->id),
-        'method'=>'PUT',
-        'id'=>'form_edit'
+        'url'=>route('object-type.store'),
+        'method'=>'POST',
+        'id'=>'form_create'
         ]) !!}
     <div class="form-group <?php echo $errors->has('caption') ? ' has-danger' : '' ?>">
         <label class="col-12 col-form-label" style="display: block !important;">Наименование<span
                     class="form-element-required"></span></label>
 
         <div class="col-lg-6 col-md-12" style="display: block !important;">
-            {!! Form::text('caption',$object_item->caption,array(
+            {!! Form::text('caption',null,array(
             'id'=>'caption',
             'placeholder'=>'Введите наименование',
             'class'=>'form-control',
