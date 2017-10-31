@@ -41,9 +41,9 @@ interface IDirTypesService extends ICrud
 //    public function get_types();
 
 
-//    /**
-//     * Выгружает список типов объектов для combobox (id,caption)
-//     * @return mixed
-//     */
-//    public function get_types_cm();
+    /**
+     * Выгружает список типов объектов для combobox (id,caption)
+     * @return mixed
+     */
+    public function get_types_cm();
 }

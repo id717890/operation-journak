@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Infrastructure\Interfaces\ICrud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Session;
+
 
 class BaseBackendController extends Controller
 {

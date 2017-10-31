@@ -15,7 +15,7 @@
         <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse">
             <div class="navbar-header visible">
                 <a class="navbar-brand " href="{{route('admin')}}">
-                    <i class="fa fa-home"></i> Admin
+                    <i class="fa fa-home"></i> Панель администрирования
                 </a>
             </div>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -35,7 +35,7 @@
                 </ul>
                 <ul class="navbar-nav align-self-end">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('/')}}">To Site</a>
+                        <a class="nav-link" href="{{route('/')}}">Назад на сайт</a>
                     </li>
                     <li class="nav-item dropdown d-block pull-right">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
@@ -76,6 +76,12 @@
                     </li>
                 </ul>
                 <ul class="nav nav-sidebar d-block">
+                    <li class="{{ Request::is('object') || Request::is('object\*') ? 'active' : '' }}">
+                        <a href="{{route('object.index')}}">
+                            <i class="fa fa-folder-o" title="Объекты"></i>
+                            <span>Объекты</span>
+                        </a>
+                    </li>
                     <li class="{{ Request::is('object-type*') ? 'active' : '' }}">
                         <a href="{{route('object-type.index')}}">
                             <i class="fa fa-folder-o" title="Типы объектов"></i>

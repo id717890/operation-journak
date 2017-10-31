@@ -16,7 +16,7 @@ class CreateTableDirGlobal extends Migration
         if (!Schema::hasTable('dir_global')) {
             Schema::create('dir_global', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('dir_type_id');
+                $table->integer('dir_type_id')->unsigned();
                 $table->string('caption');
                 $table->string('group_name')->nullable(true);
                 $table->integer('order')->nullable(true);

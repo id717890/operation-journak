@@ -79,4 +79,18 @@ class DirTypesService extends BaseCrudService implements IDirTypesService
             Session::flash('error_msg', $e->getMessage());
         }
     }
+
+    /**
+     * Выгружает список типов объектов для combobox (id,caption)
+     * @return mixed
+     */
+    public function get_types_cm()
+    {
+        $data=[];
+        foreach($this->context->all_sorted('asc','caption') as $item)
+        {
+            $data[$item->id]=$item->caption;
+        }
+        return $data;
+    }
 }

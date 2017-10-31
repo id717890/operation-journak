@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::resource('staff', 'Dashboard\StaffController');
         Route::resource('issue', 'Dashboard\IssueController');
         Route::resource('object-type', 'Dashboard\ObjectTypeController');
+        Route::resource('object', 'Dashboard\ObjectController');
 
 //        //region Справочник мероприятий и типов работ
 //        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта

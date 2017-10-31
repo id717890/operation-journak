@@ -3,7 +3,9 @@
 namespace App\Infrastructure\Interfaces\Services;
 
 
-interface IDirGlobalService
+use App\Infrastructure\Interfaces\ICrud;
+
+interface IDirGlobalService extends ICrud
 {
     /**
      * Выгружает список объектов по фильтру dir_type_id
