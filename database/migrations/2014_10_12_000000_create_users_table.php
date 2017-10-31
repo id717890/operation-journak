@@ -17,8 +17,9 @@ class CreateUsersTable extends Migration
             Schema::create('users', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name')->unique();
-                $table->string('email')->unique();
-                $table->boolean('email_confirmed')->default(0);
+//                $table->string('email')->unique();
+                $table->string('login')->unique();
+//                $table->boolean('email_confirmed')->default(0);
                 $table->string('password');
                 $table->boolean('lockout_enabled')->default(0);
                 $table->rememberToken();
@@ -36,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-//        Schema::dropIfExists('users');
+        Schema::dropIfExists('users');
     }
 }

@@ -15,6 +15,7 @@ use App\Models\Scopes\IsNotDeleted;
 use App\Models\Scopes\IsDeleted;
 
 use Illuminate\Support\Facades\Password;
+use App\Models\Relations\HasMany\IncidentsOfUser;
 
 
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
@@ -22,12 +23,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     use Notifiable;
     use EntrustUserTrait; // add this trait to your user model
 
+    use IncidentsOfUser;
     /**
      * //     * The attributes that are mass assignable.
      * //     *
      * //     * @var array
      * //     */
-    protected $fillable = array('name', 'email', 'password', 'confirm_token', 'email_confirmed', 'lockout_enabled');
+//    protected $fillable = array('name', 'email', 'password', 'confirm_token', 'email_confirmed', 'lockout_enabled');
+    protected $fillable = array('name', 'login', 'password', 'confirm_token', 'lockout_enabled');
 
     /**
      * The attributes that should be hidden for arrays.

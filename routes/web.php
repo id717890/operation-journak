@@ -42,6 +42,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::resource('issue', 'Dashboard\IssueController');
         Route::resource('object-type', 'Dashboard\ObjectTypeController');
         Route::resource('object', 'Dashboard\ObjectController');
+        Route::resource('user', 'Dashboard\UserController');
 
 //        //region Справочник мероприятий и типов работ
 //        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта
@@ -62,14 +63,14 @@ Route::group(['middleware' => ['web']], function () {
 //        Route::get('/object-type', ['as' => 'object.type', 'uses' => 'Dashboard\ObjectTypeController@getTypes']); //Справочник типов объектов
 //        //endregion
 
-        //region Управление пользователями
-        Route::post('/users/delete/{id}', ['as' => 'user.delete', 'uses' => 'Dashboard\AdminController@postUserDelete']); //POST удаление пользователя
-        Route::post('/users/edit/{id}', ['as' => 'user.edit', 'uses' => 'Dashboard\AdminController@postUserEdit']); //POST редактирование пользователя
-        Route::get('/users/edit/{id}', ['as' => 'user.edit', 'uses' => 'Dashboard\AdminController@getUserEdit']); //редактирование пользователя
-        Route::post('/users/create', ['as' => 'user.create', 'uses' => 'Dashboard\AdminController@postUserCreate']); //POST Создание нового пользователя
-        Route::get('/users/create', ['as' => 'user.create', 'uses' => 'Dashboard\AdminController@getUserCreate']); //Создание нового пользователя
-        Route::get('/users', ['as' => 'users', 'uses' => 'Dashboard\AdminController@getUsers']); //Справочник пользователей
-        //endregion
+//        //region Управление пользователями
+//        Route::post('/users/delete/{id}', ['as' => 'user.delete', 'uses' => 'Dashboard\AdminController@postUserDelete']); //POST удаление пользователя
+//        Route::post('/users/edit/{id}', ['as' => 'user.edit', 'uses' => 'Dashboard\AdminController@postUserEdit']); //POST редактирование пользователя
+//        Route::get('/users/edit/{id}', ['as' => 'user.edit', 'uses' => 'Dashboard\AdminController@getUserEdit']); //редактирование пользователя
+//        Route::post('/users/create', ['as' => 'user.create', 'uses' => 'Dashboard\AdminController@postUserCreate']); //POST Создание нового пользователя
+//        Route::get('/users/create', ['as' => 'user.create', 'uses' => 'Dashboard\AdminController@getUserCreate']); //Создание нового пользователя
+//        Route::get('/users', ['as' => 'users', 'uses' => 'Dashboard\AdminController@getUsers']); //Справочник пользователей
+//        //endregion
 
         Route::get('/admin', ['as' => 'admin', 'uses' => 'Dashboard\AdminController@index']); //Стартовая страница для кабинета админа
     });

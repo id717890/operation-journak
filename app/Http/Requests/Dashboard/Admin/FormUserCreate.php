@@ -25,9 +25,9 @@ class FormUserCreate extends FormRequest
     {
         return [
             'name' => 'required|unique:users',
-            'email' => 'required|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required|min:6'
+            'login' => 'required|unique:users',
+            'password' => 'required|min:4|confirmed',
+            'password_confirmation' => 'required|min:4'
         ];
     }
 
@@ -35,7 +35,7 @@ class FormUserCreate extends FormRequest
     {
         return [
             'name.required' => 'Необходимо указать имя пользователя',
-            'email.required' => 'Необходимо указать email',
+            'login.required' => 'Необходимо указать логин',
             'password.required' => 'Необходимо указать пароль',
             'password_confirmation.required' => 'Подтвердите пароль'
         ];

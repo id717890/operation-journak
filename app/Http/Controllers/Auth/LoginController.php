@@ -54,17 +54,18 @@ class LoginController extends Controller
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
+
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
         }
 
-        //Проверяем чтобы пользователь подтвердиол свой Email
-        $user = User::where($this->username(), '=', $request->only($this->username()))->first();
-        if ($user != null) {
-            if ($user->email_confirmed == 0) return $this->sendFailedLoginIsNotConfirmed($request);
-        }
+//        //Проверяем чтобы пользователь подтвердиол свой Email
+//        $user = User::where($this->username(), '=', $request->only($this->username()))->first();
+//        if ($user != null) {
+//            if ($user->email_confirmed == 0) return $this->sendFailedLoginIsNotConfirmed($request);
+//        }
 
         if ($this->attemptLogin($request)) {
             return $this->sendLoginResponse($request);
@@ -86,5 +87,10 @@ class LoginController extends Controller
             ->withErrors([
                 $this->username() => 'Для подтверждения учетной записи пройдите по ссылке, отправленной на почту',
             ]);
+    }
+
+    public function username()
+    {
+        return 'login';
     }
 }

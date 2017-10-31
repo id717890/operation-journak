@@ -31,8 +31,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'Юсупов З.А.',
-            'email' => 'YusupovZA',
-            'email_confirmed' => true,
+            'login' => 'YusupovZA',
+//            'email_confirmed' => true,
             'password' => Hash::make('Cegthg@hjkm04'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
@@ -40,17 +40,17 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 2,
             'name' => 'Сербин Ю.В.',
-            'email' => 'SerbinYV',
+            'login' => 'SerbinYV',
             'password' => Hash::make('22'),
-            'email_confirmed' => true,
+//            'email_confirmed' => true,
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
         DB::table('users')->insert([
             'id' => 3,
             'name' => 'Шакирова Е.Ю.',
-            'email' => 'ShakirovaEY',
-            'email_confirmed' => true,
+            'login' => 'ShakirovaEY',
+//            'email_confirmed' => true,
             'password' => Hash::make('33'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
@@ -58,8 +58,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 4,
             'name' => 'Шкилёва Н.А.',
-            'email' => 'ShkilevaNA',
-            'email_confirmed' => true,
+            'login' => 'ShkilevaNA',
+//            'email_confirmed' => true,
             'password' => Hash::make('44'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
@@ -67,8 +67,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 5,
             'name' => 'Туганова И.В.',
-            'email' => 'TuganovaIV',
-            'email_confirmed' => true,
+            'login' => 'TuganovaIV',
+//            'email_confirmed' => true,
             'password' => Hash::make('55'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
@@ -76,8 +76,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 6,
             'name' => 'Евтушенко Н.М.',
-            'email' => 'EvtushenkoNM',
-            'email_confirmed' => true,
+            'login' => 'EvtushenkoNM',
+//            'email_confirmed' => true,
             'password' => Hash::make('66'),
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')

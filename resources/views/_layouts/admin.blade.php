@@ -68,8 +68,8 @@
         <div class="row">
             <div class="col-md-2 col-sm-3 left-sidebar">
                 <ul class="nav nav-sidebar d-block">
-                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
-                        <a href="{{route('users')}}">
+                    <li class="{{ Request::is('user*') ? 'active' : '' }}">
+                        <a href="{{route('user.index')}}">
                             <i class="fa fa-user-circle" title="Пользователи"></i>
                             <span class="title-link">Пользователи</span>
                         </a>

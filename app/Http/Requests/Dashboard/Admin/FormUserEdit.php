@@ -25,7 +25,7 @@ class FormUserEdit extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required'
+            'login' => 'required'
         ];
     }
 
@@ -33,7 +33,7 @@ class FormUserEdit extends FormRequest
     {
         return [
             'name.required' => 'Необходимо указать имя пользователя',
-            'email.required' => 'Необходимо указать email'
+            'login.required' => 'Необходимо указать логин'
         ];
     }
 }
