@@ -9,7 +9,7 @@ return [
         500 => 500,
     ],
     'operation_journal' => [
-        'default_staff' => [10000]
+        'default_staff' => [10000,10001]
 
     ],
     'delimeter_symbol'=>'|@|'

@@ -28,12 +28,12 @@ class DirIssuesSeeder extends Seeder
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
         DB::table('dir_issues')->insert([
-            'caption' => 'Аварийное отклбючение ВЛ',
+            'caption' => 'Аварийное отключение ВЛ',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
         DB::table('dir_issues')->insert([
-            'caption' => 'Плановое отклбючение ВЛ',
+            'caption' => 'Плановое отключение ВЛ',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);

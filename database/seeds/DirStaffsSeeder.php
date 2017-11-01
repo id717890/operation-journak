@@ -38,7 +38,16 @@ class DirStaffsSeeder extends Seeder
         ]);
         DB::table('dir_staffs')->insert([
             'id'=>10000,
-            'fio' => 'Диспетчер РДП, оператор НПС',
+            'fio' => 'Диспетчер РДП',
+            'phone' => '',
+            'post' => '',
+            'department' => '',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_staffs')->insert([
+            'id'=>10001,
+            'fio' => 'Оператор НПС',
             'phone' => '',
             'post' => '',
             'department' => '',

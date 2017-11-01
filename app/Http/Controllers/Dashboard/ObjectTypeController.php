@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Session;
 
-
 class ObjectTypeController extends BaseBackendController
 {
     public function __construct(IDirTypesService $service)
