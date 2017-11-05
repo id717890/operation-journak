@@ -21,7 +21,7 @@
                 <col>
                 <col>
                 <col>
-                <col class="width-90">
+                <col class="width-140">
             </colgroup>
             <thead>
             <tr>
@@ -49,8 +49,24 @@
                                class="btn btn-xs btn-remark-primary">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
+                            <a href="{{route('user.edit.password',['id'=>$item->id])}}"
+                               class="btn btn-xs btn-remark-warning" title="Сменить пароль">
+                                <i class="fa fa-user-secret" aria-hidden="true"></i>
+                            </a>
+                            @if($item->lockout_enabled)
+                                <a href="{{route('user.unlock',['id'=>$item->id])}}"
+                                   class="btn btn-xs btn-remark-success" title="Разблокировать пользователя">
+                                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                                </a>
+                            @else
+                                <a href="{{route('user.lock',['id'=>$item->id])}}"
+                                   class="btn btn-xs btn-remark-info" title="Заблокировать пользователя">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </a>
+                            @endif
                             <a href="#" class="btn btn-xs btn-remark-danger btn-delete" data-toggle="modal"
-                               data-target="#AskRemove" data-url="{{route('user.destroy',['id'=>$item->id])}}" data-method="DELETE">
+                               data-target="#AskRemove" data-url="{{route('user.destroy',['id'=>$item->id])}}"
+                               data-method="DELETE">
                                 <i class="fa fa-remove" aria-hidden="true"></i>
                             </a>
                         </td>

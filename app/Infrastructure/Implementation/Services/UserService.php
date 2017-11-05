@@ -17,19 +17,55 @@ class UserService extends BaseCrudService implements IUserService
         parent::__construct($context);
     }
 
-    public function change_password($user, $new_password)
+    public function change_password($id, $new_password)
     {
-        // TODO: Implement change_password() method.
+        try {
+            DB::beginTransaction();
+            $user = $this->context->find($id);
+            if ($user == null) throw new Exception('Пользователь не найден');
+            $this->context->update([
+                'password' => Hash::make(Input::get('password'))
+            ], $id);
+            DB::commit();
+            Session::flash('success_msg', 'Данные успешно сохранены');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error_msg', $e->getMessage());
+        }
     }
 
-    public function lock($user)
+    public function lock($id)
     {
-        // TODO: Implement lock() method.
+        try {
+            DB::beginTransaction();
+            $user = $this->context->find($id);
+            if ($user == null) throw new Exception('Пользователь не найден');
+            $this->context->update([
+                'lockout_enabled' => true
+            ], $id);
+            DB::commit();
+            Session::flash('success_msg', 'Пользователь успешно заблокирован');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error_msg', $e->getMessage());
+        }
     }
 
-    public function unlock($user)
+    public function unlock($id)
     {
-        // TODO: Implement unlock() method.
+        try {
+            DB::beginTransaction();
+            $user = $this->context->find($id);
+            if ($user == null) throw new Exception('Пользователь не найден');
+            $this->context->update([
+                'lockout_enabled' => false
+            ], $id);
+            DB::commit();
+            Session::flash('success_msg', 'Пользователь успешно разблокирован');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error_msg', $e->getMessage());
+        }
     }
 
     /** Получает список всех пользователей

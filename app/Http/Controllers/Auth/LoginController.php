@@ -67,6 +67,12 @@ class LoginController extends Controller
 //            if ($user->email_confirmed == 0) return $this->sendFailedLoginIsNotConfirmed($request);
 //        }
 
+        //Проверяем чтобы пользователь подтвердиол свой Email
+        $user = User::where($this->username(), '=', $request->only($this->username()))->first();
+        if ($user != null) {
+            if ($user->lockout_enabled == 1) return $this->sendFailedLoginIsLocked($request);
+        }
+
         if ($this->attemptLogin($request)) {
             return $this->sendLoginResponse($request);
         }
@@ -86,6 +92,16 @@ class LoginController extends Controller
             ->withInput($request->only($this->username(), 'remember'))
             ->withErrors([
                 $this->username() => 'Для подтверждения учетной записи пройдите по ссылке, отправленной на почту',
+            ]);
+    }
+
+    /*Сообщение если пользователь заблокирован*/
+    protected function sendFailedLoginIsLocked(Request $request)
+    {
+        return redirect()->back()
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors([
+                $this->username() => 'Учетная запись заблокирована',
             ]);
     }
 

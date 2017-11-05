@@ -43,6 +43,11 @@ Route::group(['middleware' => ['web']], function () {
         Route::resource('object-type', 'Dashboard\ObjectTypeController');
         Route::resource('object', 'Dashboard\ObjectController');
         Route::resource('user', 'Dashboard\UserController');
+        Route::get('user/{user}/edit/password', ['as' => 'user.edit.password', 'uses' => 'Dashboard\UserController@password']); //смена пароля пользователя
+        Route::put('user/{user}/password', ['as' => 'user.update.password', 'uses' => 'Dashboard\UserController@update_password']); //смена пароля пользователя
+        Route::get('user/{user}/lock', ['as' => 'user.lock', 'uses' => 'Dashboard\UserController@lock']); //смена пароля пользователя
+        Route::get('user/{user}/unlock', ['as' => 'user.unlock', 'uses' => 'Dashboard\UserController@unlock']); //смена пароля пользователя
+
 
 //        //region Справочник мероприятий и типов работ
 //        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта

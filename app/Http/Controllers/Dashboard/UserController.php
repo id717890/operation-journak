@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\BaseBackendController;
 use App\Http\Requests\Dashboard\Admin\FormUserCreate;
 use App\Http\Requests\Dashboard\Admin\FormUserEdit;
+use App\Http\Requests\Dashboard\Admin\FormUserPasswordEdit;
 use App\Infrastructure\Interfaces\Services\IUserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -64,6 +65,52 @@ class UserController extends BaseBackendController
             }
         }
         $this->contextService->update_object($id, Input::all());
+        return redirect()->route($this->indexRoute);
+    }
+
+    public function password($id)
+    {
+        $object = $this->contextService->find_object_by_id($id);
+        if ($object == null) {
+            Session::flash('error_msg', 'Указанный объект не найден');
+            return redirect()->route($this->indexRoute);
+        } else
+            return View($this->getDirectory() . '.password')
+                ->with('object_item', $object)
+                ->with('index_route',$this->indexRoute);
+    }
+
+
+    public function update_password(FormUserPasswordEdit $request, $id)
+    {
+        $user = $this->contextService->find_object_by_id($id);
+        if ($user == null) {
+            Session::flash('error_msg', 'Пользователь не найден');
+            return redirect()->back();
+        }
+        $this->userService->change_password($id, Input::all());
+        return redirect()->route($this->indexRoute);
+    }
+
+    public function lock($id)
+    {
+        $user = $this->contextService->find_object_by_id($id);
+        if ($user == null) {
+            Session::flash('error_msg', 'Пользователь не найден');
+            return redirect()->back();
+        }
+        $this->userService->lock($id);
+        return redirect()->route($this->indexRoute);
+    }
+
+    public function unlock($id)
+    {
+        $user = $this->contextService->find_object_by_id($id);
+        if ($user == null) {
+            Session::flash('error_msg', 'Пользователь не найден');
+            return redirect()->back();
+        }
+        $this->userService->unlock($id);
         return redirect()->route($this->indexRoute);
     }
 }

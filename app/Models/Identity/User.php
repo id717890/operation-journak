@@ -32,14 +32,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 //    protected $fillable = array('name', 'email', 'password', 'confirm_token', 'email_confirmed', 'lockout_enabled');
     protected $fillable = array('name', 'login', 'password', 'confirm_token', 'lockout_enabled');
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+//    /**
+//     * The attributes that should be hidden for arrays.
+//     *
+//     * @var array
+//     */
+//    protected $hidden = [
+//        'password', 'remember_token',
+//    ];
 
     /**
      * Get the name of the unique identifier for the user.

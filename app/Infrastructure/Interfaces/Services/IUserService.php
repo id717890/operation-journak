@@ -7,37 +7,6 @@ use App\Infrastructure\Interfaces\ICrud;
 
 interface IUserService extends ICrud
 {
-
-//    /** Получает список всех пользователей
-//     * @return mixed
-//     */
-//    public function get_users();
-//
-//    /** Создает нового пользователя
-//     * @param $data
-//     * @return mixed
-//     */
-//    public function new_user($data);
-//
-//    /** Обновляет данные по пользователю
-//     * @param $id
-//     * @param $data
-//     * @return mixed
-//     */
-//    public function update_user($id, $data);
-//
-//    /** Удаляет пользователя
-//     * @param $id
-//     * @return mixed
-//     */
-//    public function remove_user($id);
-//
-//    /** Поиск пользователя по ID
-//     * @param $id
-//     * @return mixed
-//     */
-//    public function find_user_by_id($id);
-
     /** Поиск пользователя по Email
      * @param $login
      * @return mixed
