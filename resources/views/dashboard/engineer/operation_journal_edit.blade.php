@@ -144,7 +144,13 @@
                 <div class="card-block">
                     <div class="row">
                         <div class="col-xl-3 col-md-12 text-center">
-                            <h4>РДП Урай</h4>
+                            <h4>
+                                @if (isset($department))
+                                    {{$department}}
+                                @else
+                                    Подразделение не определено
+                                @endif
+                            </h4>
                         </div>
                         <div class="col-xl-6 col-md-12 text-center">
                             <h4><img src="../../img/tn-logo-3.png" style="width: 80px"> АО "Транснефть-Сибирь" <img

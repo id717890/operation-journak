@@ -48,6 +48,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('user/{user}/lock', ['as' => 'user.lock', 'uses' => 'Dashboard\UserController@lock']); //смена пароля пользователя
         Route::get('user/{user}/unlock', ['as' => 'user.unlock', 'uses' => 'Dashboard\UserController@unlock']); //смена пароля пользователя
 
+        Route::resource('settings', 'Dashboard\SettingsController');
+
 
 //        //region Справочник мероприятий и типов работ
 //        Route::get('/issue/json/list', ['as' => 'issues.json', 'uses' => 'Dashboard\IssueController@postIssuesJson']); //POST получает список всех мероприятий в виде json объекта

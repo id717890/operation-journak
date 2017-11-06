@@ -74,6 +74,12 @@
                             <span class="title-link">Пользователи</span>
                         </a>
                     </li>
+                    <li class="{{ Request::is('settings*') ? 'active' : '' }}">
+                        <a href="{{route('settings.index')}}">
+                            <i class="fa fa-cog" title="Настройки"></i>
+                            <span class="title-link">Настройки</span>
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav nav-sidebar d-block">
                     <li class="{{ Request::is('object') || Request::is('object\*') ? 'active' : '' }}">

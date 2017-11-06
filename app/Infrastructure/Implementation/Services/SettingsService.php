@@ -9,57 +9,36 @@ use Session;
 use DB;
 
 
-class SettingsService implements ISettingsService
+class SettingsService extends BaseCrudService implements ISettingsService
 {
-    private $context;
 
-    public function __construct(
-        SettingsRepository $context
-    )
+    public function __construct(SettingsRepository $context)
     {
-        $this->context = $context;
+        parent::__construct($context);
     }
 
-    public function new_settings($data)
+    public function get_objects()
+    {
+        $data = [];
+        try {
+            $all = $this->context->all();
+            foreach ($all as $item) $data[$item->key] = $item->value;
+            return $data;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Создает новый объект
+     * @param $data
+     * @return mixed
+     */
+    public function new_object($data)
     {
         try {
             $this->context->create($data);
         } catch (Exception $e) {
-            Session::flash('error_msg', $e->getMessage());
-        }
-    }
-
-    public function update_settings($data, $id)
-    {
-        try {
-            $this->context->update($data, $id);
-        } catch (Exception $e) {
-            Session::flash('error_msg', $e->getMessage());
-        }
-    }
-
-
-    public function change_settings($key, $value)
-    {
-        try {
-            $find = $this->context->findBy('key', $key)->get();
-            DB::beginTransaction();
-
-            if (count($find) == 0) {
-                $this->new_settings([
-                    'key' => $key,
-                    'value' => $value
-                ]);
-            } else {
-                $this->update_settings([
-                    'value' => $value
-                ], $find->first()->id);
-            }
-            DB::commit();
-            Session::flash('success_msg', 'Настройка успешно сохранена');
-
-        } catch (Exception $e) {
-            DB::rollBack();
             Session::flash('error_msg', $e->getMessage());
         }
     }
@@ -70,19 +49,6 @@ class SettingsService implements ISettingsService
             $find = $this->context->findBy('key', $key)->get();
             if (count($find) == 0) return null;
             return $find->first()->value;
-        } catch (Exception $e) {
-            return null;
-        }
-    }
-
-
-    public function get_settings()
-    {
-        $data = [];
-        try {
-            $all = $this->context->all();
-            foreach ($all as $item) $data[$item->key] = $item->value;
-            return $data;
         } catch (Exception $e) {
             return null;
         }
@@ -104,4 +70,39 @@ class SettingsService implements ISettingsService
         $diff = round(($now - $updated_at) / 60);
         return $diff <= $minutes;
     }
+
+    /**
+     * Обновляет объект
+     * @param $key
+     * @param $data
+     * @return mixed
+     */
+    public function update_object($key, $data)
+    {
+        try {
+            $find = $this->context->findBy('key', $key)->get();
+            DB::beginTransaction();
+
+            if (count($find) == 0) {
+                $this->new_object([
+                    'key' => $key,
+                    'value' => $data['value'],
+                    'description'=>$data['description']
+                ]);
+            } else {
+                $this->context->update(
+                    [
+                        'value' => $data['value']
+                    ], $find->first()->id);
+            }
+            DB::commit();
+            Session::flash('success_msg', 'Настройка успешно сохранена');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error_msg', $e->getMessage());
+        }
+    }
+
+
 }

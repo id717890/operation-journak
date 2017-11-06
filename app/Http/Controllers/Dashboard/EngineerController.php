@@ -141,7 +141,8 @@ class EngineerController extends Controller
                 ->with('objects', $this->dirGlobalService->get_objects_suggest())
                 ->with('object_selected', $incident->get_array_of_object())
                 ->with('incident', $incident)
-                ->with('allow_edit', $allow_edit);
+                ->with('allow_edit', $allow_edit)
+                ->with('department', $this->settingsService->get('department'));
         }
     }
     //endregion
@@ -178,7 +179,8 @@ class EngineerController extends Controller
             ->with('staffs', $this->dirStaffsService->get_staff_suggest())
             ->with('staff_default', $this->dirStaffsService->default_staff())
             ->with('issues', $this->dirIssuesService->get_issues_suggest())
-            ->with('objects', $this->dirGlobalService->get_objects_suggest());
+            ->with('objects', $this->dirGlobalService->get_objects_suggest())
+            ->with('department', $this->settingsService->get('department'));
     }
     //endregion
 

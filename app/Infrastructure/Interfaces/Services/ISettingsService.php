@@ -3,13 +3,11 @@
 namespace App\Infrastructure\Interfaces\Services;
 
 
-interface ISettingsService
+use App\Infrastructure\Interfaces\ICrud;
+
+interface ISettingsService extends ICrud
 {
-    public function change_settings($key, $value);
-
     public function get($key);
-
-    public function get_settings();
 
     /**
      * Проверяет доступно ли редактирование записи
