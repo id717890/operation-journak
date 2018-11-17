@@ -37,5 +37,11 @@ class DirTypeSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
+        DB::table('dir_types')->insert([
+            'id' => 5,
+            'caption' => 'СИКН',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
     }
 }

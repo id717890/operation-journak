@@ -18,7 +18,7 @@ class DirIssuesSeeder extends Seeder
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
         DB::table('dir_issues')->insert([
-            'caption' => 'Затоплени колодца КИП/Вантуза',
+            'caption' => 'Затопление колодца КИП/Вантуза',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
@@ -49,6 +49,41 @@ class DirIssuesSeeder extends Seeder
         ]);
         DB::table('dir_issues')->insert([
             'caption' => 'Проведение ТО СА,ТМ',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'ТО средств ЭХЗ',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'Ремонт освещения',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'Подключение коверов',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'Перенос коверов',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'Вскрытие колодцев',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'Замена ОД',
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP')
+        ]);
+        DB::table('dir_issues')->insert([
+            'caption' => 'Работы по включению/отключению резервной нитки',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP')
         ]);
